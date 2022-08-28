@@ -1,0 +1,8 @@
+<div class="flex flex-row">
+    <div class="fixed h-screen transition-all" [ngClass]="{'w-64':this.layoutConfig.isSidebarExpanded, 'w-16':!this.layoutConfig.isSidebarExpanded}">
+        <ng-content select=[sidebar]></ng-content>
+    </div>
+    <div class="w-full h-screen overflow-auto bg-white transition-all p-4" [ngClass]="{'ml-16':!this.layoutConfig.isSidebarExpanded, 'ml-64':this.layoutConfig.isSidebarExpanded}">
+        <ng-content select=[body]></ng-content>
+    </div>
+</div>

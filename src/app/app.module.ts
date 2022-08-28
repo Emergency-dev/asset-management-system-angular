@@ -2,15 +2,39 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { LayoutComponent } from './layout/layout/layout.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { LayoutConfig } from './layout/layout/services/layout-config.service';
+import { SidebarIconComponent } from './components/sidebar/sidebar-icon/sidebar-icon.component';
+import { Route, RouterModule, Routes } from '@angular/router';
+import { PointOfSaleComponent } from './pages/point-of-sale/point-of-sale.component';
+import { ModalComponent } from './components/shared/modal/modal.component';
+import { PointOfSaleAddComponent } from './components/point-of-sale-add/point-of-sale-add.component';
+import { SelectCustomerComponent } from './components/point-of-sale-add/ui/select-customer/select-customer.component';
+import { CartItemListComponent } from './components/point-of-sale-add/ui/cart-item-list/cart-item-list.component';
+
+const appRoutes: Routes = [
+  {path:'', component: PointOfSaleComponent},
+  {path: 'point-of-sale', component: PointOfSaleComponent}
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LayoutComponent,
+    SidebarComponent,
+    SidebarIconComponent,
+    PointOfSaleComponent,
+    ModalComponent,
+    PointOfSaleAddComponent,
+    SelectCustomerComponent,
+    CartItemListComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [LayoutConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
