@@ -6,15 +6,18 @@ export class PointOfSaleTransactionHistory{
     transactionHistoryList:TransactionInfo[] = [];
     private historyInfo: BehaviorSubject<TransactionInfo[]>;
 
+    private names = ["Salman", "Asad", "Haseeb", "Ali", "Hamza", "Hassan", "Bilal", "Karam"];
+    private companyNames = ["Suzuki", "Honda", "DevTech", "Shafiq Book", "Pepsi Limited"];
+
     constructor(){
         
         for(let i = 0; i < 100 ; i++){
         let transactionInfo = new TransactionInfo();
         transactionInfo.transactionId = (new Date()).getMilliseconds() + '' + Math.round(Math.random() * 100);
         transactionInfo.transactionDate = this.addDays(new Date(), Math.round(Math.random() * 90));
-        transactionInfo.userInfo.firstName = 'Asad';
-        transactionInfo.userInfo.lastName = 'Asad';
-        transactionInfo.customerInfo.name = 'Asset Manager';
+        transactionInfo.userInfo.firstName = this.names[Math.round(Math.random() * (this.names.length - 1))];
+        transactionInfo.userInfo.lastName = this.names[Math.round(Math.random() * (this.names.length - 1))];
+        transactionInfo.customerInfo.name = this.companyNames[Math.round(Math.random() * (this.companyNames.length - 1))];
         transactionInfo.customerInfo.customerType = Math.round(Math.random() * 2);
 
         this.transactionHistoryList.push(transactionInfo);

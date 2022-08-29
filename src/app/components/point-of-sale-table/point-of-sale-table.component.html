@@ -51,7 +51,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let trans of this.posFilteredTransactions">
-        <td class="text-black">{{ trans.transactionId }}</td>
+        <td class="text-black"><a class="hover:underline" href="https://templates.invoicehome.com/receipt-template-us-classic-white-750px.png" target="_blank" rel="noreferrer">
+          {{ trans.transactionId }}
+        </a> </td>
         <td class="text-black">{{ trans.userInfo.firstName }}</td>
         <td class="text-black">{{ trans.userInfo.lastName }}</td>
         <td class="text-black">{{ trans.transactionDate.toDateString() }}</td>
