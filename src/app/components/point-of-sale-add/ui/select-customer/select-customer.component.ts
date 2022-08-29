@@ -10,7 +10,7 @@ import { PointOfSaleTransaction } from '../../services/point-of-sale-transaction
 export class SelectCustomerComponent implements OnInit {
   @Output() onSelectCustomer = new EventEmitter<any>();
 
-  customers:Customer[] = [Customer.Reguler, Customer.Retailer, Customer.Wholesale];
+  customers:Customer[] = [Customer.Regular, Customer.Retailer, Customer.Wholesale];
   selectCustomer?:Customer;
   constructor(protected transactionService: PointOfSaleTransaction) { }
 

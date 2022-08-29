@@ -8,17 +8,10 @@ import { LayoutConfig } from './services/layout-config.service';
 })
 export class LayoutComponent implements OnInit {
   constructor(protected layoutConfig: LayoutConfig) {
-    this.loop();
+    
   }
 
   ngOnInit(): void {
-  }
-
-  loop(){
-    setTimeout(() => {
-      console.log(this.layoutConfig.isSidebarExpanded);
-      this.loop();
-    }, 5000);
   }
 
 }

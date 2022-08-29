@@ -12,6 +12,11 @@ import { ModalComponent } from './components/shared/modal/modal.component';
 import { PointOfSaleAddComponent } from './components/point-of-sale-add/point-of-sale-add.component';
 import { SelectCustomerComponent } from './components/point-of-sale-add/ui/select-customer/select-customer.component';
 import { CartItemListComponent } from './components/point-of-sale-add/ui/cart-item-list/cart-item-list.component';
+import { PointOfSaleTableComponent } from './components/point-of-sale-table/point-of-sale-table.component';
+import { DataTablesModule } from 'angular-datatables';
+import { FormsModule } from '@angular/forms';
+import { CartItemAddComponent } from './components/point-of-sale-add/ui/cart-item-list/cart-item-add/cart-item-add.component';
+import { NgxPopper } from 'angular-popper';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -28,11 +33,16 @@ const appRoutes: Routes = [
     ModalComponent,
     PointOfSaleAddComponent,
     SelectCustomerComponent,
-    CartItemListComponent
+    CartItemListComponent,
+    PointOfSaleTableComponent,
+    CartItemAddComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    DataTablesModule,
+    FormsModule,
+    NgxPopper
   ],
   providers: [LayoutConfig],
   bootstrap: [AppComponent]

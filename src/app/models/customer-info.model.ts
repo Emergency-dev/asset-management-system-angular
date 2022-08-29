@@ -4,7 +4,7 @@ export class CustomerInfo{
     name:string = "";
     address:string = "";
     contactNumber:string = "";
-    customerType:Customer = Customer.Reguler
+    customerType:Customer = Customer.Regular
 
     constructor(){
     }

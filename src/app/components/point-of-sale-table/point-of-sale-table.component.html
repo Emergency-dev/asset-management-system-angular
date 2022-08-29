@@ -1,0 +1,62 @@
+<br>
+<div class="flex flex-row">
+  <label class="input-group input-group-vertical">
+    <span class="first:rounded-none first:rounded-tl">Search</span>
+    <input
+      [(ngModel)]="this.searchQuery"
+      type="text"
+      placeholder="Filter"
+      class="input input-bordered w-full
+      focus:outline-none focus:bg-base-300
+      last:rounded-none"
+      (ngModelChange)="this.updateTable()"
+    />
+  </label>
+  <label class="input-group input-group-vertical">
+    <span class="first:rounded-none">Start Date</span>
+    <input
+      [ngModel]="this.startDate | date:'yyyy-MM-dd'"
+      (ngModelChange)="this.startDate = this.setDate($event); this.updateTable();"
+      type="date"
+      (keydown)="false"
+      class="input input-bordered w-full
+      focus:outline-none focus:bg-base-300
+      last:rounded-none"
+
+    />
+  </label>
+  <label class="input-group input-group-vertical">
+    <span class="first:rounded-none first:rounded-tr">End Date</span>
+    <input
+    [ngModel]="this.endDate | date:'yyyy-MM-dd'"
+    (ngModelChange)="this.endDate = this.setDate($event); this.updateTable();"
+      type="date"
+      (keydown)="false"
+      class="input input-bordered w-full
+      focus:outline-none focus:bg-base-300
+      last:rounded-none"
+    />
+  </label>
+</div>
+<table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
+    <thead>
+      <tr class="bg-base-100">
+        <th class="text-white">Transaction ID</th>
+        <th class="text-white">Seller First name</th>
+        <th class="text-white">Seller Last name</th>
+        <th class="text-white">Date</th>
+        <th class="text-white">Customer Name</th>
+        <th class="text-white">Customer Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let trans of this.posFilteredTransactions">
+        <td class="text-black">{{ trans.transactionId }}</td>
+        <td class="text-black">{{ trans.userInfo.firstName }}</td>
+        <td class="text-black">{{ trans.userInfo.lastName }}</td>
+        <td class="text-black">{{ trans.transactionDate.toDateString() }}</td>
+        <td class="text-black">{{ trans.customerInfo.name }}</td>
+        <td class="text-black">{{ this.getCustomerType(trans.customerInfo.customerType) }}</td>
+      </tr>
+    </tbody>
+  </table>

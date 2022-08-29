@@ -1,0 +1,70 @@
+<div class="flex flex-col h-full">
+    <div class="divider"></div>
+    <div class="flex flex-row">
+        <div class="basis-1/2">
+            <div class="grid grid-cols-2 gap-2">
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Item Code</span>
+                    </label>
+                    <input type="text" placeholder="Type here" [(ngModel)]="this.cartItemInfo.productInfo.productCode"
+                        class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Item Name</span>
+                    </label>
+                    <input type="text" placeholder="Type here" [(ngModel)]="this.cartItemInfo.productInfo.productName"
+                        class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Quantity</span>
+                    </label>
+                    <input type="number" min="1" placeholder="Type here" [(ngModel)]="this.cartItemInfo.quantity"
+                        class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Unit</span>
+                    </label>
+                    <select class="select select-bordered select-sm w-full max-w-xs rounded" (change)="this.onUnitChange($event.target)">
+                        <option selected value="single">Single</option>
+                        <option value="dozen">Dozen</option>
+                        <option value="pack">Pack</option>
+                        <option value="carton">Carton</option>
+                    </select>
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Per Unit Price</span>
+                        <angular-popper [show]="this.showPopover">
+                            <svg (click)="this.togglePopover()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                              </svg>
+                              
+                            <div content><div>Min Price: 20 PKR</div><div>Max Price: 25 PKR</div></div>
+                        </angular-popper>
+                    </label>
+                    <input type="number" min="1" placeholder="Type here" [(ngModel)]="this.cartItemInfo.price"
+                        class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">_</span>
+                    </label>
+                    <button class="btn btn-sm rounded" (click)="this.onAddClick()">Add to cart</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="divider divider-horizontal"></div>
+        <div class="basis-1/2">
+            <div class="rounded bg-base-200">
+                <img class="object-scale-down"
+                    src="https://media.istockphoto.com/photos/pencil-picture-id120086722?b=1&k=20&m=120086722&s=170667a&w=0&h=FJ10yydJfGEUwBTW8R-ruHo3xswSQjW4IEZwcm5TTXU="
+                    alt="">
+            </div>
+        </div>
+    </div>
+</div>
