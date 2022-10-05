@@ -22,9 +22,7 @@ export class PointOfSaleTransactionHistory{
 
         this.transactionHistoryList.push(transactionInfo);
         }
-
         
-
         this.historyInfo = new BehaviorSubject<TransactionInfo[]>(this.transactionHistoryList);
 
         //this.addTransaction();

@@ -17,6 +17,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule } from '@angular/forms';
 import { CartItemAddComponent } from './components/point-of-sale-add/ui/cart-item-list/cart-item-add/cart-item-add.component';
 import { NgxPopper } from 'angular-popper';
+import { CustomerDetailsComponent } from './components/point-of-sale-add/ui/customer-details/customer-details.component';
+import { ReviewDetailsComponent } from './components/point-of-sale-add/ui/review-details/review-details.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -35,7 +37,9 @@ const appRoutes: Routes = [
     SelectCustomerComponent,
     CartItemListComponent,
     PointOfSaleTableComponent,
-    CartItemAddComponent
+    CartItemAddComponent,
+    CustomerDetailsComponent,
+    ReviewDetailsComponent
   ],
   imports: [
     BrowserModule,

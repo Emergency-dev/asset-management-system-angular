@@ -6,6 +6,8 @@
     <div class="grow overflow-auto">
         <app-select-customer (onSelectCustomer)="this.onClickNext()" *ngIf="this.currentStep === 1"></app-select-customer>
         <app-cart-item-list *ngIf="this.currentStep === 2"></app-cart-item-list>
+        <app-customer-details *ngIf="this.currentStep === 3"></app-customer-details>
+        <app-review-details *ngIf="this.currentStep === 4"></app-review-details>
     </div>
     <div class="flex flex-row w-full justify-between mt-4">
         <button class="btn gap-2 rounded" [disabled]="this.currentStep === 1" (click)="this.onClickBack()">
