@@ -4,10 +4,13 @@
         <div class='divider m-0'></div>
     </div>
     <div class="grow overflow-auto">
-        <app-select-customer (onSelectCustomer)="this.onClickNext()" *ngIf="this.currentStep === 1"></app-select-customer>
+        <!-- <app-select-customer (onSelectCustomer)="this.onClickNext()" *ngIf="this.currentStep === 1"></app-select-customer>
         <app-cart-item-list *ngIf="this.currentStep === 2"></app-cart-item-list>
         <app-customer-details *ngIf="this.currentStep === 3"></app-customer-details>
-        <app-review-details *ngIf="this.currentStep === 4"></app-review-details>
+        <app-review-details *ngIf="this.currentStep === 4"></app-review-details> -->
+
+        <app-cart (onSelectCustomer)="this.onClickNext()" *ngIf="this.currentStep === 1"></app-cart>
+        <app-review-details *ngIf="this.currentStep === 2"></app-review-details>
     </div>
     <div class="flex flex-row w-full justify-between mt-4">
         <button class="btn gap-2 rounded" [disabled]="this.currentStep === 1" (click)="this.onClickBack()">
@@ -20,17 +23,17 @@
             <ul class="steps w-full">
                 <li class="step" [ngClass]="{'step-primary':this.currentStep > 0}"></li>
                 <li class="step" [ngClass]="{'step-primary':this.currentStep > 1}"></li>
-                <li class="step" [ngClass]="{'step-primary':this.currentStep > 2}"></li>
-                <li class="step" [ngClass]="{'step-primary':this.currentStep > 3}"></li>
+                <!-- <li class="step" [ngClass]="{'step-primary':this.currentStep > 2}"></li>
+                <li class="step" [ngClass]="{'step-primary':this.currentStep > 3}"></li> -->
             </ul>
         </div>
-        <button *ngIf="this.currentStep !== 4" class="btn gap-2 rounded" (click)="this.onClickNext()">
+        <button *ngIf="this.currentStep !== 2" class="btn gap-2 rounded" (click)="this.onClickNext()">
             Next
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                 <path fill-rule="evenodd" d="M2 10a.75.75 0 01.75-.75h12.638L10.23 4.29a.75.75 0 111.04-1.08l6.5 6.25a.75.75 0 010 1.08l-6.5 6.25a.75.75 0 11-1.04-1.08l5.158-4.96H2.75A.75.75 0 012 10z" clip-rule="evenodd" />
               </svg>
           </button>
-          <button class="btn gap-2 rounded" *ngIf="this.currentStep === 4" (click)="this.onClickFinish()">
+          <button class="btn gap-2 rounded" *ngIf="this.currentStep === 2" (click)="this.onClickFinish()">
             Finish
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                 <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />

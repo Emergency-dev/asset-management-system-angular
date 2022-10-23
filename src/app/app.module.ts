@@ -19,6 +19,7 @@ import { CartItemAddComponent } from './components/point-of-sale-add/ui/cart-ite
 import { NgxPopper } from 'angular-popper';
 import { CustomerDetailsComponent } from './components/point-of-sale-add/ui/customer-details/customer-details.component';
 import { ReviewDetailsComponent } from './components/point-of-sale-add/ui/review-details/review-details.component';
+import { CartComponent } from './components/point-of-sale-add/ui/cart/cart.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     PointOfSaleTableComponent,
     CartItemAddComponent,
     CustomerDetailsComponent,
-    ReviewDetailsComponent
+    ReviewDetailsComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
