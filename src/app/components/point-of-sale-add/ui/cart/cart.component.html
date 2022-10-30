@@ -42,12 +42,24 @@
                     <div class="flex-grow group-hover:underline">
                         5698: Pencils (Yellow)
                     </div>
-                    <div class="flex justify-end">
-                        <input type="text" placeholder="Quantity"
-                            class="bg-white input input-xs input-bordered w-full max-w-xs rounded text-black" />
+                    <div class="flex flex-row gap-4 justify-end">
+                        <input type="text" placeholder="Carton"
+                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
+                            <input type="text" placeholder="PCS/PKT"
+                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
+                            <div class="divider divider-vertical border m-0 h-full"></div>
+                              <label class="label cursor-pointer p-0 gap-2">
+                                <span class="label-text">Carton</span> 
+                                <input type="radio" name="radio-10" class="radio" checked />
+                              </label>
+                              <label class="label cursor-pointer p-0 gap-2">
+                                <span class="label-text">Pieces</span> 
+                                <input type="radio" name="radio-10" class="radio" checked />
+                              </label>
+                            <div class="divider divider-vertical border m-0 h-full"></div>
+                            Quantity x Unit Price = 1231 PKR
                     </div>
-                    <div class="flex justify-end">X</div>
-                    <div class="flex justify-end">
+                    <!-- <div class="flex justify-end">
 
                         <select class="select select-bordered select-xs w-full max-w-xs rounded" (change)="null">
                             <option selected value="single">Single</option>
@@ -55,8 +67,7 @@
                             <option value="pack">Pack</option>
                             <option value="carton">Carton</option>
                         </select>
-                    </div>
-                    <div class="flex justify-end">12856 PKR</div>
+                    </div> -->
                 </div>
             </div>
 
