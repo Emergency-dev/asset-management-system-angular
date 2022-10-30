@@ -3,13 +3,16 @@ import { DataTableDirective } from 'angular-datatables';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Customer } from 'src/app/models/customer-type.enum';
 import { TransactionInfo } from 'src/app/models/transaction-info.model';
+import { ProductInfo } from 'src/app/models/product-info.model';
 import { PointOfSaleTransactionHistory } from './services/point-of-sale-table.service';
+import {DataService} from 'src/app/services/supabase.service'
+import { PointOfSaleTransaction } from '../point-of-sale-add/services/point-of-sale-transaction.service';
 
 @Component({
   selector: 'app-point-of-sale-table',
   templateUrl: './point-of-sale-table.component.html',
   styleUrls: ['./point-of-sale-table.component.css'],
-  providers: [PointOfSaleTransactionHistory]
+  providers: [PointOfSaleTransactionHistory, DataService, PointOfSaleTransaction]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   @ViewChild(DataTableDirective, {static: false})
@@ -18,6 +21,8 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   dtOptions: DataTables.Settings = {};
   posTransactions: TransactionInfo[] = [];
   posFilteredTransactions: TransactionInfo[] = [];
+  data: any = '';
+  productInfo: ProductInfo[] = [];
 
   dtTrigger: Subject<DataTables.Settings> = new Subject();
 
@@ -32,9 +37,11 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   // thus we ensure the data is fetched before rendering
 
 
-  constructor(protected posTransactionHistoryService: PointOfSaleTransactionHistory) {
+  constructor(protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, protected pointOfSaleTransaction: PointOfSaleTransaction) {
     this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
+    console.log('this.pointOfSaleTransaction');
+    console.log(this.pointOfSaleTransaction);
     
   }
   ngAfterViewInit(): void {
@@ -42,7 +49,6 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -68,6 +74,8 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
 
       this.rerender();
     });
+
+    // this.getDataServiceData();
   }
 
   rerender(): void {
@@ -86,8 +94,48 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   updateTable(){
     this.searchFilter.next({searchQuery:this.searchQuery.toLowerCase(), startDate: this.startDate, endDate: this.endDate});
   }
+
+  getTodaysTransactions(){
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.searchFilter.next({searchQuery:this.searchQuery.toLowerCase(), startDate: this.startDate, endDate: this.endDate});
+  }
+
+  getThisWeeksTransactions(){
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.startDate.setDate(this.endDate.getDate()-7);
+    this.searchFilter.next({searchQuery:this.searchQuery.toLowerCase(), startDate: this.startDate, endDate: this.endDate});
+  }
+
+  getThisMonthsTransactions(){
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.startDate.setDate(this.endDate.getDate()-30);
+    this.searchFilter.next({searchQuery:this.searchQuery.toLowerCase(), startDate: this.startDate, endDate: this.endDate});
+  }
   
   getCustomerType(customer: Customer){
     return Customer[customer];
   }
+
+  // async getDataServiceData(){
+  //   const proInfo: Array<ProductInfo> = [];
+  //   const options = await (await this.dataService.getProducts()).data;
+  //   options?.map((item)=>{
+  //     let proInfo  = new ProductInfo ();
+  //     proInfo =({
+  //       productId: item.productId,
+  //       productCode: item.productCode,
+  //       productName: item.productName,
+  //       productImageUrl: '',
+  //       productUnit: item.MeasureUnit,
+  //       price: item.SaleRate,
+  //       minPrice: item.MinRate,
+  //       maxPrice: 0,
+  //     })
+  //     this.productInfo.push(proInfo);
+  //   });
+    
+  // }
 }

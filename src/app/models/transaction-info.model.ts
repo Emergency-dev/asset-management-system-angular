@@ -17,4 +17,5 @@ export class CartItemInfo{
     quantity:number = 0;
     unit:string = "";
     price:number = 0;
+    totalPrice:number = 0;
 }

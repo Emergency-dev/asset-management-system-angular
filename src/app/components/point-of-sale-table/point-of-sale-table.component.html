@@ -37,6 +37,33 @@
       last:rounded-none"
     />
   </label>
+  <label class="input-group input-group-vertical">
+    <span class="first:rounded-none first:rounded-tr">Get Today's transactions</span>
+    <button
+    (click)="getTodaysTransactions()"
+    class="input input-bordered w-full
+      focus:outline-none focus:bg-base-300
+      last:rounded-none"
+    >TODAY</button>
+  </label>
+  <label class="input-group input-group-vertical">
+    <span class="first:rounded-none first:rounded-tr">Get This week's transactions</span>
+    <button
+    (click)="getThisWeeksTransactions()"
+    class="input input-bordered w-full
+      focus:outline-none focus:bg-base-300
+      last:rounded-none"
+    >THIS WEEK</button>
+  </label>
+  <label class="input-group input-group-vertical">
+    <span class="first:rounded-none first:rounded-tr">Get This month's transactions</span>
+    <button
+    (click)="getThisMonthsTransactions()"
+    class="input input-bordered w-full
+      focus:outline-none focus:bg-base-300
+      last:rounded-none"
+    >THIS MONTH</button>
+  </label>
 </div>
 <table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
     <thead>

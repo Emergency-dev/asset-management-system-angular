@@ -7,7 +7,8 @@
                     <label class="label">
                         <span class="label-text">Item Code</span>
                     </label>
-                    <input type="text" placeholder="Type here" [(ngModel)]="this.cartItemInfo.productInfo.productCode"
+                    <input type="text" placeholder="Type here" (keyup.enter)="getSelectedProductInfo()" 
+                        [(ngModel)]="this.cartItemInfo.productInfo.productCode"
                         class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
                 </div>
                 <div class="form-control w-full max-w-xs">
@@ -28,12 +29,14 @@
                     <label class="label">
                         <span class="label-text">Unit</span>
                     </label>
-                    <select class="select select-bordered select-sm w-full max-w-xs rounded" (change)="this.onUnitChange($event.target)">
+                    <input type="text" placeholder="Type here" placeholder="Type here" [(ngModel)]="this.cartItemInfo.unit"
+                        class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+                    <!-- <select class="select select-bordered select-sm w-full max-w-xs rounded" (change)="this.onUnitChange($event.target)">
                         <option selected value="single">Single</option>
                         <option value="dozen">Dozen</option>
                         <option value="pack">Pack</option>
                         <option value="carton">Carton</option>
-                    </select>
+                    </select> -->
                 </div>
                 <div class="form-control w-full max-w-xs">
                     <label class="label">
@@ -43,7 +46,7 @@
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                               </svg>
                               
-                            <div content><div>Min Price: 20 PKR</div><div>Max Price: 25 PKR</div></div>
+                            <div content><div> Min Price - {{this.selectedProductInfo.minPrice}}</div><div>Max Price: 25 PKR</div></div>
                         </angular-popper>
                     </label>
                     <input type="number" min="1" placeholder="Type here" [(ngModel)]="this.cartItemInfo.price"

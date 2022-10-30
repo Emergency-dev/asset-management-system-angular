@@ -9,10 +9,13 @@ import { PointOfSaleTransaction } from './services/point-of-sale-transaction.ser
 })
 export class PointOfSaleAddComponent implements OnInit {
 
-  steps = [{ stepId: 1, stepTitle: 'Select Customer' },
-  { stepId: 2, stepTitle: 'Add Products in Cart' },
-  { stepId: 3, stepTitle: 'Enter Customer Details' },
-  { stepId: 4, stepTitle: 'Review'}];
+  // steps = [{ stepId: 1, stepTitle: 'Select Customer' },
+  // { stepId: 2, stepTitle: 'Add Products in Cart' },
+  // { stepId: 3, stepTitle: 'Enter Customer Details' },
+  // { stepId: 4, stepTitle: 'Review'}];
+  steps = [
+  { stepId: 1, stepTitle: 'Fill Cart' },
+  { stepId: 2, stepTitle: 'Review'}];
   currentStep: number = 1;
   constructor(protected transactionService: PointOfSaleTransaction) {}
 
