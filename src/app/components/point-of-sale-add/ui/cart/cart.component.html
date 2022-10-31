@@ -1,12 +1,13 @@
 <div class="flex flex-col h-full">
     <div class="flex flex-row gap-4">
-        <input type="text" placeholder="Product Code"
+        <input type="text" placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()" 
+        [(ngModel)]="this.cartItemInfo.productInfo.productCode"
             class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         <input type="text" placeholder="Product Name"
             class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         <input type="text" placeholder="Product Serial Number"
             class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-        <button class="btn gap-2 btn-sm btn-primary rounded" (click)="null">
+        <button class="btn gap-2 btn-sm btn-primary rounded" (click)="this.onAddClick()">
             Add
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                 <path
@@ -23,29 +24,29 @@
     </div>
     <div class="divider m-0"></div>
     <div class="overflow-auto h-full">
-        <div class="grid grid-cols-1 gap-4">
-            <div *ngFor="let item of this.cartItems"
+        <div *ngFor="let item of this.transactionService.transactionInfo.cartItemList" class="grid grid-cols-1 gap-4">
+            <!-- <div
                 class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
                 <div class="flex flex-row gap-4">
                     <input type="checkbox" class="checkbox" />
                     <div class="flex-grow group-hover:underline">
-                        {{item.productInfo.productCode}}: {{item.productInfo.productName}}
+                        {{this.cartItemInfo.productInfo.productCode}}: {{this.cartItemInfo.productInfo.productCode}}
                     </div>
                     <div class="flex justify-end">{{item.quantity}} {{item.unit}}</div>
                     <div class="flex justify-end">{{item.price * item.quantity}} PKR</div>
                 </div>
-            </div>
+            </div> -->
             <div
                 class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
                 <div class="flex flex-row gap-4">
                     <input type="checkbox" class="checkbox" />
                     <div class="flex-grow group-hover:underline">
-                        5698: Pencils (Yellow)
+                    {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
                     </div>
                     <div class="flex flex-row gap-4 justify-end">
                         <input type="text" placeholder="Carton"
                             class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
-                            <input type="text" placeholder="PCS/PKT"
+                            <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
                             class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
                             <div class="divider divider-vertical border m-0 h-full"></div>
                               <label class="label cursor-pointer p-0 gap-2">
@@ -57,7 +58,7 @@
                                 <input type="radio" name="radio-10" class="radio" checked />
                               </label>
                             <div class="divider divider-vertical border m-0 h-full"></div>
-                            Quantity x Unit Price = 1231 PKR
+                            {{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}
                     </div>
                     <!-- <div class="flex justify-end">
 
@@ -70,9 +71,8 @@
                     </div> -->
                 </div>
             </div>
-
         </div>
-        <div *ngIf="this.cartItems.length < 1" class="flex items-center justify-center">No Item in the Cart</div>
+        <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1" class="flex items-center justify-center">No Item in the Cart</div>
     </div>
     <div class="divider m-0"></div>
     <div>
