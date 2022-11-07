@@ -1,78 +1,79 @@
-<div class="flex flex-col h-full">
-    <div class="flex flex-row gap-4">
-        <input type="text" placeholder="Product Code" (keyup.enter)="null"
-            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-        <input type="text" placeholder="Product Name"
-            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-        <input type="text" placeholder="Product Serial Number"
-            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-        <button class="btn gap-2 btn-sm btn-primary rounded">
-            Add
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                <path
-                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-            </svg>
-        </button>
-        <!-- <button class="btn gap-2 btn-sm btn-error rounded">Remove
-        
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-            <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
-          </svg>
-                    
-      </button> -->
-    </div>
-    <div class="divider m-0"></div>
-    <div class="overflow-auto h-full">
-        <div *ngFor="let item of this.transactionService.transactionInfo.cartItemList" class="grid grid-cols-1 gap-4">
-            <!-- <div
-                class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
-                <div class="flex flex-row gap-4">
-                    <input type="checkbox" class="checkbox" />
-                    <div class="flex-grow group-hover:underline">
-                        {{this.cartItemInfo.productInfo.productCode}}: {{this.cartItemInfo.productInfo.productCode}}
+    <div class="flex flex-col h-full">
+        <div class="flex flex-row gap-4">
+            <input type="text" placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()" 
+            [(ngModel)]="this.cartItemInfo.productInfo.productCode"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            <input type="text" placeholder="Product Name"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            <!-- <input type="text" placeholder="Product Serial Number"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+            <button class="btn gap-2 btn-sm btn-primary rounded" (click)="getSelectedProductInfo()">
+                Add
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            </button>
+            <button class="btn gap-2 btn-sm btn-error rounded">Remove
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
+              </svg>
+                        
+            </button>
+        </div>
+        <div class="divider m-0"></div>
+        <div class="overflow-auto h-full">
+            <div *ngFor="let item of this.transactionService.transactionInfo.cartItemList" class="grid grid-cols-1 gap-4">
+                <!-- <div
+                    class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
+                    <div class="flex flex-row gap-4">
+                        <input type="checkbox" class="checkbox" />
+                        <div class="flex-grow group-hover:underline">
+                            {{this.cartItemInfo.productInfo.productCode}}: {{this.cartItemInfo.productInfo.productCode}}
+                        </div>
+                        <div class="flex justify-end">{{item.quantity}} {{item.unit}}</div>
+                        <div class="flex justify-end">{{item.price * item.quantity}} PKR</div>
                     </div>
-                    <div class="flex justify-end">{{item.quantity}} {{item.unit}}</div>
-                    <div class="flex justify-end">{{item.price * item.quantity}} PKR</div>
-                </div>
-            </div> -->
-            <div
-                class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
-                <div class="flex flex-row gap-4">
-                    <input type="checkbox" class="checkbox" />
-                    <div class="flex-grow group-hover:underline">
-                    {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
+                </div> -->
+                <div
+                    class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
+                    <div class="flex flex-row gap-4">
+                        <input type="checkbox" class="checkbox" />
+                        <div class="flex-grow group-hover:underline">
+                        {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
+                        </div>
+                        <div class="flex flex-row gap-4 justify-end">
+                            <input type="text" placeholder="Carton"
+                                class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
+                                <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
+                                class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
+                                <div class="divider divider-vertical border m-0 h-full"></div>
+                                  <label class="label cursor-pointer p-0 gap-2">
+                                    <span class="label-text">Carton</span> 
+                                    <input type="radio" name="radio-10" class="radio" checked />
+                                  </label>
+                                  <label class="label cursor-pointer p-0 gap-2">
+                                    <span class="label-text">Pieces</span> 
+                                    <input type="radio" name="radio-10" class="radio" checked />
+                                  </label>
+                                <div class="divider divider-vertical border m-0 h-full"></div>
+                                {{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}
+                        </div>
+                        <!-- <div class="flex justify-end">
+    
+                            <select class="select select-bordered select-xs w-full max-w-xs rounded" (change)="null">
+                                <option selected value="single">Single</option>
+                                <option value="dozen">Dozen</option>
+                                <option value="pack">Pack</option>
+                                <option value="carton">Carton</option>
+                            </select>
+                        </div> -->
                     </div>
-                    <div class="flex flex-row gap-4 justify-end">
-                        <input type="text" placeholder="Carton"
-                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
-                            <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
-                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
-                            <div class="divider divider-vertical border m-0 h-full"></div>
-                              <label class="label cursor-pointer p-0 gap-2">
-                                <span class="label-text">Carton</span> 
-                                <input type="radio" name="radio-10" class="radio" checked />
-                              </label>
-                              <label class="label cursor-pointer p-0 gap-2">
-                                <span class="label-text">Pieces</span> 
-                                <input type="radio" name="radio-10" class="radio" checked />
-                              </label>
-                            <div class="divider divider-vertical border m-0 h-full"></div>
-                            {{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}
-                    </div>
-                    <!-- <div class="flex justify-end">
-
-                        <select class="select select-bordered select-xs w-full max-w-xs rounded" (change)="null">
-                            <option selected value="single">Single</option>
-                            <option value="dozen">Dozen</option>
-                            <option value="pack">Pack</option>
-                            <option value="carton">Carton</option>
-                        </select>
-                    </div> -->
                 </div>
             </div>
+            <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1" class="flex items-center justify-center">No Item in the Cart</div>
         </div>
-        <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1" class="flex items-center justify-center">No Item in the Cart</div>
-    </div>
     <div class="divider m-0"></div>
     <div>
         <div class="flex flex-row gap-4">

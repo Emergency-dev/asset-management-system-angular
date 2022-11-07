@@ -24,9 +24,10 @@ export class DataService{
     }
 
     async getCustomers(){
-        const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerId`);
+        const data = await this.supabase
+        .rpc('GetCustomers');
         console.log("result");
-        console.log(result);
-        return result || [];
+        console.log(data);
+        return data || [];
     }
 }
