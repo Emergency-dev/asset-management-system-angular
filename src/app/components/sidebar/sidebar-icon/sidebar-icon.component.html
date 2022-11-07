@@ -1,5 +1,7 @@
-<div class="flex p-3 h-12 whitespace-pre group bg-base-300
+<a [routerLink]="this.route" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="flex p-3 h-12 whitespace-pre group bg-base-300
             hover:bg-white hover:text-slate-900 rounded transition-all">
-    <ng-content></ng-content>
-    <ng-content *ngIf="this.layoutConfig.isSidebarExpanded" select=[expandedTitle]></ng-content>
-</div>
+        <ng-content></ng-content>
+        <ng-content *ngIf="this.layoutConfig.isSidebarExpanded" select=[expandedTitle]></ng-content>
+    </div>
+</a>

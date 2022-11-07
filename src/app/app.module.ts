@@ -20,10 +20,14 @@ import { NgxPopper } from 'angular-popper';
 import { CustomerDetailsComponent } from './components/point-of-sale-add/ui/customer-details/customer-details.component';
 import { ReviewDetailsComponent } from './components/point-of-sale-add/ui/review-details/review-details.component';
 import { CartComponent } from './components/point-of-sale-add/ui/cart/cart.component';
+import { PointOfPurchaseComponent } from './pages/point-of-purchase/point-of-purchase.component';
+import { PointOfPurchaseAddComponent } from './components/point-of-purchase-add/point-of-purchase-add.component';
+import { PurchaseCartComponent } from './components/point-of-purchase-add/ui/purchase-cart/purchase-cart.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
-  {path: 'point-of-sale', component: PointOfSaleComponent}
+  {path: 'point-of-sale', component: PointOfSaleComponent},
+  {path: 'point-of-purchase', component: PointOfPurchaseComponent}
 ];
 
 @NgModule({
@@ -41,7 +45,10 @@ const appRoutes: Routes = [
     CartItemAddComponent,
     CustomerDetailsComponent,
     ReviewDetailsComponent,
-    CartComponent
+    CartComponent,
+    PointOfPurchaseComponent,
+    PointOfPurchaseAddComponent,
+    PurchaseCartComponent
   ],
   imports: [
     BrowserModule,

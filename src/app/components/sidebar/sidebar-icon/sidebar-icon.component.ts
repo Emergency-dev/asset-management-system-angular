@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { LayoutConfig } from 'src/app/layout/layout/services/layout-config.service';
 
 @Component({
@@ -7,7 +7,10 @@ import { LayoutConfig } from 'src/app/layout/layout/services/layout-config.servi
   styleUrls: ['./sidebar-icon.component.css']
 })
 export class SidebarIconComponent implements OnInit {
-  constructor(protected layoutConfig: LayoutConfig) { }
+  @Input() route: string | null;
+  constructor(protected layoutConfig: LayoutConfig) {
+    this.route = null;
+  }
 
   ngOnInit(): void {
   }
