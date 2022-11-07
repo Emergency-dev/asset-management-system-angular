@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PointOfSaleTransaction } from '../point-of-sale-add/services/point-of-sale-transaction.service';
 
 @Component({
   selector: 'app-point-of-purchase-add',

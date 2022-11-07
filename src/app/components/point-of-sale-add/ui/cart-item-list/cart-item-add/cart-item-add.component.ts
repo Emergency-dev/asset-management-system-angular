@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
-import { PointOfSaleTransaction } from '../../../services/point-of-sale-transaction.service';
 import { CartItemAddService } from './services/casrt-item-add.service';
 import {DataService} from 'src/app/services/supabase.service'
 import { VirtualTimeScheduler } from 'rxjs';
+import { PosTransactionService } from '../../../services/pos-transaction.service';
 
 @Component({
   selector: 'app-cart-item-add',
@@ -20,7 +20,7 @@ export class CartItemAddComponent implements OnInit {
   localCartItemInfo: CartItemInfo = new CartItemInfo();
   
   constructor(protected cartItemService: CartItemAddService,
-    protected transactionService: PointOfSaleTransaction,
+    protected transactionService: PosTransactionService,
     protected dataService: DataService ) { 
       this.getDataServiceData();
     }
@@ -46,8 +46,8 @@ export class CartItemAddComponent implements OnInit {
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
     veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
-    console.log(this.cartItemInfo);
-    console.log(veryLocalCartItemInfo);
+    // console.log(this.cartItemInfo);
+    // console.log(veryLocalCartItemInfo);
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
   }
   
@@ -87,10 +87,10 @@ export class CartItemAddComponent implements OnInit {
       })
       this.productInfo.push(proInfo);
     });
-    console.log('this.productInfo - Add Cart Component');
-    console.log(this.productInfo);
-    console.log('options - Add Cart Component');
-    console.log(options);
+    // console.log('this.productInfo - Add Cart Component');
+    // console.log(this.productInfo);
+    // console.log('options - Add Cart Component');
+    // console.log(options);
     
   }
 }

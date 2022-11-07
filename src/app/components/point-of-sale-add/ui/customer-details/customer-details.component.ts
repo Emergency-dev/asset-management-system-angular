@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Customer } from 'src/app/models/customer-type.enum';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
-import { CartItemInfo } from 'src/app/models/transaction-info.model';
-import { PointOfSaleTransaction } from '../../services/point-of-sale-transaction.service';
 import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/customer-details/services/customer-details.service';
+import { PosTransactionService } from '../../services/pos-transaction.service';
 
 @Component({
   selector: 'app-customer-details',
@@ -20,7 +19,7 @@ export class CustomerDetailsComponent implements OnInit {
   customerInfo: CustomerInfo=new CustomerInfo();
 
 
-  constructor(protected transactionService: PointOfSaleTransaction,
+  constructor(protected transactionService: PosTransactionService,
     protected customerService: CustomerInfoService) { }
   
   ngOnInit(): void {

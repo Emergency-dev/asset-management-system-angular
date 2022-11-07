@@ -3,7 +3,7 @@ import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/cus
 import { CartItemAddService } from 'src/app/components/point-of-sale-add/ui/cart-item-list/cart-item-add/services/casrt-item-add.service';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
-import { PointOfSaleTransaction } from 'src/app/components/point-of-sale-add/services/point-of-sale-transaction.service';
+import { PosTransactionService } from '../../services/pos-transaction.service';
 
 @Component({
   selector: 'app-review-details',
@@ -18,13 +18,20 @@ export class ReviewDetailsComponent implements OnInit {
   cartItems: CartItemInfo[] = [];
   constructor(protected cartItemService: CartItemAddService,
     protected customerService: CustomerInfoService,
-    protected transactionService: PointOfSaleTransaction) { }
+    protected transactionService: PosTransactionService) { }
 
   ngOnInit(): void {
+    this.getDataFromTransactionService();
+  }
+
+  getDataFromTransactionService(){
     this.customerInfo = this.transactionService.transactionInfo.customerInfo;
     this.cartItemInfo = this.cartItemService.cartItemInfo;
     this.cartItems = this.transactionService.transactionInfo.cartItemList;
+    console.log('this.cartItems');
     console.log(this.cartItems);
+    console.log(this.customerInfo);
+    console.log(this.transactionService);
   }
 
 }

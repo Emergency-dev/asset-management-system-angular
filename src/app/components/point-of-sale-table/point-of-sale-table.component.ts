@@ -6,13 +6,13 @@ import { TransactionInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import { PointOfSaleTransactionHistory } from './services/point-of-sale-table.service';
 import {DataService} from 'src/app/services/supabase.service'
-import { PointOfSaleTransaction } from '../point-of-sale-add/services/point-of-sale-transaction.service';
+import { PosTransactionService } from '../point-of-sale-add/services/pos-transaction.service';
 
 @Component({
   selector: 'app-point-of-sale-table',
   templateUrl: './point-of-sale-table.component.html',
   styleUrls: ['./point-of-sale-table.component.css'],
-  providers: [PointOfSaleTransactionHistory, DataService, PointOfSaleTransaction]
+  providers: [PointOfSaleTransactionHistory, DataService]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   @ViewChild(DataTableDirective, {static: false})
@@ -37,11 +37,11 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   // thus we ensure the data is fetched before rendering
 
 
-  constructor(protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, protected pointOfSaleTransaction: PointOfSaleTransaction) {
+  constructor(protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, protected pointOfSaleTransaction: PosTransactionService) {
     this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
-    console.log('this.pointOfSaleTransaction');
-    console.log(this.pointOfSaleTransaction);
+    // console.log('this.pointOfSaleTransaction');
+    // console.log(this.pointOfSaleTransaction);
     
   }
   ngAfterViewInit(): void {

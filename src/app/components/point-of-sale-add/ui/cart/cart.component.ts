@@ -5,14 +5,15 @@ import { ProductInfo } from 'src/app/models/product-info.model';
 import {DataService} from 'src/app/services/supabase.service'
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { PointOfSaleTransactionHistory } from 'src/app/components/point-of-sale-table/services/point-of-sale-table.service';
-import { PointOfSaleTransaction } from 'src/app/components/point-of-sale-add/services/point-of-sale-transaction.service';
 import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/customer-details/services/customer-details.service';
+import { ReturnStatement } from '@angular/compiler';
+import { PosTransactionService } from '../../services/pos-transaction.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
-  providers: [PointOfSaleTransactionHistory, DataService, PointOfSaleTransaction, CustomerInfoService]
+  providers: [PointOfSaleTransactionHistory, DataService, CustomerInfoService]
 })
 export class CartComponent implements OnInit {
   cartItems: CartItemInfo[] = [];
@@ -26,12 +27,18 @@ export class CartComponent implements OnInit {
   cartItemInfo: CartItemInfo = new CartItemInfo();
   productInfo: ProductInfo[] = [];
   selectedProductInfo: ProductInfo = new ProductInfo();
+  customerInfo1: CustomerInfo[] = [];
+  productExists: boolean = false;
+  isProductCodeInDB: boolean = false;
+  selectedCustomerInfo: CustomerInfo = new CustomerInfo();
 
-  constructor(protected transactionService: PointOfSaleTransaction, protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, 
-    protected pointOfSaleTransaction: PointOfSaleTransaction, protected customerService: CustomerInfoService) {
+  constructor(protected transactionService: PosTransactionService, protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, 
+    protected customerService: CustomerInfoService) {
     this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
     this.getDataServiceData();
+    this.getCustomersData();
+    console.log(this.transactionService);
     
   }
 
@@ -49,30 +56,24 @@ export class CartComponent implements OnInit {
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
     veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
-    console.log("CALLED");
+    // console.log("CALLED");
     console.log(this.cartItemInfo);
-    console.log(veryLocalCartItemInfo);
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
+    console.log(this.transactionService);
   }
   
   getSelectedProductInfo(){
-    this.productInfo.forEach((value) => {
-      if(value.productCode == this.cartItemInfo.productInfo.productCode){
-        this.selectedProductInfo.productCode = value.productCode;
-        this.cartItemInfo.productInfo.productCode = value.productCode;
-        this.selectedProductInfo.productName = value.productName;
-        this.cartItemInfo.productInfo.productName = value.productName;
-        this.selectedProductInfo.price = value.price;
-        this.cartItemInfo.unit = value.productUnit;
-        this.cartItemInfo.price = value.price;
-        this.selectedProductInfo.minPrice = value.minPrice;
-        this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
-
-        //this.customerService.selectedProductInfo = this.selectedProductInfo;
-        //this.transactionService.transactionInfo.selectedProductInfo = this.selectedProductInfo;
+    if(this.productAlreadyInTheCart()){
+      alert("Product already exists in the cart");
+    }
+    else{
+      if(this.productCodeNotInTheDatabase()){
+        this.onAddClick();
       }
-    }); 
-
+      else{
+        alert("Product code not in the database");
+      }
+    }
   }
   
 
@@ -106,11 +107,66 @@ export class CartComponent implements OnInit {
       })
       this.productInfo.push(proInfo);
     });
-    console.log('this.productInfo - Add Cart Component');
-    console.log(this.productInfo);
-    console.log('options - Add Cart Component');
-    console.log(options);
+    // console.log('this.productInfo - Add Cart Component');
+    // console.log(this.productInfo);
+    // console.log('options - Add Cart Component');
+    // console.log(options);
     
   }
 
+  async getCustomersData(){
+    const cusInfo: Array<CustomerInfo> = [];
+    const cusOptions = await (await this.dataService.getCustomers()).data;
+    cusOptions?.map((item)=>{
+      let cusInfo  = new CustomerInfo ();
+      cusInfo =({
+        customerCode: item.CustomerId,
+        name: item.CustomerName,
+        address: '',
+        contactNumber: '',
+        customerType: 1,
+        OrganizationCode: 0,
+        OrganizationName: '',
+        
+      })
+      this.customerInfo1.push(cusInfo);
+    });
+    console.log('this.customerInfo1 - Add Cart Component');
+    console.log(this.customerInfo1);
+    console.log('cusOptions - Add Cart Component');
+    console.log(cusOptions);
+  }
+
+  productAlreadyInTheCart(): boolean{
+    this.productExists = false;
+    this.transactionService.transactionInfo.cartItemList.forEach((value)=>{
+      if(value.productInfo.productCode == this.cartItemInfo.productInfo.productCode){
+        this.productExists = true;
+      }
+    });
+    return this.productExists;
+  }
+
+  productCodeNotInTheDatabase(): boolean{
+    this.isProductCodeInDB = false;
+    this.productInfo.forEach((value) => {
+      if(value.productCode == this.cartItemInfo.productInfo.productCode){
+        this.isProductCodeInDB = true;
+        this.addProductInTheCart(value);
+      }
+    }); 
+    return this.isProductCodeInDB;
+  }
+
+  addProductInTheCart(value: any){
+    this.selectedProductInfo.productCode = value.productCode;
+    this.cartItemInfo.productInfo.productCode = value.productCode;
+    this.selectedProductInfo.productName = value.productName;
+    this.cartItemInfo.productInfo.productName = value.productName;
+    this.selectedProductInfo.price = value.price;
+    this.cartItemInfo.unit = value.productUnit;
+    this.cartItemInfo.price = value.price;
+    this.selectedProductInfo.minPrice = value.minPrice;
+    this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
+  }
 }

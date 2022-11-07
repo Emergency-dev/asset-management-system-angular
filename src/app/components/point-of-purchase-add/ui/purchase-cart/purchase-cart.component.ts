@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { PointOfSaleTransaction } from 'src/app/components/point-of-sale-add/services/point-of-sale-transaction.service';
+import { PosTransactionService } from 'src/app/components/point-of-sale-add/services/pos-transaction.service';
 
 @Component({
   selector: 'app-purchase-cart',
   templateUrl: './purchase-cart.component.html',
   styleUrls: ['./purchase-cart.component.css'],
-  providers: [PointOfSaleTransaction]
+  providers: []
 })
 export class PurchaseCartComponent implements OnInit {
 
-  constructor(protected transactionService: PointOfSaleTransaction) { }
+  constructor(protected transactionService: PosTransactionService) { }
 
   ngOnInit(): void {
   }

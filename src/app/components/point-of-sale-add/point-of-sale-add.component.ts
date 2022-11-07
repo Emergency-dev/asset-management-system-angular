@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { PointOfSaleTransaction } from './services/point-of-sale-transaction.service';
+import { PosTransactionService } from './services/pos-transaction.service';
 
 @Component({
   selector: 'app-point-of-sale-add',
   templateUrl: './point-of-sale-add.component.html',
   styleUrls: ['./point-of-sale-add.component.css'],
-  providers:[PointOfSaleTransaction]
+  providers:[]
 })
 export class PointOfSaleAddComponent implements OnInit {
 
@@ -17,7 +17,7 @@ export class PointOfSaleAddComponent implements OnInit {
   { stepId: 1, stepTitle: 'Fill Cart' },
   { stepId: 2, stepTitle: 'Review'}];
   currentStep: number = 1;
-  constructor(protected transactionService: PointOfSaleTransaction) {}
+  constructor(protected transactionService: PosTransactionService) {}
 
   ngOnInit(): void {
   }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Customer } from 'src/app/models/customer-type.enum';
-import { PointOfSaleTransaction } from '../../services/point-of-sale-transaction.service';
+import { PosTransactionService } from '../../services/pos-transaction.service';
 
 @Component({
   selector: 'app-select-customer',
@@ -12,7 +12,7 @@ export class SelectCustomerComponent implements OnInit {
 
   customers:Customer[] = [Customer.Regular, Customer.Retailer, Customer.Wholesale];
   selectCustomer?:Customer;
-  constructor(protected transactionService: PointOfSaleTransaction) { }
+  constructor(protected transactionService: PosTransactionService) { }
 
   ngOnInit(): void {
     this.selectCustomer = this.transactionService.transactionInfo.customerInfo.customerType;
