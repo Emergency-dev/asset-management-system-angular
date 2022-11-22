@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { TransactionListService } from '../point-of-sale-table/services/transaction-list.service';
 import { PosTransactionService } from './services/pos-transaction.service';
 
 @Component({
   selector: 'app-point-of-sale-add',
   templateUrl: './point-of-sale-add.component.html',
   styleUrls: ['./point-of-sale-add.component.css'],
-  providers:[]
+  providers: [PosTransactionService, TransactionListService]
 })
 export class PointOfSaleAddComponent implements OnInit {
 
@@ -17,7 +18,7 @@ export class PointOfSaleAddComponent implements OnInit {
   { stepId: 1, stepTitle: 'Fill Cart' },
   { stepId: 2, stepTitle: 'Review'}];
   currentStep: number = 1;
-  constructor(protected transactionService: PosTransactionService) {}
+  constructor(protected transactionService: PosTransactionService, protected transactionInfoList1: TransactionListService) {}
 
   ngOnInit(): void {
   }
@@ -32,6 +33,9 @@ export class PointOfSaleAddComponent implements OnInit {
 
   onClickFinish() {
     console.log("Congrats");
+    this.transactionInfoList1.transactionInfo.push(this.transactionService.transactionInfo);
+    console.log("this.transactionInfoList1");
+    console.log(this.transactionInfoList1);
   }
 
   getTitle(step:number){

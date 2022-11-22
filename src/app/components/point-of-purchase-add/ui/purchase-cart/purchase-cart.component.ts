@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/customer-details/services/customer-details.service';
-import { PointOfSaleTransactionHistory } from 'src/app/components/point-of-sale-table/services/point-of-sale-table.service';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';

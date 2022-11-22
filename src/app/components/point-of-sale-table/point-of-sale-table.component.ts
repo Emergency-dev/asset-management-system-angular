@@ -4,15 +4,15 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Customer } from 'src/app/models/customer-type.enum';
 import { TransactionInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
-import { PointOfSaleTransactionHistory } from './services/point-of-sale-table.service';
 import {DataService} from 'src/app/services/supabase.service'
 import { PosTransactionService } from '../point-of-sale-add/services/pos-transaction.service';
+import { TransactionListService } from './services/transaction-list.service';
 
 @Component({
   selector: 'app-point-of-sale-table',
   templateUrl: './point-of-sale-table.component.html',
   styleUrls: ['./point-of-sale-table.component.css'],
-  providers: [PointOfSaleTransactionHistory, DataService]
+  providers: [DataService, TransactionListService]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   @ViewChild(DataTableDirective, {static: false})
@@ -37,11 +37,12 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   // thus we ensure the data is fetched before rendering
 
 
-  constructor(protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, protected pointOfSaleTransaction: PosTransactionService) {
-    this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
+  constructor(protected dataService: DataService, protected pointOfSaleTransaction: PosTransactionService,
+    protected transactionInfoList1: TransactionListService) {
+    // this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
-    // console.log('this.pointOfSaleTransaction');
-    // console.log(this.pointOfSaleTransaction);
+    console.log('this.posTransactions');
+    console.log(this.posTransactions);
     
   }
   ngAfterViewInit(): void {
@@ -56,11 +57,11 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
       searching: false
     };
 
-    this.posTransactionHistoryService.getValue().subscribe((value) => {
+    // this.posTransactionHistoryService.getValue().subscribe((value) => {
 
-      this.posTransactions = value;
-      this.rerender();
-    });
+    //   this.posTransactions = value;
+    //   this.rerender();
+    // });
 
     this.searchFilter.subscribe(value => {
 

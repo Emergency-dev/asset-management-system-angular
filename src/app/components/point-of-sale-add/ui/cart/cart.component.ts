@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import {DataService} from 'src/app/services/supabase.service'
 import { CustomerInfo } from 'src/app/models/customer-info.model';
-import { PointOfSaleTransactionHistory } from 'src/app/components/point-of-sale-table/services/point-of-sale-table.service';
 import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/customer-details/services/customer-details.service';
-import { ReturnStatement } from '@angular/compiler';
 import { PosTransactionService } from '../../services/pos-transaction.service';
+import { TransactionListService } from 'src/app/components/point-of-sale-table/services/transaction-list.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
-  providers: [PointOfSaleTransactionHistory, DataService, CustomerInfoService]
+  providers: [DataService, CustomerInfoService]
 })
 export class CartComponent implements OnInit {
   cartItems: CartItemInfo[] = [];
   searchFilter:BehaviorSubject<{searchQuery:string,
-    startDate:Date, endDate:Date}>;
+  startDate:Date, endDate:Date}>;
   searchQuery:string = "";
   startDate:Date = new Date();
   endDate:Date = new Date();
@@ -31,10 +30,14 @@ export class CartComponent implements OnInit {
   productExists: boolean = false;
   isProductCodeInDB: boolean = false;
   selectedCustomerInfo: CustomerInfo = new CustomerInfo();
+  checkedTransactions: string[]=[];
+  totalBill: number=0;
+  //totalBill: Observable<number[]>();
 
-  constructor(protected transactionService: PosTransactionService, protected posTransactionHistoryService: PointOfSaleTransactionHistory, protected dataService: DataService, 
-    protected customerService: CustomerInfoService) {
-    this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
+
+  constructor(protected transactionService: PosTransactionService, protected dataService: DataService, 
+    protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService) {
+    // this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
     this.getDataServiceData();
     this.getCustomersData();
@@ -43,7 +46,7 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listCustomer = this.customerService.customerInfoList;
+    //this.listCustomer = this.customerService.customerInfoList;
   }
 
 
@@ -56,10 +59,9 @@ export class CartComponent implements OnInit {
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
     veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
-    // console.log("CALLED");
-    console.log(this.cartItemInfo);
+
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
-    console.log(this.transactionService);
+    this.totalBill += veryLocalCartItemInfo.totalPrice;
   }
   
   getSelectedProductInfo(){
@@ -77,19 +79,19 @@ export class CartComponent implements OnInit {
   }
   
 
-  getCustomerdetails(){
-    this.listCustomer.forEach((value) => {
-      if(value.customerCode == this.customerInfo.customerCode){
-        this.customerInfo.name = value.name;
-        this.customerInfo.OrganizationCode = value.OrganizationCode;
-        this.customerInfo.contactNumber = value.contactNumber;
-        this.customerInfo.OrganizationName = value.OrganizationName;
+  // getCustomerdetails(){
+  //   this.listCustomer.forEach((value) => {
+  //     if(value.customerCode == this.customerInfo.customerCode){
+  //       this.customerInfo.name = value.name;
+  //       this.customerInfo.OrganizationCode = value.OrganizationCode;
+  //       this.customerInfo.contactNumber = value.contactNumber;
+  //       this.customerInfo.OrganizationName = value.OrganizationName;
 
-        this.customerService.customerInfo = this.customerInfo;
-        this.transactionService.transactionInfo.customerInfo = this.customerInfo;
-      }
-    }); 
-  }
+  //       this.customerService.customerInfo = this.customerInfo;
+  //       this.transactionService.transactionInfo.customerInfo = this.customerInfo;
+  //     }
+  //   }); 
+  // }
   async getDataServiceData(){
     const proInfo: Array<ProductInfo> = [];
     const options = await (await this.dataService.getProducts()).data;
@@ -129,12 +131,10 @@ export class CartComponent implements OnInit {
         OrganizationName: '',
         
       })
-      this.customerInfo1.push(cusInfo);
+      this.listCustomer.push(cusInfo);
     });
-    console.log('this.customerInfo1 - Add Cart Component');
-    console.log(this.customerInfo1);
-    console.log('cusOptions - Add Cart Component');
-    console.log(cusOptions);
+    console.log("this.listCustomer");
+    console.log(this.listCustomer);
   }
 
   productAlreadyInTheCart(): boolean{
@@ -168,5 +168,44 @@ export class CartComponent implements OnInit {
     this.cartItemInfo.price = value.price;
     this.selectedProductInfo.minPrice = value.minPrice;
     this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
+  }
+
+  checkBoxChecked(event: any){
+    if (event.target.checked) {
+      this.checkedTransactions.push(event.target.id);
+    } else {
+      const index = this.checkedTransactions.indexOf(event.target.id, 0);
+      this.checkedTransactions.splice(index,1);
+    }
+    console.log(this.checkedTransactions);
+  }
+
+  removeTransactions(){
+    if(this.checkedTransactions.length != 0){
+      this.transactionService.transactionInfo.cartItemList.forEach((valuee, index) => {
+        this.checkedTransactions.forEach((value) => {
+          if(value == valuee.productInfo.productCode){
+            this.transactionService.transactionInfo.cartItemList.splice(index,1);
+            this.totalBill -= valuee.productInfo.price;
+          }
+        });
+      });
+    }
+    else
+      alert("No item selected");
+  }
+
+  getCustomerdetails(){
+    this.listCustomer.forEach((value) => {
+      if(value.customerCode == this.customerInfo.customerCode){
+        this.customerInfo.name = value.name;
+        this.customerInfo.OrganizationCode = value.OrganizationCode;
+        this.customerInfo.contactNumber = value.contactNumber;
+        this.customerInfo.OrganizationName = value.OrganizationName;
+
+        this.customerService.customerInfo = this.customerInfo;
+        this.transactionService.transactionInfo.customerInfo = this.customerInfo;
+      }
+    }); 
   }
 }

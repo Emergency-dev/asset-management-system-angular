@@ -3,7 +3,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { initSupabase } from 'src/app/utils/initSupabase'
 
 export const TABLE_PRODUCTS = 'Products'
-export const TABLE_CUSTOMERS = 'Customers'
+export const TABLE_CUSTOMERS = 'ShopCustomer'
 
 @Injectable({
     providedIn: 'root',
@@ -24,10 +24,7 @@ export class DataService{
     }
 
     async getCustomers(){
-        const data = await this.supabase
-        .rpc('GetCustomers');
-        console.log("result");
-        console.log(data);
-        return data || [];
+        const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerId, CustomerName`);
+        return result || [];
     }
 }
