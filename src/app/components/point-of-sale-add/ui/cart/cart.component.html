@@ -1,10 +1,15 @@
 <div class="flex flex-col h-full">
     <div class="flex flex-row gap-4">
-        <input type="text" placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()" 
-        [(ngModel)]="this.cartItemInfo.productInfo.productCode"
-            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+        <input type="text" placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()"
+            [(ngModel)]="this.cartItemInfo.productInfo.productCode"
+            class="bg-white input input-sm input-bordered w-200 max-w-xs rounded text-black" />
         <input type="text" placeholder="Product Name"
-            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            class="bg-white input input-sm input-bordered w-300 max-w-xs rounded text-black" 
+            (keyup.enter)="searchProductNameInTheDatabase($event)" (change)="ClearProduct()"/>
+        <select [(ngModel)]="this.cartItemInfo.productInfo.productName" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+            <option>Select Product Name</option>
+            <option *ngFor="let product of productName">{{product}}</option>
+        </select>
         <!-- <input type="text" placeholder="Product Serial Number"
             class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
         <button class="btn gap-2 btn-sm btn-primary rounded" (click)="getSelectedProductInfo()">
@@ -15,14 +20,16 @@
             </svg>
         </button>
         <button class="btn gap-2 btn-sm btn-error rounded" (click)="removeTransactions()">Remove
-        
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-            <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
-          </svg>
-                    
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd"
+                    d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                    clip-rule="evenodd" />
+            </svg>
+
         </button>
-        <div class="flex-grow group-hover:underline">
-            Total Bill: {{this.totalBill}}
+        <div class="flex-grow group-hover:underline" [(ngModel)]="this.price.totalAmount">
+            Total Bill: {{this.price.totalAmount}}
         </div>
     </div>
     <div class="divider m-0"></div>
@@ -42,26 +49,27 @@
             <div
                 class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
                 <div class="flex flex-row gap-4">
-                    <input id="{{this.item.productInfo.productCode}}" type="checkbox" class="checkbox" (change)="checkBoxChecked($event)" />
+                    <input id="{{this.item.productInfo.productCode}}" type="checkbox" class="checkbox"
+                        (change)="checkBoxChecked($event)" />
                     <div class="flex-grow group-hover:underline">
-                    {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
+                        {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
                     </div>
                     <div class="flex flex-row gap-4 justify-end">
                         <input type="text" placeholder="Carton"
                             class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
-                            <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
-                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
-                            <div class="divider divider-vertical border m-0 h-full"></div>
-                              <label class="label cursor-pointer p-0 gap-2">
-                                <span class="label-text">Carton</span> 
-                                <input type="radio" name="radio-10" class="radio" checked />
-                              </label>
-                              <label class="label cursor-pointer p-0 gap-2">
-                                <span class="label-text">Pieces</span> 
-                                <input type="radio" name="radio-10" class="radio" checked />
-                              </label>
-                            <div class="divider divider-vertical border m-0 h-full"></div>
-                            {{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}
+                        <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
+                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()"/>
+                        <div class="divider divider-vertical border m-0 h-full"></div>
+                        <label class="label cursor-pointer p-0 gap-2">
+                            <span class="label-text">Carton</span>
+                            <input type="radio" name="radio-10" class="radio" checked />
+                        </label>
+                        <label class="label cursor-pointer p-0 gap-2">
+                            <span class="label-text">Pieces</span>
+                            <input type="radio" name="radio-10" class="radio" checked />
+                        </label>
+                        <div class="divider divider-vertical border m-0 h-full"></div>
+                        {{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}
                     </div>
                     <!-- <div class="flex justify-end">
 
@@ -75,17 +83,29 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1" class="flex items-center justify-center">No Item in the Cart</div>
+        <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1"
+            class="flex items-center justify-center">No Item in the Cart
+        </div>
     </div>
     <div class="divider m-0"></div>
     <div>
         <div class="flex flex-row gap-4">
-            <input type="text" placeholder="Search Customer"
-            (keyup.enter)="getCustomerdetails()" [(ngModel)]="this.customerInfo.customerCode" 
-                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-            <div class="flex-grow group-hover:underline">
+            <!-- <input type="text" placeholder="Search Customer" (keyup.enter)="getCustomerdetails()"
+                [(ngModel)]="this.customerInfo.customerCode"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"/> -->
+                <input type="text" placeholder="Search Customer"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" (keyup.enter)="searchCustomerNameInTheDatabase($event)" (change)="ClearCustomer()"/>
+            <!-- <div class="flex-grow group-hover:underline">
                 {{this.customerInfo.name}}
-            </div>
+            </div> -->
+            <select [(ngModel)]="this.customerInfo.name" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+                <option>Select Customer</option>
+                <option *ngFor="let customer of customerName">{{customer}}</option>
+            </select>
+            <!-- <select [(ngModel)]="this.cartItemInfo.productInfo.productName" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+                <option>Select Product Name</option>
+                <option *ngFor="let product of productName">{{product}}</option>
+            </select> -->
             <select class="select select-bordered select-sm w-full max-w-xs rounded" (change)="null">
                 <option selected value="regular">Regular</option>
                 <option value="retailer">Retailer</option>

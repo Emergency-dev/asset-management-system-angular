@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PointOfSaleComponent implements OnInit {
   isAddModalOpen:boolean = false;
+  isNewPageModalOpen:boolean = false;
   constructor() { }
 
   ngOnInit(): void {
@@ -18,6 +19,14 @@ export class PointOfSaleComponent implements OnInit {
 
   onClose(){
     this.isAddModalOpen = false;
+  }
+
+  onNewPageClick(){
+    this.isNewPageModalOpen= true;
+  }
+
+  onNewPageClose(){
+    this.isNewPageModalOpen = false;
   }
 
 }

@@ -7,6 +7,7 @@ import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/customer-details/services/customer-details.service';
 import { PosTransactionService } from '../../services/pos-transaction.service';
 import { TransactionListService } from 'src/app/components/point-of-sale-table/services/transaction-list.service';
+import { TotalPrice } from './TotalPrice.model';
 
 @Component({
   selector: 'app-cart',
@@ -29,9 +30,13 @@ export class CartComponent implements OnInit {
   customerInfo1: CustomerInfo[] = [];
   productExists: boolean = false;
   isProductCodeInDB: boolean = false;
+  isProductNameInDB: boolean = false;
   selectedCustomerInfo: CustomerInfo = new CustomerInfo();
   checkedTransactions: string[]=[];
   totalBill: number=0;
+  productName: string [] = [];
+  customerName: string [] = [];
+  price:TotalPrice = new TotalPrice();
   //totalBill: Observable<number[]>();
 
 
@@ -70,6 +75,9 @@ export class CartComponent implements OnInit {
     }
     else{
       if(this.productCodeNotInTheDatabase()){
+        this.onAddClick();
+      }
+      else if(this.productNameNotInTheDatabase()){
         this.onAddClick();
       }
       else{
@@ -158,6 +166,48 @@ export class CartComponent implements OnInit {
     return this.isProductCodeInDB;
   }
 
+  productNameNotInTheDatabase() : boolean{
+    this.isProductNameInDB = false;
+    this.productInfo.forEach((value) => {
+      if(value.productName == this.cartItemInfo.productInfo.productName){
+        this.isProductNameInDB = true;
+        this.addProductInTheCart(value);
+      }
+    });
+    return this.isProductNameInDB;
+  }
+
+  searchProductNameInTheDatabase(e:any) :boolean{
+    this.isProductNameInDB = false;
+    this.productInfo.forEach((value) => {
+      //console.log(e.target.value.toUpperCase());
+      //console.log(value.productName);
+      if(value.productName.includes(e.target.value.toUpperCase())){
+        this.isProductNameInDB = true;
+        this.productName.push(value.productName);
+      }
+    });
+    console.log(this.productName); 
+    return this.isProductNameInDB;
+  }
+
+  searchCustomerNameInTheDatabase(e:any){
+    this.listCustomer.forEach((value) => {
+      if(value.name.includes(e.target.value.toUpperCase())){
+        this.customerName.push(value.name);
+      }
+    });
+    console.log(this.customerName); 
+  }
+
+  ClearProduct(){
+    this.productName = [];
+  }
+
+  ClearCustomer(){
+    this.customerName = [];
+  }
+
   addProductInTheCart(value: any){
     this.selectedProductInfo.productCode = value.productCode;
     this.cartItemInfo.productInfo.productCode = value.productCode;
@@ -168,6 +218,7 @@ export class CartComponent implements OnInit {
     this.cartItemInfo.price = value.price;
     this.selectedProductInfo.minPrice = value.minPrice;
     this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
+    this.ClearProduct();
   }
 
   checkBoxChecked(event: any){
@@ -207,5 +258,17 @@ export class CartComponent implements OnInit {
         this.transactionService.transactionInfo.customerInfo = this.customerInfo;
       }
     }); 
+  }
+
+  updateTotalPrice(){
+    console.log("Total Bill");
+    this.transactionService.transactionInfo.cartItemList.forEach((value)=>{
+      this.price.totalAmount += value.quantity * value.price;
+    })
+    console.log(this.price.totalAmount);
+  }
+
+  ClearTotalPrice(){
+    this.price.totalAmount = 0;
   }
 }
