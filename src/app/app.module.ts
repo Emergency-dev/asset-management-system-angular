@@ -24,6 +24,7 @@ import { PointOfPurchaseComponent } from './pages/point-of-purchase/point-of-pur
 import { PointOfPurchaseAddComponent } from './components/point-of-purchase-add/point-of-purchase-add.component';
 import { PurchaseCartComponent } from './components/point-of-purchase-add/ui/purchase-cart/purchase-cart.component';
 import { NewPageComponent } from './components/new-page/new-page.component';
+import { CartItemComponent } from './components/point-of-sale-add/ui/cart/cart-item/cart-item.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     PointOfPurchaseComponent,
     PointOfPurchaseAddComponent,
     PurchaseCartComponent,
-    NewPageComponent
+    NewPageComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,
