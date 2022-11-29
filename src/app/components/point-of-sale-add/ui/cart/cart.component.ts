@@ -46,6 +46,7 @@ export class CartComponent implements OnInit {
   price: TotalPrice = new TotalPrice();
   //totalBill: Observable<number[]>();
 
+  isAddCustomerModalOpen = false;
 
   constructor(protected transactionService: PosTransactionService, protected dataService: DataService,
     protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService) {
@@ -317,5 +318,9 @@ export class CartComponent implements OnInit {
 
   ClearTotalPrice() {
     this.price.totalAmount = 0;
+  }
+
+  ToggleAddCustomerModal(){
+    this.isAddCustomerModalOpen = !this.isAddCustomerModalOpen;
   }
 }

@@ -79,7 +79,23 @@
                 <option value="retailer">Retailer</option>
                 <option value="wholesale">Wholesale</option>
             </select>
+            <button class="btn gap-2 btn-sm btn-primary rounded" (click)="this.ToggleAddCustomerModal()">
+                Add
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            </button>
         </div>
     </div>
     <div class="divider m-0"></div>
+</div>
+
+<input [checked]="this.isAddCustomerModalOpen" type="checkbox" id="add-customer-modal" class="modal-toggle" />
+<div
+class="modal transition-all">
+  <div class="modal-box rounded w-11/12 h-5/6 max-w-screen-xl max-h-screen absolute overflow-auto">
+    <label for="add-customer-modal" class="btn btn-sm btn-circle absolute right-2 top-2 rounded bg-error" (click)="this.ToggleAddCustomerModal()">✕</label>
+    <!-- Add Customer Screen Here -->
+  </div>
 </div>
