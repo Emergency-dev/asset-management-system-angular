@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import {DataService} from 'src/app/services/supabase.service'
 import { Purchase } from './purchase-info.model';
@@ -9,6 +9,13 @@ import { Purchase } from './purchase-info.model';
   styleUrls: ['./new-page.component.css']
 })
 export class NewPageComponent implements OnInit {
+  @ViewChild("pId") pId: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("pName") pName : ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("pList") pList : ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("sId") sId : ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("sName") sName : ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("sList") sList : ElementRef<HTMLInputElement> = {} as ElementRef;
+  
   productInfo: ProductInfo[] = [];
   isProductNameInDB: boolean = false;
   isProductCodeInDB: boolean = false;
@@ -17,6 +24,7 @@ export class NewPageComponent implements OnInit {
   saleList:{saleCode:string,saleName:string}[] = [];
   purchaseProductNames:string[] =[];
   saleProductNames:string[] =[];
+  submitSaleList:{code:String}[] = [];
 
   constructor(protected dataService: DataService) { 
 
@@ -77,9 +85,11 @@ export class NewPageComponent implements OnInit {
         this.purchaseProductNames.push(value.productName);
       }
     });
+    this.pList.nativeElement.focus();
     console.log(this.productName); 
     return this.isProductNameInDB;
   }
+
   purchaseCode(e:any){
     this.isProductCodeInDB = false;
     this.productInfo.forEach((value) => {
@@ -89,7 +99,10 @@ export class NewPageComponent implements OnInit {
         this.purchase.purchaseName = value.productName
       }
     });
-    this.clearPurchaseList(); 
+    this.clearPurchaseList();
+    this.pId.nativeElement.value = "";
+    this.pName.nativeElement.value = "";
+    this.pId.nativeElement.focus(); 
     return this.isProductCodeInDB;
   }
 
@@ -104,6 +117,9 @@ export class NewPageComponent implements OnInit {
       }
     }); 
     this.clearPurchaseList();
+    this.pId.nativeElement.value = "";
+    this.pName.nativeElement.value = "";
+    this.pId.nativeElement.focus();
     return this.isProductCodeInDB;
   }
 
@@ -115,7 +131,8 @@ export class NewPageComponent implements OnInit {
         this.saleProductNames.push(value.productName);
       }
     });
-    console.log(this.productName); 
+    console.log(this.productName);
+    this.sList.nativeElement.focus(); 
     return this.isProductNameInDB; 
   }
   saleCode(e:any){
@@ -126,7 +143,10 @@ export class NewPageComponent implements OnInit {
         this.saleList.push({saleCode : value.productCode,saleName:value.productName});
       }
     });
-    this.clearSaleList(); 
+    this.clearSaleList();
+    this.sId.nativeElement.value = "";
+    this.sName.nativeElement.value = "";
+    this.sId.nativeElement.focus(); 
     return this.isProductCodeInDB;
   }
   saleName(e:any){
@@ -138,7 +158,10 @@ export class NewPageComponent implements OnInit {
         this.saleList.push({saleCode : value.productCode,saleName:value.productName});
       }
     });
-    this.clearSaleList(); 
+    this.clearSaleList();
+    this.sId.nativeElement.value = "";
+    this.sName.nativeElement.value = "";
+    this.sId.nativeElement.focus(); 
     return this.isProductNameInDB;
   }
 
@@ -148,6 +171,15 @@ export class NewPageComponent implements OnInit {
 
   clearSaleList(){
     this.saleProductNames = [];
+  }
+
+  Submit(){
+    
+    console.log(this.purchase.purchaseCode);
+    this.saleList.forEach(element => {
+      this.submitSaleList.push({code : element.saleCode});
+    });
+    console.log(this.submitSaleList);
   }
 }
 

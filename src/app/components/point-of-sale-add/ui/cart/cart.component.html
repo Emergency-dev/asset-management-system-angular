@@ -1,12 +1,16 @@
 <div class="flex flex-col h-full">
     <div class="flex flex-row gap-4">
-        <input type="text" placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()"
+        <!-- <input type="text" #pId placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()"
             [(ngModel)]="this.cartItemInfo.productInfo.productCode"
+            class="bg-white input input-sm input-bordered w-200 max-w-xs rounded text-black" /> -->
+        <input type="text" #pId placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()"
             class="bg-white input input-sm input-bordered w-200 max-w-xs rounded text-black" />
-        <input type="text" placeholder="Product Name"
-            class="bg-white input input-sm input-bordered w-300 max-w-xs rounded text-black" 
-            (keyup.enter)="searchProductNameInTheDatabase($event)" (change)="ClearProduct()"/>
-        <select [(ngModel)]="this.cartItemInfo.productInfo.productName" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+        <input type="text" placeholder="Product Name" #pName
+            class="bg-white input input-sm input-bordered w-300 max-w-xs rounded text-black"
+            (keyup.enter)="searchProductNameInTheDatabase($event)" (change)="ClearProduct()" />
+        <select [(ngModel)]="this.cartItemInfo.productInfo.productName" #pListName
+            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
+            (change)="getSelectedProductInfo()">
             <option>Select Product Name</option>
             <option *ngFor="let product of productName">{{product}}</option>
         </select>
@@ -28,9 +32,12 @@
             </svg>
 
         </button>
-        <div class="flex-grow group-hover:underline" [(ngModel)]="this.price.totalAmount">
+        <!-- <div class="flex-grow group-hover:underline" [(ngModel)]="this.price.totalAmount">
             Total Bill: {{this.price.totalAmount}}
-        </div>
+        </div> -->
+        <label class="flex-grow group-hover:underline" #tBill>
+            Total Bill :
+        </label>
     </div>
     <div class="divider m-0"></div>
     <div class="overflow-auto h-full">
@@ -58,7 +65,8 @@
                         <input type="text" placeholder="Carton"
                             class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
                         <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
-                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()"/>
+                            class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black"
+                            (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()" />
                         <div class="divider divider-vertical border m-0 h-full"></div>
                         <label class="label cursor-pointer p-0 gap-2">
                             <span class="label-text">Carton</span>
@@ -93,12 +101,15 @@
             <!-- <input type="text" placeholder="Search Customer" (keyup.enter)="getCustomerdetails()"
                 [(ngModel)]="this.customerInfo.customerCode"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"/> -->
-                <input type="text" placeholder="Search Customer"
-                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" (keyup.enter)="searchCustomerNameInTheDatabase($event)" (change)="ClearCustomer()"/>
+            <input type="text" placeholder="Search Customer"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
+                (keyup.enter)="searchCustomerNameInTheDatabase($event)" (change)="ClearCustomer()" />
             <!-- <div class="flex-grow group-hover:underline">
                 {{this.customerInfo.name}}
             </div> -->
-            <select [(ngModel)]="this.customerInfo.name" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+            <select #cList [(ngModel)]="this.customerInfo.name"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
+                (change)="getCustomerdetails($event)">
                 <option>Select Customer</option>
                 <option *ngFor="let customer of customerName">{{customer}}</option>
             </select>
