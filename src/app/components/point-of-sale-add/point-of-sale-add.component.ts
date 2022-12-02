@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AppModule } from 'src/app/app.module';
 import { TransactionListService } from '../point-of-sale-table/services/transaction-list.service';
 import { PosTransactionService } from './services/pos-transaction.service';
 
@@ -9,6 +10,8 @@ import { PosTransactionService } from './services/pos-transaction.service';
   providers: [PosTransactionService, TransactionListService]
 })
 export class PointOfSaleAddComponent implements OnInit {
+
+  //@Output() finishTransaction:EventEmitter<string> = new EventEmitter();
 
   // steps = [{ stepId: 1, stepTitle: 'Select Customer' },
   // { stepId: 2, stepTitle: 'Add Products in Cart' },
@@ -36,6 +39,7 @@ export class PointOfSaleAddComponent implements OnInit {
     this.transactionInfoList1.transactionInfo.push(this.transactionService.transactionInfo);
     console.log("this.transactionInfoList1");
     console.log(this.transactionInfoList1);
+    //this.finishTransaction.emit("Finish");
   }
 
   getTitle(step:number){

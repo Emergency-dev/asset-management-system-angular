@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-point-of-sale',
@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class PointOfSaleComponent implements OnInit {
   isAddModalOpen:boolean = false;
   isNewPageModalOpen:boolean = false;
+
+  // @Output() public sendStatus = new EventEmitter<string>();
+
   constructor() { }
 
   ngOnInit(): void {
@@ -28,5 +31,4 @@ export class PointOfSaleComponent implements OnInit {
   onNewPageClose(){
     this.isNewPageModalOpen = false;
   }
-
 }

@@ -25,6 +25,7 @@ import { PointOfPurchaseAddComponent } from './components/point-of-purchase-add/
 import { PurchaseCartComponent } from './components/point-of-purchase-add/ui/purchase-cart/purchase-cart.component';
 import { NewPageComponent } from './components/new-page/new-page.component';
 import { CartItemComponent } from './components/point-of-sale-add/ui/cart/cart-item/cart-item.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -59,7 +60,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     DataTablesModule,
     FormsModule,
-    NgxPopper
+    NgxPopper,
+    MatDialogModule
   ],
   providers: [LayoutConfig],
   bootstrap: [AppComponent]

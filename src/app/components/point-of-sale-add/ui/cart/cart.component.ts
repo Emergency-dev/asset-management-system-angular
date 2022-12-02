@@ -8,7 +8,7 @@ import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/cus
 import { PosTransactionService } from '../../services/pos-transaction.service';
 import { TransactionListService } from 'src/app/components/point-of-sale-table/services/transaction-list.service';
 import { TotalPrice } from './TotalPrice.model';
-
+import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -16,6 +16,7 @@ import { TotalPrice } from './TotalPrice.model';
   providers: [DataService, CustomerInfoService]
 })
 export class CartComponent implements OnInit {
+  isExtraNumberModalOpen:boolean = false;
   @ViewChild("pListName") pListName: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("pName") pName: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("pId") pId: ElementRef<HTMLInputElement> = {} as ElementRef;
@@ -49,7 +50,7 @@ export class CartComponent implements OnInit {
   isAddCustomerModalOpen = false;
 
   constructor(protected transactionService: PosTransactionService, protected dataService: DataService,
-    protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService) {
+    protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService , protected dialogRef:MatDialog ) {
     // this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
     this.searchFilter = new BehaviorSubject({ searchQuery: this.searchQuery, startDate: this.startDate, endDate: this.endDate });
     this.getDataServiceData();
@@ -62,7 +63,13 @@ export class CartComponent implements OnInit {
     //this.listCustomer = this.customerService.customerInfoList;
   }
 
-
+  onExtraNumberClick(){
+    this.isExtraNumberModalOpen = true;
+    //this.dialogRef.open(ExtraNumberComponent);
+  }
+  onExtraNumberClose(){
+    this.isExtraNumberModalOpen = false;
+  }
   onAddClick() {
     let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
     veryLocalCartItemInfo.price = this.cartItemInfo.price;

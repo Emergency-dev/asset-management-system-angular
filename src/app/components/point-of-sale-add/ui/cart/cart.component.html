@@ -42,11 +42,8 @@
     <div class="divider m-0"></div>
     <div class="overflow-auto h-full">
         <div *ngFor="let item of this.transactionService.transactionInfo.cartItemList" class="grid grid-cols-1 gap-4">
-            <app-cart-item [item]="item"
-                    (onItemCheckClick)="this.checkBoxChecked($event)"
-                    (onChangeQuantity)="this.ClearTotalPrice()"
-                    (onEnterQuantity)="this.updateTotalPrice()"
-                    ></app-cart-item>
+            <app-cart-item [item]="item" (onItemCheckClick)="this.checkBoxChecked($event)"
+                (onChangeQuantity)="this.ClearTotalPrice()" (onEnterQuantity)="this.updateTotalPrice()"></app-cart-item>
         </div>
         <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1"
             class="flex items-center justify-center">No Item in the Cart
@@ -92,10 +89,61 @@
 </div>
 
 <input [checked]="this.isAddCustomerModalOpen" type="checkbox" id="add-customer-modal" class="modal-toggle" />
-<div
-class="modal transition-all">
-  <div class="modal-box rounded w-11/12 h-5/6 max-w-screen-xl max-h-screen absolute overflow-auto">
-    <label for="add-customer-modal" class="btn btn-sm btn-circle absolute right-2 top-2 rounded bg-error" (click)="this.ToggleAddCustomerModal()">✕</label>
-    <!-- Add Customer Screen Here -->
-  </div>
+<div class="modal transition-all">
+    <div class="modal-box rounded w-11/12 h-5/6 max-w-screen-xl max-h-screen absolute overflow-auto">
+        <label for="add-customer-modal" class="btn btn-sm btn-circle absolute right-2 top-2 rounded bg-error"
+            (click)="this.ToggleAddCustomerModal()">✕</label>
+        <!-- Add Customer Screen Here -->
+        <div class='flex flex-col justify-center items-center'>
+            <div class='text-lg'>Add Customer Page</div>
+            <div class='divider m-0'></div>
+        </div>
+        <div class="flex flex-col auto">
+            <div class="flex flex-row gap-4">
+                <input type="text" placeholder="Customer Name" class="input input-bordered input-accent w-full max-w-xs" />
+                <input type="text" placeholder="Customer Phone Number" class="input input-bordered input-accent w-full max-w-xs" />  
+                <input type="text" placeholder="Customer City" class="input input-bordered input-accent w-full max-w-xs" />                      
+                <!-- <input type="text" placeholder="Customer Name" #pId
+                    class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+            </div>
+            <div class="divider m-0"></div>
+            <div class="flex flex-row gap-4 my-10">
+                <input type="text" placeholder="Customer Organization Name" class="input input-bordered input-accent w-full max-w-xs" />
+                <input type="text" placeholder="Customer Organization Code" class="input input-bordered input-accent w-full max-w-xs" />
+                <input type="radio" name="gender" value="Male" class="radio radio-accent" checked />Male
+                <input type="radio" name="gender" value="Female" class="radio radio-accent" />Female   
+            </div>
+            <div class="divider m-0"></div>
+            <div class="flex flex-col justify-center items-center my-3">
+                <button class="btn bg-accent gap-2 rounded my-2" (click)="this.onExtraNumberClick()">
+                    Add Extra Phone Number
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path
+                            d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                    </svg>
+                </button>
+                <button class="btn gap-2 rounded bg-accent" >
+                    Add Customer
+                </button>
+            </div> 
+        </div>
+    </div>
 </div>
+
+<app-modal *ngIf="this.isExtraNumberModalOpen" [isModalOpen]="this.isExtraNumberModalOpen" (closeModal)="this.onExtraNumberClose()">
+    <div class='flex flex-col justify-center items-center'>
+        <div class='text-lg'>Add Extra Phone Number Page</div>
+        <div class='divider m-0'></div>
+    </div>
+    <div class="flex flex-col auto">
+        <div class="flex flex-row gap-4 my-10 justify-center items-center">
+            <input type="text" placeholder="Enter Phone Number" class="input input-bordered input-accent w-full max-w-xs" />
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-col justify-center items-center my-10">
+            <button class="btn gap-2 rounded bg-accent" >
+                Add Number
+            </button>
+        </div> 
+    </div>
+</app-modal>

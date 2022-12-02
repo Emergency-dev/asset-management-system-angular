@@ -8,7 +8,11 @@ export class CustomerInfo{
     customerCode:number =0;
     OrganizationCode:number =0;
     OrganizationName:string = "";
+    
+    // Dev-Taha Added some require Fields
 
+    //cityName:string = "";
+    //extraContactNumber:string[] = []
 
     constructor(){
     }
