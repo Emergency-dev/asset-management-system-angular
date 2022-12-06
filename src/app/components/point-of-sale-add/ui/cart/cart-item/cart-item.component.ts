@@ -13,11 +13,13 @@ export class CartItemComponent implements OnInit, AfterViewInit {
   @Output() onChangeQuantity = new EventEmitter<any>();
   @Output() onEnterQuantity = new EventEmitter<any>();
 
-  @ViewChild('cartonCount') cartonCount!: ElementRef<HTMLInputElement>;
+  //@ViewChild('cartonCount') cartonCount!: ElementRef<HTMLInputElement>;
+  @ViewChild('quantity') quantity!: ElementRef<HTMLInputElement>;
 
   constructor() { }
   ngAfterViewInit(): void {
-    this.cartonCount.nativeElement.focus();
+    //this.cartonCount.nativeElement.focus();
+    this.quantity.nativeElement.focus();
   }
 
   ngOnInit(): void {}

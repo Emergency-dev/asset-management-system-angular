@@ -218,18 +218,26 @@ export class CartComponent implements OnInit {
 
   searchProductNameInTheDatabase(e: any): boolean {
     this.isProductNameInDB = false;
-    this.productInfo.forEach((value) => {
-      //console.log(e.target.value.toUpperCase());
-      //console.log(value.productName);
-      if (value.productName.includes(e.target.value.toUpperCase())) {
-        this.isProductNameInDB = true;
-        this.productName.push(value.productName);
-      }
-    });
+    if(this.productName.length == 0){
+      this.productInfo.forEach((value) => {
+        //console.log(e.target.value.toUpperCase());
+        //console.log(value.productName);
+        if (value.productName.includes(e.target.value.toUpperCase())) {
+          this.isProductNameInDB = true;
+          this.productName.push(value.productName);
+        }
+      });
+    }
+    
     this.pListName.nativeElement.focus();
+    //var event = new MouseEvent('mouseClick');
+    //this.pListName.nativeElement.dispatchEvent(event);
+    //this.pListName.nativeElement.;
     console.log(this.productName);
     return this.isProductNameInDB;
   }
+
+
 
   searchCustomerNameInTheDatabase(e: any) {
     this.listCustomer.forEach((value) => {
@@ -277,6 +285,8 @@ export class CartComponent implements OnInit {
       this.transactionService.transactionInfo.cartItemList.forEach((valuee, index) => {
         this.checkedTransactions.forEach((value) => {
           if (value == valuee.productInfo.productCode) {
+            this.price.totalAmount -= valuee.price * valuee.quantity;  
+            this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
             this.transactionService.transactionInfo.cartItemList.splice(index, 1);
             this.totalBill -= valuee.productInfo.price;
           }
@@ -314,13 +324,18 @@ export class CartComponent implements OnInit {
   }
 
   updateTotalPrice() {
+    var temp = 0;
     console.log("Total Bill");
     this.transactionService.transactionInfo.cartItemList.forEach((value) => {
-      this.price.totalAmount += value.quantity * value.price;
+      temp += value.quantity * value.price;
     })
-    this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
-    console.log(this.price.totalAmount);
-    this.pId.nativeElement.focus();
+    if(this.price.totalAmount != temp){
+      this.price.totalAmount = temp;
+      this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
+      console.log(this.price.totalAmount);
+      this.pId.nativeElement.focus();
+    
+    }
   }
 
   ClearTotalPrice() {

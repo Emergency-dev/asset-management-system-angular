@@ -32,8 +32,8 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   searchQuery:string = "";
   startDate:Date = new Date();
   endDate:Date = new Date();
-  //reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
-   reviewList : TransactionInfo[] = []; 
+  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
+  //reviewList : TransactionInfo[] = []; 
 
 
   // We use this trigger because fetching the list of persons can be quite long,
@@ -147,8 +147,11 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   // }
   
 
-  RefreshReviewList(){
+  RefreshReviewList(e:any){
     //this.reviewList = this.transaction;
-    console.log(this.pointOfSaleTransaction);
+    //console.log(this.dataService);
+    //console.log(this.serviceReviewList.getReviewList());
+    this.reviewList = e ;
+    console.log(this.reviewList);
   }
 }

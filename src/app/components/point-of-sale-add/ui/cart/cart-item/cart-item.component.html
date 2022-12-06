@@ -8,20 +8,20 @@
 <div class="flex flex-row gap-4 justify-end">
     <input type="text" placeholder="Carton" #cartonCount
         class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
-    <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
+    <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity" #quantity
         class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black"
         (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()" />
     <div class="divider divider-vertical border m-0 h-full"></div>
-    <label class="label cursor-pointer p-0 gap-2">
+    <label class="label cursor-pointer p-0 gap-2" style="margin-right: 1em;">
         <span class="label-text">Carton</span>
         <input type="radio" name="radio-10" class="radio" checked />
     </label>
-    <label class="label cursor-pointer p-0 gap-2">
+    <label class="label cursor-pointer p-0 gap-2 " style="margin-right: 15em;">
         <span class="label-text">Pieces</span>
         <input type="radio" name="radio-10" class="radio" checked />
     </label>
     <div class="divider divider-vertical border m-0 h-full"></div>
-    {{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}
+    <label style="display: flex; position:absolute;">{{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}</label>
 </div>
 </div>
 </div>

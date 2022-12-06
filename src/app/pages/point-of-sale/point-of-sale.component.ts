@@ -9,8 +9,6 @@ export class PointOfSaleComponent implements OnInit {
   isAddModalOpen:boolean = false;
   isNewPageModalOpen:boolean = false;
 
-  // @Output() public sendStatus = new EventEmitter<string>();
-
   constructor() { }
 
   ngOnInit(): void {
@@ -31,4 +29,9 @@ export class PointOfSaleComponent implements OnInit {
   onNewPageClose(){
     this.isNewPageModalOpen = false;
   }
+
+  closeModalOnFinish(e:any){
+    this.isAddModalOpen = false;
+  }
 }
+
