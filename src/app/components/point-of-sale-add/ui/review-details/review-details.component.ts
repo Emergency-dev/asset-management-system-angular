@@ -16,6 +16,8 @@ export class ReviewDetailsComponent implements OnInit {
   customerInfo = new CustomerInfo();
   cartItemInfo: CartItemInfo = new CartItemInfo();
   cartItems: CartItemInfo[] = [];
+
+  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
   constructor(protected cartItemService: CartItemAddService,
     protected customerService: CustomerInfoService,
     protected transactionService: PosTransactionService) { }
@@ -28,10 +30,16 @@ export class ReviewDetailsComponent implements OnInit {
     this.customerInfo = this.transactionService.transactionInfo.customerInfo;
     this.cartItemInfo = this.cartItemService.cartItemInfo;
     this.cartItems = this.transactionService.transactionInfo.cartItemList;
+
+    this.cartItems.forEach(item => {
+      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:item.quantity*item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
+    });
+
     console.log('this.cartItems');
     console.log(this.cartItems);
     console.log(this.customerInfo);
     console.log(this.transactionService);
+    console.log(this.reviewList);
   }
 
 }

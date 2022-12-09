@@ -1,0 +1,52 @@
+<div class="flex flex-col h-full justify-between">
+    <div class='flex flex-col justify-center items-center'>
+        <div class='text-lg'>New Page</div>
+        <div class='divider m-0'></div>
+    </div>
+    <div class="flex flex-col h-full">
+        <div class="flex flex-row gap-4">
+            <input type="text" placeholder="Purchase ID" #pId
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" (keyup.enter)="purchaseCode($event)"
+                />
+            <input type="text" placeholder="Purchase Name" #pName
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"  (keyup.enter)="searchPurchaseName($event)" (change)="clearPurchaseList()"/>
+                <select #pList class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" (change)="purchaseName($event)">
+                    <option>Select Product</option>
+                    <option *ngFor="let product of purchaseProductNames">{{product}}</option>
+                </select>
+            <input type="text" placeholder="Sale ID" #sId 
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"  (keyup.enter)="saleCode($event)" />
+            <input type="text" placeholder="Sale Name" #sName
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" (keyup.enter)="searchSaleName($event)" (change)="clearSaleList()"/>
+                <select #sList class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" (change)="saleName($event)">
+                    <option>Select Product </option>
+                    <option *ngFor="let product of saleProductNames">{{product}}</option>
+                </select>    
+        </div>
+        <div class="divider m-0"></div>
+    </div>
+    <div class="flex flex-col w-full lg:flex-row">
+        <div class="grid flex-grow h-80 card bg-base-200 rounded-box place-items-center">
+                <div class="">
+                    {{ this.purchase.purchaseCode}}: {{ this.purchase.purchaseName}}
+                </div>
+            </div> 
+        <div class="divider lg:divider-horizontal"></div> 
+        <div class="grid flex-grow h-80 card bg-base-200 rounded-box">
+            <div class="">
+                <div *ngFor="let item of this.saleList" class="">
+                    {{ this.item.saleCode}} : {{ this.item.saleName}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider m-0 my-2"></div>
+    <div class="flex flex-col justify-center items-center my-3">
+        <button class="btn gap-2 rounded" (click)="Submit()">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M18 10a.75.75 0 01-.75.75H4.612l5.158 4.96a.75.75 0 11-1.04 1.08l-6.5-6.25a.75.75 0 010-1.08l6.5-6.25a.75.75 0 111.04 1.08L4.612 9.25H17.25A.75.75 0 0118 10z" clip-rule="evenodd" />
+              </svg>               -->
+            Submit
+          </button>
+    </div>   
+</div> 

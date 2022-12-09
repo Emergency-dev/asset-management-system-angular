@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AppModule } from 'src/app/app.module';
 import { TransactionListService } from '../point-of-sale-table/services/transaction-list.service';
 import { PosTransactionService } from './services/pos-transaction.service';
+import { CustomerInfo } from 'src/app/models/customer-info.model';
+import { TransactionInfo } from 'src/app/models/transaction-info.model';
+import { CartItemInfo } from 'src/app/models/transaction-info.model';
+import { CartItemAddService } from './ui/cart-item-list/cart-item-add/services/casrt-item-add.service';
 
 @Component({
   selector: 'app-point-of-sale-add',
   templateUrl: './point-of-sale-add.component.html',
   styleUrls: ['./point-of-sale-add.component.css'],
-  providers: [PosTransactionService, TransactionListService]
+  providers: [PosTransactionService, TransactionListService, CartItemAddService]
 })
 export class PointOfSaleAddComponent implements OnInit {
+  customerInfo = new CustomerInfo();
+  cartItems: CartItemInfo[] = [];
 
+  @Output() finishTransaction:EventEmitter<any> = new EventEmitter();
+  
   // steps = [{ stepId: 1, stepTitle: 'Select Customer' },
   // { stepId: 2, stepTitle: 'Add Products in Cart' },
   // { stepId: 3, stepTitle: 'Enter Customer Details' },
@@ -18,7 +27,9 @@ export class PointOfSaleAddComponent implements OnInit {
   { stepId: 1, stepTitle: 'Fill Cart' },
   { stepId: 2, stepTitle: 'Review'}];
   currentStep: number = 1;
-  constructor(protected transactionService: PosTransactionService, protected transactionInfoList1: TransactionListService) {}
+  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
+  reviewList2:TransactionInfo[]=[];  
+  constructor(protected transactionService: PosTransactionService, protected transactionInfoList1: TransactionListService,protected cartItemService: CartItemAddService) {}
 
   ngOnInit(): void {
   }
@@ -35,7 +46,23 @@ export class PointOfSaleAddComponent implements OnInit {
     console.log("Congrats");
     this.transactionInfoList1.transactionInfo.push(this.transactionService.transactionInfo);
     console.log("this.transactionInfoList1");
-    console.log(this.transactionInfoList1);
+    //console.log(this.transactionInfoList1);
+    // this.reviewList2 = this.transactionInfoList1.transactionInfo;
+
+    //this.finishTransaction.emit("Finish");
+
+    this.customerInfo = this.transactionService.transactionInfo.customerInfo;
+    this.cartItems = this.transactionService.transactionInfo.cartItemList;
+
+    // this.cartItems.forEach(item => {
+    //   this.serviceReviewList.setReviewList(item.productInfo.productCode,item.productInfo.productName,item.quantity,item.unit,item.price,item.quantity*item.price,this.customerInfo.name,this.customerInfo.contactNumber);
+    // });
+    this.cartItems.forEach(item => {
+      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:item.quantity*item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
+    });
+    //console.log(this.serviceReviewList.getReviewList());
+    //console.log(this.reviewList2);
+    this.finishTransaction.emit(this.reviewList);
   }
 
   getTitle(step:number){

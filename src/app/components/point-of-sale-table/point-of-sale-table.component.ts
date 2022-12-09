@@ -32,6 +32,9 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   searchQuery:string = "";
   startDate:Date = new Date();
   endDate:Date = new Date();
+  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
+  //reviewList : TransactionInfo[] = []; 
+
 
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
@@ -43,7 +46,6 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
     console.log('this.posTransactions');
     console.log(this.posTransactions);
-    
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next(this.dtOptions);
@@ -72,7 +74,6 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
         Customer[ele.customerInfo.customerType].toLowerCase().startsWith(value.searchQuery) ||
         ele.customerInfo.name.toLowerCase().includes(value.searchQuery));
       });
-
       this.rerender();
     });
 
@@ -139,4 +140,18 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   //   });
     
   // }
+
+  //Added Emitter by Taha
+  // sendStatus(value:string){
+
+  // }
+  
+
+  RefreshReviewList(e:any){
+    //this.reviewList = this.transaction;
+    //console.log(this.dataService);
+    //console.log(this.serviceReviewList.getReviewList());
+    this.reviewList = e ;
+    console.log(this.reviewList);
+  }
 }

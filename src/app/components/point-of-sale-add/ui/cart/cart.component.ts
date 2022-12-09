@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
-import {DataService} from 'src/app/services/supabase.service'
+import { DataService } from 'src/app/services/supabase.service'
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CustomerInfoService } from 'src/app/components/point-of-sale-add/ui/customer-details/services/customer-details.service';
 import { PosTransactionService } from '../../services/pos-transaction.service';
 import { TransactionListService } from 'src/app/components/point-of-sale-table/services/transaction-list.service';
-
+import { TotalPrice } from './TotalPrice.model';
+import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -15,42 +16,61 @@ import { TransactionListService } from 'src/app/components/point-of-sale-table/s
   providers: [DataService, CustomerInfoService]
 })
 export class CartComponent implements OnInit {
+  isExtraNumberModalOpen:boolean = false;
+  @ViewChild("pListName") pListName: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("pName") pName: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("pId") pId: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("tBill") tBill: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cList") cLsit: ElementRef<HTMLInputElement> = {} as ElementRef;
   cartItems: CartItemInfo[] = [];
-  searchFilter:BehaviorSubject<{searchQuery:string,
-  startDate:Date, endDate:Date}>;
-  searchQuery:string = "";
-  startDate:Date = new Date();
-  endDate:Date = new Date();
-  listCustomer:CustomerInfo[]=[];
-  customerInfo: CustomerInfo=new CustomerInfo();
+  searchFilter: BehaviorSubject<{
+    searchQuery: string,
+    startDate: Date, endDate: Date
+  }>;
+  searchQuery: string = "";
+  startDate: Date = new Date();
+  endDate: Date = new Date();
+  listCustomer: CustomerInfo[] = [];
+  customerInfo: CustomerInfo = new CustomerInfo();
   cartItemInfo: CartItemInfo = new CartItemInfo();
   productInfo: ProductInfo[] = [];
   selectedProductInfo: ProductInfo = new ProductInfo();
   customerInfo1: CustomerInfo[] = [];
   productExists: boolean = false;
   isProductCodeInDB: boolean = false;
+  isProductNameInDB: boolean = false;
   selectedCustomerInfo: CustomerInfo = new CustomerInfo();
-  checkedTransactions: string[]=[];
-  totalBill: number=0;
+  checkedTransactions: string[] = [];
+  totalBill: number = 0;
+  productName: string[] = [];
+  customerName: string[] = [];
+  price: TotalPrice = new TotalPrice();
   //totalBill: Observable<number[]>();
 
+  isAddCustomerModalOpen = false;
 
-  constructor(protected transactionService: PosTransactionService, protected dataService: DataService, 
-    protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService) {
+  constructor(protected transactionService: PosTransactionService, protected dataService: DataService,
+    protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService , protected dialogRef:MatDialog ) {
     // this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
-    this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
+    this.searchFilter = new BehaviorSubject({ searchQuery: this.searchQuery, startDate: this.startDate, endDate: this.endDate });
     this.getDataServiceData();
     this.getCustomersData();
     console.log(this.transactionService);
-    
+
   }
 
   ngOnInit(): void {
     //this.listCustomer = this.customerService.customerInfoList;
   }
 
-
-  onAddClick(){
+  onExtraNumberClick(){
+    this.isExtraNumberModalOpen = true;
+    //this.dialogRef.open(ExtraNumberComponent);
+  }
+  onExtraNumberClose(){
+    this.isExtraNumberModalOpen = false;
+  }
+  onAddClick() {
     let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
     veryLocalCartItemInfo.price = this.cartItemInfo.price;
     veryLocalCartItemInfo.productInfo.productCode = this.cartItemInfo.productInfo.productCode;
@@ -63,21 +83,37 @@ export class CartComponent implements OnInit {
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
     this.totalBill += veryLocalCartItemInfo.totalPrice;
   }
-  
-  getSelectedProductInfo(){
-    if(this.productAlreadyInTheCart()){
+
+  getSelectedProductInfo() {
+    if (this.productAlreadyInTheCart()) {
       alert("Product already exists in the cart");
+      this.ClearProduct();
+      this.pId.nativeElement.value = "";
+      this.pName.nativeElement.value = "";
+      this.pId.nativeElement.focus();
     }
-    else{
-      if(this.productCodeNotInTheDatabase()){
+    else {
+      if (this.productCodeNotInTheDatabase()) {
         this.onAddClick();
+        this.pId.nativeElement.value = "";
+        this.pName.nativeElement.value = "";
+        this.pId.nativeElement.focus();
       }
-      else{
+      else if (this.productNameNotInTheDatabase()) {
+        this.onAddClick();
+        this.pId.nativeElement.value = "";
+        this.pName.nativeElement.value = "";
+        this.pId.nativeElement.focus();
+      }
+      else {
         alert("Product code not in the database");
+        this.pId.nativeElement.value = "";
+        this.pName.nativeElement.value = "";
+        this.pId.nativeElement.focus();
       }
     }
   }
-  
+
 
   // getCustomerdetails(){
   //   this.listCustomer.forEach((value) => {
@@ -92,12 +128,12 @@ export class CartComponent implements OnInit {
   //     }
   //   }); 
   // }
-  async getDataServiceData(){
+  async getDataServiceData() {
     const proInfo: Array<ProductInfo> = [];
     const options = await (await this.dataService.getProducts()).data;
-    options?.map((item)=>{
-      let proInfo  = new ProductInfo ();
-      proInfo =({
+    options?.map((item) => {
+      let proInfo = new ProductInfo();
+      proInfo = ({
         productId: item.ProductId,
         productCode: item.ProductCode,
         productName: item.ProductName,
@@ -113,15 +149,15 @@ export class CartComponent implements OnInit {
     // console.log(this.productInfo);
     // console.log('options - Add Cart Component');
     // console.log(options);
-    
+
   }
 
-  async getCustomersData(){
+  async getCustomersData() {
     const cusInfo: Array<CustomerInfo> = [];
     const cusOptions = await (await this.dataService.getCustomers()).data;
-    cusOptions?.map((item)=>{
-      let cusInfo  = new CustomerInfo ();
-      cusInfo =({
+    cusOptions?.map((item) => {
+      let cusInfo = new CustomerInfo();
+      cusInfo = ({
         customerCode: item.CustomerId,
         name: item.CustomerName,
         address: '',
@@ -129,7 +165,7 @@ export class CartComponent implements OnInit {
         customerType: 1,
         OrganizationCode: 0,
         OrganizationName: '',
-        
+
       })
       this.listCustomer.push(cusInfo);
     });
@@ -137,28 +173,90 @@ export class CartComponent implements OnInit {
     console.log(this.listCustomer);
   }
 
-  productAlreadyInTheCart(): boolean{
+  productAlreadyInTheCart(): boolean {
     this.productExists = false;
-    this.transactionService.transactionInfo.cartItemList.forEach((value)=>{
-      if(value.productInfo.productCode == this.cartItemInfo.productInfo.productCode){
+    this.transactionService.transactionInfo.cartItemList.forEach((value) => {
+      // if(value.productInfo.productCode == this.cartItemInfo.productInfo.productCode){
+      //   this.productExists = true;
+      // }
+      if (value.productInfo.productCode == this.pId.nativeElement.value) {
+        this.productExists = true;
+      }
+      else if(value.productInfo.productName == this.pListName.nativeElement.value){
         this.productExists = true;
       }
     });
     return this.productExists;
   }
 
-  productCodeNotInTheDatabase(): boolean{
+  productCodeNotInTheDatabase(): boolean {
     this.isProductCodeInDB = false;
     this.productInfo.forEach((value) => {
-      if(value.productCode == this.cartItemInfo.productInfo.productCode){
+      // if(value.productCode == this.cartItemInfo.productInfo.productCode){
+      //   this.isProductCodeInDB = true;
+      //   this.addProductInTheCart(value);
+      //   //@ViewChild(value.productCode) quantity : ElementRef<HTMLInputElement> = {} as ElementRef;
+      // }
+      if (value.productCode == this.pId.nativeElement.value) {
         this.isProductCodeInDB = true;
         this.addProductInTheCart(value);
       }
-    }); 
+    });
     return this.isProductCodeInDB;
   }
 
-  addProductInTheCart(value: any){
+  productNameNotInTheDatabase(): boolean {
+    this.isProductNameInDB = false;
+    this.productInfo.forEach((value) => {
+      if (value.productName == this.cartItemInfo.productInfo.productName) {
+        this.isProductNameInDB = true;
+        this.addProductInTheCart(value);
+      }
+    });
+    return this.isProductNameInDB;
+  }
+
+  searchProductNameInTheDatabase(e: any): boolean {
+    this.isProductNameInDB = false;
+    if(this.productName.length == 0){
+      this.productInfo.forEach((value) => {
+        //console.log(e.target.value.toUpperCase());
+        //console.log(value.productName);
+        if (value.productName.includes(e.target.value.toUpperCase())) {
+          this.isProductNameInDB = true;
+          this.productName.push(value.productName);
+        }
+      });
+    }
+    
+    this.pListName.nativeElement.focus();
+    //var event = new MouseEvent('mouseClick');
+    //this.pListName.nativeElement.dispatchEvent(event);
+    //this.pListName.nativeElement.;
+    console.log(this.productName);
+    return this.isProductNameInDB;
+  }
+
+
+
+  searchCustomerNameInTheDatabase(e: any) {
+    this.listCustomer.forEach((value) => {
+      if (value.name.includes(e.target.value.toUpperCase())) {
+        this.customerName.push(value.name);
+      }
+    });
+    console.log(this.customerName);
+  }
+
+  ClearProduct() {
+    this.productName = [];
+  }
+
+  ClearCustomer() {
+    this.customerName = [];
+  }
+
+  addProductInTheCart(value: any) {
     this.selectedProductInfo.productCode = value.productCode;
     this.cartItemInfo.productInfo.productCode = value.productCode;
     this.selectedProductInfo.productName = value.productName;
@@ -167,25 +265,29 @@ export class CartComponent implements OnInit {
     this.cartItemInfo.unit = value.productUnit;
     this.cartItemInfo.price = value.price;
     this.selectedProductInfo.minPrice = value.minPrice;
-    this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
+    this.cartItemInfo.totalPrice = value.price * this.cartItemInfo.quantity;
+    this.ClearProduct();
+    //this.cartItemInfo.productInfo.productCode = "";
   }
 
-  checkBoxChecked(event: any){
+  checkBoxChecked(event: any) {
     if (event.target.checked) {
       this.checkedTransactions.push(event.target.id);
     } else {
       const index = this.checkedTransactions.indexOf(event.target.id, 0);
-      this.checkedTransactions.splice(index,1);
+      this.checkedTransactions.splice(index, 1);
     }
     console.log(this.checkedTransactions);
   }
 
-  removeTransactions(){
-    if(this.checkedTransactions.length != 0){
+  removeTransactions() {
+    if (this.checkedTransactions.length != 0) {
       this.transactionService.transactionInfo.cartItemList.forEach((valuee, index) => {
         this.checkedTransactions.forEach((value) => {
-          if(value == valuee.productInfo.productCode){
-            this.transactionService.transactionInfo.cartItemList.splice(index,1);
+          if (value == valuee.productInfo.productCode) {
+            this.price.totalAmount -= valuee.price * valuee.quantity;  
+            this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
+            this.transactionService.transactionInfo.cartItemList.splice(index, 1);
             this.totalBill -= valuee.productInfo.price;
           }
         });
@@ -195,17 +297,52 @@ export class CartComponent implements OnInit {
       alert("No item selected");
   }
 
-  getCustomerdetails(){
+  getCustomerdetails(e: any) {
     this.listCustomer.forEach((value) => {
-      if(value.customerCode == this.customerInfo.customerCode){
+      // if(value.customerCode == this.customerInfo.customerCode){
+      //   this.customerInfo.name = value.name;
+      //   this.customerInfo.OrganizationCode = value.OrganizationCode;
+      //   this.customerInfo.contactNumber = value.contactNumber;
+      //   this.customerInfo.OrganizationName = value.OrganizationName;
+
+      //   this.customerService.customerInfo = this.customerInfo;
+      //   this.transactionService.transactionInfo.customerInfo = this.customerInfo;
+      // }
+      if (value.name == e.target.value) {
         this.customerInfo.name = value.name;
         this.customerInfo.OrganizationCode = value.OrganizationCode;
         this.customerInfo.contactNumber = value.contactNumber;
         this.customerInfo.OrganizationName = value.OrganizationName;
+        this.customerInfo.customerCode = value.customerCode;
 
         this.customerService.customerInfo = this.customerInfo;
         this.transactionService.transactionInfo.customerInfo = this.customerInfo;
       }
-    }); 
+      console.log(this.customerInfo);
+    });
+    //console.log(this.transactionService.transactionInfo.customerInfo); 
+  }
+
+  updateTotalPrice() {
+    var temp = 0;
+    console.log("Total Bill");
+    this.transactionService.transactionInfo.cartItemList.forEach((value) => {
+      temp += value.quantity * value.price;
+    })
+    if(this.price.totalAmount != temp){
+      this.price.totalAmount = temp;
+      this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
+      console.log(this.price.totalAmount);
+      this.pId.nativeElement.focus();
+    
+    }
+  }
+
+  ClearTotalPrice() {
+    this.price.totalAmount = 0;
+  }
+
+  ToggleAddCustomerModal(){
+    this.isAddCustomerModalOpen = !this.isAddCustomerModalOpen;
   }
 }

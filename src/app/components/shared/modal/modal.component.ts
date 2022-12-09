@@ -19,5 +19,4 @@ export class ModalComponent implements OnInit {
   onClose(){
     this.closeModal.emit();
   }
-
 }
