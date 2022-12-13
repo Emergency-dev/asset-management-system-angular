@@ -29,5 +29,5 @@
     <app-point-of-sale-add (finishTransaction)="pst.RefreshReviewList($event)" (finishTransaction)="this.closeModalOnFinish($event)"></app-point-of-sale-add>
 </app-modal>
 <app-modal *ngIf="this.isNewPageModalOpen" [isModalOpen]="this.isNewPageModalOpen" (closeModal)="this.onNewPageClose()">
-    <app-new-page></app-new-page>
+    <app-new-page (finishEvent)="this.onNewPageClose()"></app-new-page>
 </app-modal>

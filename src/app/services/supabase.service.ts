@@ -27,4 +27,10 @@ export class DataService{
         const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerId, CustomerName`);
         return result || [];
     }
+
+    async saveNewPageData(product_id:string, sale_ids:string){
+        const {data,error} = await this.supabase.rpc("newpage_data" , {product_id : product_id,sale_ids : sale_ids});
+        console.log(data);
+        if(error) console.log(error);
+    }
 }
