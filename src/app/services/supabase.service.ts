@@ -33,4 +33,22 @@ export class DataService{
         console.log(data);
         if(error) console.log(error);
     }
+
+    async addCustomerDetails(cust_name :string,cust_address :string,cust_city :string,cust_country :string,cust_fax :string,cust_mobile :number,cust_email :string,cust_credit_days :string,cust_credit_limit :string){
+        let { data, error } = await this.supabase
+  .rpc('add_customer_details', {
+    cust_address : cust_address, 
+    cust_city : cust_city, 
+    cust_country : cust_country, 
+    cust_credit_days : cust_credit_days, 
+    cust_credit_limit: cust_credit_limit, 
+    cust_email : cust_email, 
+    cust_fax :cust_fax, 
+    cust_mobile : cust_mobile, 
+    cust_name :cust_name
+  })
+
+if (error) console.error(error)
+else console.log(data)
+    }
 }

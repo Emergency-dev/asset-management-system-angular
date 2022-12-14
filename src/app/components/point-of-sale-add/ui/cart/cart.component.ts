@@ -22,6 +22,20 @@ export class CartComponent implements OnInit {
   @ViewChild("pId") pId: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("tBill") tBill: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cList") cLsit: ElementRef<HTMLInputElement> = {} as ElementRef;
+
+  //Add Customer Fields Values
+  @ViewChild("cust_name") cust_name: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_address") cust_address: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_city") cust_city: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_country") cust_country: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_fax") cust_fax: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_mobile") cust_mobile: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_email") cust_email: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_credit_days") cust_credit_days: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("cust_credit_limit") cust_credit_limit: ElementRef<HTMLInputElement> = {} as ElementRef;
+
+
+
   cartItems: CartItemInfo[] = [];
   searchFilter: BehaviorSubject<{
     searchQuery: string,
@@ -344,5 +358,9 @@ export class CartComponent implements OnInit {
 
   ToggleAddCustomerModal(){
     this.isAddCustomerModalOpen = !this.isAddCustomerModalOpen;
+  }
+
+  AddCustomerDetails(){
+    this.dataService.addCustomerDetails(this.cust_name.nativeElement.value ,this.cust_address.nativeElement.value,this.cust_city.nativeElement.value,this.cust_country.nativeElement.value,this.cust_fax.nativeElement.value,Number(this.cust_mobile.nativeElement.value),this.cust_email.nativeElement.value,this.cust_credit_days.nativeElement.value,this.cust_credit_limit.nativeElement.value)
   }
 }
