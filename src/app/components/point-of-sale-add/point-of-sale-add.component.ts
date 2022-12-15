@@ -5,13 +5,14 @@ import { PosTransactionService } from './services/pos-transaction.service';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { TransactionInfo } from 'src/app/models/transaction-info.model';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
+import { DataService } from 'src/app/services/supabase.service';
 import { CartItemAddService } from './ui/cart-item-list/cart-item-add/services/casrt-item-add.service';
 
 @Component({
   selector: 'app-point-of-sale-add',
   templateUrl: './point-of-sale-add.component.html',
   styleUrls: ['./point-of-sale-add.component.css'],
-  providers: [PosTransactionService, TransactionListService, CartItemAddService]
+  providers: [PosTransactionService, TransactionListService, CartItemAddService,DataService]
 })
 export class PointOfSaleAddComponent implements OnInit {
   customerInfo = new CustomerInfo();
@@ -30,7 +31,7 @@ export class PointOfSaleAddComponent implements OnInit {
   //reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
   reviewList2:TransactionInfo= new TransactionInfo();  
   totalPrice = 0;
-  constructor(protected transactionService: PosTransactionService, protected transactionInfoList1: TransactionListService,protected cartItemService: CartItemAddService) {}
+  constructor(protected transactionService: PosTransactionService, protected transactionInfoList1: TransactionListService,protected cartItemService: CartItemAddService,protected dataService:DataService) {}
 
   ngOnInit(): void {
   }
@@ -69,6 +70,14 @@ export class PointOfSaleAddComponent implements OnInit {
     this.reviewList2.transactionDate = new Date();
     
     //this.finishTransaction.emit(this.reviewList);
+    let price = 0,products =0;
+    this.reviewList2.cartItemList.forEach(element => {
+      if(element) price += element.quantity * element.price;
+    });
+    this.reviewList2.cartItemList.forEach(element => {
+      if(element) products += 1;
+    });
+    this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price);
     this.finishTransaction.emit(this.reviewList2);
   }
 
