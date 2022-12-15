@@ -27,8 +27,9 @@ export class PointOfSaleAddComponent implements OnInit {
   { stepId: 1, stepTitle: 'Fill Cart' },
   { stepId: 2, stepTitle: 'Review'}];
   currentStep: number = 1;
-  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
-  reviewList2:TransactionInfo[]=[];  
+  //reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
+  reviewList2:TransactionInfo= new TransactionInfo();  
+  totalPrice = 0;
   constructor(protected transactionService: PosTransactionService, protected transactionInfoList1: TransactionListService,protected cartItemService: CartItemAddService) {}
 
   ngOnInit(): void {
@@ -57,12 +58,18 @@ export class PointOfSaleAddComponent implements OnInit {
     // this.cartItems.forEach(item => {
     //   this.serviceReviewList.setReviewList(item.productInfo.productCode,item.productInfo.productName,item.quantity,item.unit,item.price,item.quantity*item.price,this.customerInfo.name,this.customerInfo.contactNumber);
     // });
-    this.cartItems.forEach(item => {
-      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:item.quantity*item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
-    });
+    // this.cartItems.forEach(item => {
+    //   this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:item.quantity*item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
+    // });
     //console.log(this.serviceReviewList.getReviewList());
     //console.log(this.reviewList2);
-    this.finishTransaction.emit(this.reviewList);
+
+    this.reviewList2.customerInfo = this.transactionService.transactionInfo.customerInfo;
+    this.reviewList2.cartItemList = this.transactionService.transactionInfo.cartItemList;
+    this.reviewList2.transactionDate = new Date();
+    
+    //this.finishTransaction.emit(this.reviewList);
+    this.finishTransaction.emit(this.reviewList2);
   }
 
   getTitle(step:number){

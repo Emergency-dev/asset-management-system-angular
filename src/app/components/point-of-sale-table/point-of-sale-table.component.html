@@ -100,7 +100,7 @@
     </tbody>
 </table> -->
 
-<table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
+<!-- <table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
   <thead>
     <tr>
       <th></th>
@@ -125,6 +125,29 @@
       <td>{{item.customerName}}</td>
       <td>{{item.customerPhone}}</td>
       <td>{{item.totalPrice}}</td>
+    </tr>
+  </tbody>
+</table> -->
+
+<table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
+  <thead>
+    <tr>
+      <th> Id </th>
+      <th> Seller Name </th>
+      <th> Customer Name </th>
+      <th> Total Number of Products</th>
+      <th> Date </th>
+      <th> Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
+      <th>{{this.reviewList.length - i}}</th>
+      <td>User Name</td>
+      <td>{{trans.customerInfo.name}}</td>
+      <td>{{this.totalProducts[this.reviewList.length - i - 1]}}</td>
+      <td>{{trans.transactionDate.getDate() + "/" + trans.transactionDate.getMonth() +"/"+ trans.transactionDate.getFullYear()}}</td>
+      <td>{{this.totalPrice[this.reviewList.length - i - 1]}}</td>
     </tr>
   </tbody>
 </table>

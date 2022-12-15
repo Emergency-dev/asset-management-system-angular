@@ -32,8 +32,13 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   searchQuery:string = "";
   startDate:Date = new Date();
   endDate:Date = new Date();
-  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
+
+  //Taha Added
+  //reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
   //reviewList : TransactionInfo[] = []; 
+   reviewList:TransactionInfo[] = []; 
+   totalPrice:number[] = [];
+   totalProducts:number[]=[];
 
 
   // We use this trigger because fetching the list of persons can be quite long,
@@ -151,7 +156,28 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     //this.reviewList = this.transaction;
     //console.log(this.dataService);
     //console.log(this.serviceReviewList.getReviewList());
-    this.reviewList = e ;
+    this.reviewList.push(e) ;
+    this.totalPrice = [];
+    this.totalProducts =[];
+    for(let i=0;i<this.reviewList.length;i++){
+      let price=0;
+      this.reviewList[i].cartItemList.forEach(element => {
+        if(element) price += element.quantity * element.price;
+      });
+      this.totalPrice.push(price);
+    }
+    for(let i=0;i<this.reviewList.length;i++){
+      let products=0;
+      this.reviewList[i].cartItemList.forEach(element => {
+        if(element) products += 1;
+      });
+      this.totalProducts.push(products);
+    }
+    console.log(this.totalPrice);
+    console.log(this.totalProducts);
+    // this.reviewList.cartItemList.forEach(element => {
+    //   if(element) this.totalPrice += 1;
+    // });
     console.log(this.reviewList);
   }
 }
