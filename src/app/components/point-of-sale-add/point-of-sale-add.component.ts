@@ -18,7 +18,8 @@ export class PointOfSaleAddComponent implements OnInit {
   customerInfo = new CustomerInfo();
   cartItems: CartItemInfo[] = [];
 
-  @Output() finishTransaction:EventEmitter<any> = new EventEmitter();
+  // @Output() finishTransaction:EventEmitter<any> = new EventEmitter();
+  @Output() finishTransaction:EventEmitter<string> = new EventEmitter();
   
   // steps = [{ stepId: 1, stepTitle: 'Select Customer' },
   // { stepId: 2, stepTitle: 'Add Products in Cart' },
@@ -78,7 +79,8 @@ export class PointOfSaleAddComponent implements OnInit {
       if(element) products += 1;
     });
     this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price);
-    this.finishTransaction.emit(this.reviewList2);
+    // this.finishTransaction.emit(this.reviewList2);
+    this.finishTransaction.emit("Finish");
   }
 
   getTitle(step:number){

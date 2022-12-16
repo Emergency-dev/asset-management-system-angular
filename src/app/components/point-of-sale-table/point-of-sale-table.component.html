@@ -141,13 +141,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
+    <!-- <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
       <th>{{this.reviewList.length - i}}</th>
       <td>User Name</td>
       <td>{{trans.customerInfo.name}}</td>
       <td>{{this.totalProducts[this.reviewList.length - i - 1]}}</td>
       <td>{{trans.transactionDate.getDate() + "/" + trans.transactionDate.getMonth() +"/"+ trans.transactionDate.getFullYear()}}</td>
       <td>{{this.totalPrice[this.reviewList.length - i - 1]}}</td>
+    </tr> -->
+    <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
+      <th>{{this.reviewList.length - i}}</th>
+      <td>{{trans.SellerName}}</td>
+      <td>{{trans.CustomerName}}</td>
+      <td>{{trans.TotalProducts}}</td>
+      <td>{{trans.transactionDate}}</td>
+      <td>{{trans.TotalPrice}}</td>
     </tr>
   </tbody>
 </table>

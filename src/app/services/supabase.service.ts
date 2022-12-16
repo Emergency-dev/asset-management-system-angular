@@ -4,6 +4,7 @@ import { initSupabase } from 'src/app/utils/initSupabase'
 
 export const TABLE_PRODUCTS = 'Products'
 export const TABLE_CUSTOMERS = 'ShopCustomer'
+export const TABLE_TRANSACTION = 'TransactionInfo'
 
 @Injectable({
     providedIn: 'root',
@@ -63,6 +64,11 @@ export class DataService {
 
         if (error) console.error(error)
         else console.log(data)
+    }
+
+    async getTransaction() {
+        const result = await this.supabase.from(TABLE_TRANSACTION).select(`*`);
+        return result || [];
     }
 
 }
