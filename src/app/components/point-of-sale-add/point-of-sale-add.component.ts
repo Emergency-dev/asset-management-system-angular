@@ -78,7 +78,10 @@ export class PointOfSaleAddComponent implements OnInit {
     this.reviewList2.cartItemList.forEach(element => {
       if(element) products += 1;
     });
-    this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price);
+    this.reviewList2.cartItemList.forEach(element => {
+      this.dataService.addOrderDetails(element.productInfo.productCode,element.quantity,this.reviewList2.customerInfo.customerCode.toString());
+    });
+    this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price,this.reviewList2.customerInfo.customerCode.toString());
     // this.finishTransaction.emit(this.reviewList2);
     this.finishTransaction.emit("Finish");
   }
