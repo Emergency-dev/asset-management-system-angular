@@ -19,7 +19,7 @@ export class PointOfSaleAddComponent implements OnInit {
   cartItems: CartItemInfo[] = [];
 
   // @Output() finishTransaction:EventEmitter<any> = new EventEmitter();
-  @Output() finishTransaction:EventEmitter<string> = new EventEmitter();
+  @Output() finishTransaction:EventEmitter<TransactionInfo> = new EventEmitter();
   
   // steps = [{ stepId: 1, stepTitle: 'Select Customer' },
   // { stepId: 2, stepTitle: 'Add Products in Cart' },
@@ -46,9 +46,7 @@ export class PointOfSaleAddComponent implements OnInit {
   }
 
   onClickFinish() {
-    console.log("Congrats");
     this.transactionInfoList1.transactionInfo.push(this.transactionService.transactionInfo);
-    console.log("this.transactionInfoList1");
     //console.log(this.transactionInfoList1);
     // this.reviewList2 = this.transactionInfoList1.transactionInfo;
 
@@ -83,7 +81,9 @@ export class PointOfSaleAddComponent implements OnInit {
     });
     this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price,this.reviewList2.customerInfo.customerCode.toString());
     // this.finishTransaction.emit(this.reviewList2);
-    this.finishTransaction.emit("Finish");
+    //this.transactionService.PrintTransaction();
+    this.finishTransaction.emit(this.transactionService.transactionInfo);
+    
   }
 
   getTitle(step:number){
