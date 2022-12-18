@@ -1,0 +1,8 @@
+div.urdu *{
+    direction: rtl;
+  }
+
+table.receiptTable th,td{
+    padding-bottom: 1rem;
+    text-align: center;
+}

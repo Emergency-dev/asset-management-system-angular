@@ -2,6 +2,7 @@ import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import {DataService} from 'src/app/services/supabase.service'
 import { Purchase } from './purchase-info.model';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-new-page',
@@ -15,6 +16,8 @@ export class NewPageComponent implements OnInit {
   @ViewChild("sId") sId : ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("sName") sName : ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("sList") sList : ElementRef<HTMLInputElement> = {} as ElementRef;
+
+  @Output() finishEvent = new EventEmitter<string>();
   
   productInfo: ProductInfo[] = [];
   isProductNameInDB: boolean = false;
@@ -24,7 +27,8 @@ export class NewPageComponent implements OnInit {
   saleList:{saleCode:string,saleName:string}[] = [];
   purchaseProductNames:string[] =[];
   saleProductNames:string[] =[];
-  submitSaleList:{code:String}[] = [];
+  //submitSaleList:{code:string}[] = [];
+  submitSaleList :string = "";
 
   constructor(protected dataService: DataService) { 
 
@@ -174,12 +178,15 @@ export class NewPageComponent implements OnInit {
   }
 
   Submit(){
-    
     console.log(this.purchase.purchaseCode);
     this.saleList.forEach(element => {
-      this.submitSaleList.push({code : element.saleCode});
+      //this.submitSaleList.push({code : element.saleCode});
+      this.submitSaleList += element.saleCode;
+      this.submitSaleList += ",";
     });
-    console.log(this.submitSaleList);
+    //console.log(this.submitSaleList);
+    this.dataService.saveNewPageData(this.purchase.purchaseCode,this.submitSaleList);
+    this.finishEvent.emit("submit");
   }
 }
 

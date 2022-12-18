@@ -7,6 +7,8 @@ import { ProductInfo } from 'src/app/models/product-info.model';
 import {DataService} from 'src/app/services/supabase.service'
 import { PosTransactionService } from '../point-of-sale-add/services/pos-transaction.service';
 import { TransactionListService } from './services/transaction-list.service';
+import { TransactionSupabaseInfo } from 'src/app/models/transaction-supabase.model';
+import { TotalPrice } from '../point-of-sale-add/ui/cart/TotalPrice.model';
 
 @Component({
   selector: 'app-point-of-sale-table',
@@ -32,8 +34,14 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   searchQuery:string = "";
   startDate:Date = new Date();
   endDate:Date = new Date();
-  reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
+
+  //Taha Added
+  //reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
   //reviewList : TransactionInfo[] = []; 
+   //reviewList:TransactionInfo[] = []; 
+   reviewList:TransactionSupabaseInfo[] = [];
+   totalPrice:number[] = [];
+   totalProducts:number[]=[];
 
 
   // We use this trigger because fetching the list of persons can be quite long,
@@ -46,6 +54,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.searchFilter = new BehaviorSubject({searchQuery:this.searchQuery, startDate: this.startDate, endDate: this.endDate});
     console.log('this.posTransactions');
     console.log(this.posTransactions);
+    this.RefreshReviewList("");
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next(this.dtOptions);
@@ -147,11 +156,48 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   // }
   
 
-  RefreshReviewList(e:any){
+  async RefreshReviewList(e:any){
     //this.reviewList = this.transaction;
     //console.log(this.dataService);
     //console.log(this.serviceReviewList.getReviewList());
-    this.reviewList = e ;
+    //this.reviewList.push(e) ;
+    //const Info: Array<TransactionSupabaseInfo> = [];
+    console.log("refresh");
+    this.reviewList = [];
+    const options = await (await (this.dataService.getTransaction())).data;
+    options?.map((item)=>{
+      let transactionSupabaseInfo  = new TransactionSupabaseInfo();
+      transactionSupabaseInfo =({
+        transactionId: item.id,
+        transactionDate: item.Date,
+        SellerName: item.SellerName,
+        CustomerName: item.CustomerName,
+        TotalProducts : item.TotalProducts,
+        TotalPrice : item.TotalPrice
+      })
+      this.reviewList.push(transactionSupabaseInfo);
+    });
+    // this.totalPrice = [];
+    // this.totalProducts =[];
+    // for(let i=0;i<this.reviewList.length;i++){
+    //   let price=0;
+    //   this.reviewList[i].cartItemList.forEach(element => {
+    //     if(element) price += element.quantity * element.price;
+    //   });
+    //   this.totalPrice.push(price);
+    // }
+    // for(let i=0;i<this.reviewList.length;i++){
+    //   let products=0;
+    //   this.reviewList[i].cartItemList.forEach(element => {
+    //     if(element) products += 1;
+    //   });
+    //   this.totalProducts.push(products);
+    // }
+    // console.log(this.totalPrice);
+    // console.log(this.totalProducts);
+    // this.reviewList.cartItemList.forEach(element => {
+    //   if(element) this.totalPrice += 1;
+    // });
     console.log(this.reviewList);
   }
 }
