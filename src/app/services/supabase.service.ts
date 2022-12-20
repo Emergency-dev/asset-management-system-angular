@@ -20,7 +20,9 @@ export class DataService {
     }
 
     async getProducts() {
-        const result = await this.supabase.from(TABLE_PRODUCTS).select(`ProductCode, ProductName, SaleRate, MinRate, MeasureUnit`);
+        const result = await this.supabase.from(TABLE_PRODUCTS).select('"ProductCode", "ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing"');
+        if(result.error) console.log(result.error);
+        console.log(result);
         return result || [];
     }
 
@@ -53,14 +55,14 @@ export class DataService {
         else console.log(data)
     }
 
-    async addTransactionDetails(seller_name: string, cust_name: string, total_products: number, total_price: number,cust_id: string) {
+    async addTransactionDetails(seller_name: string, cust_name: string, total_products: number, total_price: number, cust_id: string) {
         let { data, error } = await this.supabase
             .rpc('add_transaction_details', {
                 cust_name: cust_name,
                 seller_name: seller_name,
                 total_price: total_price,
                 total_products: total_products,
-                cust_id:cust_id
+                cust_id: cust_id
             })
 
         if (error) console.error(error)
@@ -72,13 +74,13 @@ export class DataService {
         return result || [];
     }
 
-    async addOrderDetails(product_id:string,product_quantity:number,cust_id:string) {
+    async addOrderDetails(product_id: string, product_quantity: number, cust_id: string) {
 
         let { data, error } = await this.supabase
             .rpc('add_order_details', {
-                cust_id : cust_id,
-                product_id : product_id,
-                product_quantity : product_quantity
+                cust_id: cust_id,
+                product_id: product_id,
+                product_quantity: product_quantity
             })
 
         if (error) console.error(error)
@@ -86,5 +88,12 @@ export class DataService {
 
     }
 
-
+    async getOrderData(cust_id: any, trans_date: any) {
+        let result= await this.supabase
+            .from('Order')
+            .select("*")
+            .eq('CustomerId', cust_id)
+            .eq('OrderDate', trans_date);  
+            return result || [];
+    }
 }

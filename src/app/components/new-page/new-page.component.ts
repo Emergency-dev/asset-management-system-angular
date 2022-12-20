@@ -52,6 +52,7 @@ export class NewPageComponent implements OnInit {
         price: item.SaleRate,
         minPrice: item.MinRate,
         maxPrice: 0,
+        packing:item.Packing
       })
       this.productInfo.push(proInfo);
     });

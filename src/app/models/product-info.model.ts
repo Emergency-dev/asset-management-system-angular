@@ -4,10 +4,12 @@ export class ProductInfo{
     productId:string = "";
     productCode:string = "";
     productName:string = "";
+    packing:number = -1;
     
     price:number = 0;
     minPrice:number = 0;
     maxPrice:number = 0;
+    
 
     productImageUrl:string = "";
     productUnitType?:Unit;

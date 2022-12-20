@@ -42,6 +42,12 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    reviewList:TransactionSupabaseInfo[] = [];
    totalPrice:number[] = [];
    totalProducts:number[]=[];
+   isNewPageModalOpen:boolean = false;
+   selectedTransactionId:number = -1; 
+   selectedCustomerName:string = "";
+   selectedCustomerId:string="";
+   selectedTransactionDate:string = "";
+   selectedTransactionProductInfo:{productCode:string,productName:string,quantity:number,unit:string,totalPrice:number}[] = [];
 
 
   // We use this trigger because fetching the list of persons can be quite long,
@@ -173,7 +179,8 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
         SellerName: item.SellerName,
         CustomerName: item.CustomerName,
         TotalProducts : item.TotalProducts,
-        TotalPrice : item.TotalPrice
+        TotalPrice : item.TotalPrice,
+        CustomerId: item.CustomerId
       })
       this.reviewList.push(transactionSupabaseInfo);
     });
@@ -199,5 +206,31 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     //   if(element) this.totalPrice += 1;
     // });
     console.log(this.reviewList);
+  }
+
+  async onNewPageClick(id:any,cust:any,cust_id:any,trans_date:any){
+    this.selectedTransactionProductInfo = [];
+    this.isNewPageModalOpen= true;
+    this.selectedTransactionId = id;
+    this.selectedCustomerName = cust;
+    this.selectedCustomerId = cust_id;
+    this.selectedTransactionDate = trans_date;
+    let res1 = (await this.dataService.getOrderData(this.selectedCustomerId, this.selectedTransactionDate)).data;
+    let res2 = (await this.dataService.getProducts()).data; 
+    res2?.forEach(item1=>{
+      res1?.forEach(item2=>{
+        if(item1.ProductCode == item2.ProductId){
+          item1.quantity = item2.ProductQuantity;
+          this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+        }
+      })
+    })
+    // console.log(res1);
+    // console.log(res2);
+    // console.log(this.selectedTransactionProductInfo);
+  }
+
+  onNewPageClose(){
+    this.isNewPageModalOpen = false;
   }
 }

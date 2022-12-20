@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { BehaviorSubject, elementAt, Observable, Subject } from 'rxjs';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import { DataService } from 'src/app/services/supabase.service'
@@ -33,6 +33,7 @@ export class CartComponent implements OnInit {
   @ViewChild("cust_email") cust_email: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cust_credit_days") cust_credit_days: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cust_credit_limit") cust_credit_limit: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @Output() onReviewDetails = new EventEmitter<any>();
 
 
 
@@ -62,6 +63,7 @@ export class CartComponent implements OnInit {
   //totalBill: Observable<number[]>();
 
   isAddCustomerModalOpen = false;
+  cartonValue:{cartonValue:number,cartonCode:string}[]=[];
 
   constructor(protected transactionService: PosTransactionService, protected dataService: DataService,
     protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService , protected dialogRef:MatDialog ) {
@@ -85,17 +87,22 @@ export class CartComponent implements OnInit {
     this.isExtraNumberModalOpen = false;
   }
   onAddClick() {
+    console.log("Local Cart")
     let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
     veryLocalCartItemInfo.price = this.cartItemInfo.price;
     veryLocalCartItemInfo.productInfo.productCode = this.cartItemInfo.productInfo.productCode;
     veryLocalCartItemInfo.productInfo.productName = this.cartItemInfo.productInfo.productName;
     veryLocalCartItemInfo.productInfo.productUnit = this.cartItemInfo.productInfo.productUnit;
+    veryLocalCartItemInfo.productInfo.packing = this.cartItemInfo.productInfo.packing;
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
-    veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
+    // veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
+    veryLocalCartItemInfo.totalPrice = this.price.totalAmount;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
 
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
     this.totalBill += veryLocalCartItemInfo.totalPrice;
+    console.log(veryLocalCartItemInfo);
+    console.log(this.transactionService.transactionInfo);
   }
 
   getSelectedProductInfo() {
@@ -107,6 +114,7 @@ export class CartComponent implements OnInit {
       this.pId.nativeElement.focus();
     }
     else {
+      console.log("Product Code")
       if (this.productCodeNotInTheDatabase()) {
         this.onAddClick();
         this.pId.nativeElement.value = "";
@@ -156,6 +164,7 @@ export class CartComponent implements OnInit {
         price: item.SaleRate,
         minPrice: item.MinRate,
         maxPrice: 0,
+        packing : Number(item.Packing)
       })
       this.productInfo.push(proInfo);
     });
@@ -163,7 +172,7 @@ export class CartComponent implements OnInit {
     // console.log(this.productInfo);
     // console.log('options - Add Cart Component');
     // console.log(options);
-
+    console.log(this.productInfo);
   }
 
   async getCustomersData() {
@@ -205,12 +214,14 @@ export class CartComponent implements OnInit {
 
   productCodeNotInTheDatabase(): boolean {
     this.isProductCodeInDB = false;
+    console.log(this.productInfo);
     this.productInfo.forEach((value) => {
       // if(value.productCode == this.cartItemInfo.productInfo.productCode){
       //   this.isProductCodeInDB = true;
       //   this.addProductInTheCart(value);
       //   //@ViewChild(value.productCode) quantity : ElementRef<HTMLInputElement> = {} as ElementRef;
       // }
+      console.log(value);
       if (value.productCode == this.pId.nativeElement.value) {
         this.isProductCodeInDB = true;
         this.addProductInTheCart(value);
@@ -280,6 +291,7 @@ export class CartComponent implements OnInit {
     this.cartItemInfo.price = value.price;
     this.selectedProductInfo.minPrice = value.minPrice;
     this.cartItemInfo.totalPrice = value.price * this.cartItemInfo.quantity;
+    this.cartItemInfo.productInfo.packing = value.packing;
     this.ClearProduct();
     //this.cartItemInfo.productInfo.productCode = "";
   }
@@ -309,6 +321,7 @@ export class CartComponent implements OnInit {
     }
     else
       alert("No item selected");
+    this.updateTotalPrice();  
   }
 
   getCustomerdetails(e: any) {
@@ -338,10 +351,20 @@ export class CartComponent implements OnInit {
   }
 
   updateTotalPrice() {
-    var temp = 0;
+    var temp = 0,temp2=0;
     console.log("Total Bill");
     this.transactionService.transactionInfo.cartItemList.forEach((value) => {
       temp += value.quantity * value.price;
+    })
+    this.transactionService.transactionInfo.cartItemList.forEach((value) => {
+      this.cartonValue.forEach(element=>{
+        if(element.cartonCode == value.productInfo.productCode){
+          if(element.cartonValue!=0){
+            temp2= element.cartonValue * value.productInfo.packing;
+          temp += temp2 * value.price;
+          }
+          }
+      })
     })
     if(this.price.totalAmount != temp){
       this.price.totalAmount = temp;
@@ -350,6 +373,10 @@ export class CartComponent implements OnInit {
       this.pId.nativeElement.focus();
     
     }
+    this.transactionService.transactionInfo.cartItemList.forEach(Element=>{
+      Element.totalPrice = this.price.totalAmount;
+    })
+    this.onReviewDetails.emit(this.price.totalAmount);
   }
 
   ClearTotalPrice() {
@@ -362,5 +389,19 @@ export class CartComponent implements OnInit {
 
   AddCustomerDetails(){
     this.dataService.addCustomerDetails(this.cust_name.nativeElement.value ,this.cust_address.nativeElement.value,this.cust_city.nativeElement.value,this.cust_country.nativeElement.value,this.cust_fax.nativeElement.value,Number(this.cust_mobile.nativeElement.value),this.cust_email.nativeElement.value,this.cust_credit_days.nativeElement.value,this.cust_credit_limit.nativeElement.value)
+  }
+
+  cartonValueAdded(e:any){
+    let bool = false;
+    this.cartonValue.forEach(element=>{
+      if(element.cartonCode == e.cartonCode){
+        bool = true;
+        element.cartonValue = e.cartonValue
+      }
+    })
+    if(bool == false){
+      this.cartonValue.push(e);
+    }
+    this.updateTotalPrice();
   }
 }

@@ -89,4 +89,8 @@ export class PointOfSaleAddComponent implements OnInit {
   getTitle(step:number){
     return this.steps.find(ele => ele.stepId === step)?.stepTitle;
   }
+
+  seeDetails(e:any){
+    console.log(e);
+  }
 }

@@ -43,7 +43,7 @@
     <div class="overflow-auto h-full">
         <div *ngFor="let item of this.transactionService.transactionInfo.cartItemList" class="grid grid-cols-1 gap-4">
             <app-cart-item [item]="item" (onItemCheckClick)="this.checkBoxChecked($event)"
-                (onChangeQuantity)="this.ClearTotalPrice()" (onEnterQuantity)="this.updateTotalPrice()"></app-cart-item>
+                (onChangeQuantity)="this.ClearTotalPrice()" (onEnterQuantity)="this.updateTotalPrice()" (onCartonValueEnter)="this.cartonValueAdded($event)"></app-cart-item>
         </div>
         <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1"
             class="flex items-center justify-center">No Item in the Cart
@@ -71,10 +71,18 @@
                 <option>Select Product Name</option>
                 <option *ngFor="let product of productName">{{product}}</option>
             </select> -->
-            <select class="select select-bordered select-sm w-full max-w-xs rounded" (change)="null">
+            <!-- <select class="select select-bordered select-sm w-full max-w-xs rounded" (change)="null">
                 <option selected value="regular">Regular</option>
                 <option value="retailer">Retailer</option>
                 <option value="wholesale">Wholesale</option>
+            </select> -->
+            <select class="select select-bordered select-sm  max-w-xs rounded" (change)="null">
+                <option value="retailer">Retailer</option>
+                <option value="wholesale">Wholesale</option>
+            </select>
+            <select class="select select-bordered select-sm  max-w-xs rounded" (change)="null">
+                <option selected value="regular">Walking</option>
+                <option selected value="regular">Regular</option>
             </select>
             <button class="btn gap-2 btn-sm btn-primary rounded" (click)="this.ToggleAddCustomerModal()">
                 Add

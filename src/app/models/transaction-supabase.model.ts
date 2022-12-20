@@ -5,6 +5,7 @@ export class TransactionSupabaseInfo{
     CustomerName:string = "";
     TotalProducts:number=-1;
     TotalPrice:number=-1;
+    CustomerId:string="";
 
     constructor(){}
 }

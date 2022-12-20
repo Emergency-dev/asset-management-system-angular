@@ -12,9 +12,14 @@ export class CartItemComponent implements OnInit, AfterViewInit {
   @Output() onItemCheckClick = new EventEmitter<any>();
   @Output() onChangeQuantity = new EventEmitter<any>();
   @Output() onEnterQuantity = new EventEmitter<any>();
+  @Output() onCartonValueEnter = new EventEmitter<any>();
 
   //@ViewChild('cartonCount') cartonCount!: ElementRef<HTMLInputElement>;
   @ViewChild('quantity') quantity!: ElementRef<HTMLInputElement>;
+  @ViewChild('cartonCount') carton: ElementRef<HTMLInputElement> = {} as ElementRef;
+  cartonValue:number = 0;
+  totalPrice:number=0;
+
 
   constructor() { }
   ngAfterViewInit(): void {
@@ -34,6 +39,13 @@ export class CartItemComponent implements OnInit, AfterViewInit {
 
   ClearTotalPrice(){
     this.onChangeQuantity.emit();
+  }
+
+  CartonValueAdded(){
+    console.log("Carton Value");
+    this.cartonValue = Number(this.carton.nativeElement.value); 
+    console.log(this.carton.nativeElement.value);
+    this.onCartonValueEnter.emit({cartonValue:this.carton.nativeElement.value,cartonCode: this.item.productInfo.productCode});
   }
 
 }
