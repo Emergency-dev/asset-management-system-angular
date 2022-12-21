@@ -12,14 +12,14 @@
         class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black"
         (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()" />
     <div class="divider divider-vertical border m-0 h-full"></div>
-    <label class="label cursor-pointer p-0 gap-2" style="margin-right: 1em;">
+    <!-- <label class="label cursor-pointer p-0 gap-2" style="margin-right: 1em;">
         <span class="label-text">Carton</span>
         <input type="radio" name="radio-10" class="radio" checked />
     </label>
     <label class="label cursor-pointer p-0 gap-2 " style="margin-right: 15em;">
         <span class="label-text">Pieces</span>
         <input type="radio" name="radio-10" class="radio" checked />
-    </label>
+    </label> -->
     <div class="divider divider-vertical border m-0 h-full"></div>
     <label *ngIf="this.cartonValue!=0">{{this.cartonValue * this.item.productInfo.packing }} + {{ this.item.quantity }} x {{ this.item.price }} = {{((this.cartonValue * this.item.productInfo.packing) + this.item.quantity) * this.item.price }}</label>
     <label *ngIf="this.cartonValue==0" style="display: flex; position:absolute;">{{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}</label>
