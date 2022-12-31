@@ -22,7 +22,7 @@ export class CartComponent implements OnInit {
   @ViewChild("pId") pId: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("tBill") tBill: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cList") cLsit: ElementRef<HTMLInputElement> = {} as ElementRef;
-
+  @ViewChild('customerType') customerSelected: ElementRef<HTMLSelectElement>= {} as ElementRef;
   //Add Customer Fields Values
   @ViewChild("cust_name") cust_name: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cust_address") cust_address: ElementRef<HTMLInputElement> = {} as ElementRef;
@@ -61,9 +61,10 @@ export class CartComponent implements OnInit {
   customerName: string[] = [];
   price: TotalPrice = new TotalPrice();
   //totalBill: Observable<number[]>();
-
   isAddCustomerModalOpen = false;
   cartonValue:{cartonValue:number,cartonCode:string}[]=[];
+  customerType:string[]=['Retailer','Wholesale'];
+  selectedType:any;
 
   constructor(protected transactionService: PosTransactionService, protected dataService: DataService,
     protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService , protected dialogRef:MatDialog ) {
@@ -151,9 +152,11 @@ export class CartComponent implements OnInit {
   //   }); 
   // }
   async getDataServiceData() {
+    console.log(this.selectedType);
     const proInfo: Array<ProductInfo> = [];
     const options = await (await this.dataService.getProducts()).data;
-    options?.map((item) => {
+    if(this.selectedType=="Wholesale"){
+      options?.map((item) => {
       let proInfo = new ProductInfo();
       proInfo = ({
         productId: item.ProductId,
@@ -161,13 +164,32 @@ export class CartComponent implements OnInit {
         productName: item.ProductName,
         productImageUrl: '',
         productUnit: item.MeasureUnit,
-        price: item.SaleRate,
+        price: item.WHRate,
         minPrice: item.MinRate,
         maxPrice: 0,
         packing : Number(item.Packing)
       })
       this.productInfo.push(proInfo);
     });
+    }
+    else{
+      options?.map((item) => {
+        let proInfo = new ProductInfo();
+        proInfo = ({
+          productId: item.ProductId,
+          productCode: item.ProductCode,
+          productName: item.ProductName,
+          productImageUrl: '',
+          productUnit: item.MeasureUnit,
+          price: item.SaleRate,
+          minPrice: item.MinRate,
+          maxPrice: 0,
+          packing : Number(item.Packing)
+        })
+        this.productInfo.push(proInfo);
+      });
+    }
+    console.log(this.customerType);
     // console.log('this.productInfo - Add Cart Component');
     // console.log(this.productInfo);
     // console.log('options - Add Cart Component');
@@ -403,5 +425,9 @@ export class CartComponent implements OnInit {
       this.cartonValue.push(e);
     }
     this.updateTotalPrice();
+  }
+  selectType(){
+    this.selectedType = this.customerSelected.nativeElement.value;
+    this.getDataServiceData();
   }
 }

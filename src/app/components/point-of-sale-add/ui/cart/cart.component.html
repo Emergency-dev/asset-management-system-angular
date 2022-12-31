@@ -76,9 +76,10 @@
                 <option value="retailer">Retailer</option>
                 <option value="wholesale">Wholesale</option>
             </select> -->
-            <select class="select select-bordered select-sm  max-w-xs rounded" (change)="null">
-                <option value="retailer">Retailer</option>
-                <option value="wholesale">Wholesale</option>
+            <select #customerType class="select select-bordered select-sm  max-w-xs rounded" (change)="selectType()">
+                <!-- <option *ngFor="let type of customerType" value="Retailer">{{type}}</option> -->
+                <option value="Retailer">Retailer</option>
+                <option value="Wholesale">Wholesale</option>
             </select>
             <select class="select select-bordered select-sm  max-w-xs rounded" (change)="null">
                 <option selected value="regular">Walking</option>
