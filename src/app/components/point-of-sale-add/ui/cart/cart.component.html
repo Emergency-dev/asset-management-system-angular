@@ -51,11 +51,11 @@
     </div>
     <div class="divider m-0"></div>
     <div>
-        <div class="flex flex-row gap-4">
+        <div *ngIf="!this.TogglePhone" class="flex flex-row gap-4">
             <!-- <input type="text" placeholder="Search Customer" (keyup.enter)="getCustomerdetails()"
                 [(ngModel)]="this.customerInfo.customerCode"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"/> -->
-            <input type="text" placeholder="Search Customer"
+                <input [disabled]="this.TogglePhone" type="text" placeholder="Search Customer"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
                 (keyup.enter)="searchCustomerNameInTheDatabase($event)" (change)="ClearCustomer()" />
             <!-- <div class="flex-grow group-hover:underline">
@@ -81,7 +81,36 @@
                 <option value="Retailer">Retailer</option>
                 <option value="Wholesale">Wholesale</option>
             </select>
-            <select class="select select-bordered select-sm  max-w-xs rounded" (change)="null">
+            <select #userType class="select select-bordered select-sm  max-w-xs rounded" (change)="togglePhone()">
+                <option selected value="Walking">Walking</option>
+                <option selected value="Regular">Regular</option>
+            </select>
+            <button class="btn gap-2 btn-sm btn-primary rounded" (click)="this.ToggleAddCustomerModal()">
+                Add
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            </button>
+        </div>
+        <div *ngIf="this.TogglePhone" class="flex flex-row gap-4">
+            <!-- <input type="text" placeholder="Search Customer" (keyup.enter)="getCustomerdetails()"
+                [(ngModel)]="this.customerInfo.customerCode"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"/> -->
+                <input  type="text" placeholder="Enter Phone Number"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
+                 (change)="ClearCustomer()" />
+            <!-- <div class="flex-grow group-hover:underline">
+                {{this.customerInfo.name}}
+            </div> -->
+            
+            
+            <select #customerType class="select select-bordered select-sm  max-w-xs rounded" (change)="selectType()">
+                <!-- <option *ngFor="let type of customerType" value="Retailer">{{type}}</option> -->
+                <option value="Retailer">Retailer</option>
+                <option value="Wholesale">Wholesale</option>
+            </select>
+            <select #userType class="select select-bordered select-sm  max-w-xs rounded" (change)="togglePhone()">
                 <option selected value="regular">Walking</option>
                 <option selected value="regular">Regular</option>
             </select>

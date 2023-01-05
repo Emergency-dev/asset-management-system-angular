@@ -1,14 +1,15 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Customer } from 'src/app/models/customer-type.enum';
-import { TransactionInfo } from 'src/app/models/transaction-info.model';
+import { CartItemInfo, TransactionInfo } from 'src/app/models/transaction-info.model';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import {DataService} from 'src/app/services/supabase.service'
 import { PosTransactionService } from '../point-of-sale-add/services/pos-transaction.service';
 import { TransactionListService } from './services/transaction-list.service';
 import { TransactionSupabaseInfo } from 'src/app/models/transaction-supabase.model';
 import { TotalPrice } from '../point-of-sale-add/ui/cart/TotalPrice.model';
+import { Data } from '@angular/router';
 
 @Component({
   selector: 'app-point-of-sale-table',
@@ -17,6 +18,7 @@ import { TotalPrice } from '../point-of-sale-add/ui/cart/TotalPrice.model';
   providers: [DataService, TransactionListService]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
+  @Output() finishTransaction:EventEmitter<TransactionInfo> = new EventEmitter();
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
   
@@ -46,9 +48,11 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    selectedTransactionId:number = -1; 
    selectedCustomerName:string = "";
    selectedCustomerId:string="";
-   selectedTransactionDate:string = "";
+   selectedTransactionDate:Date = new Date;
    selectedTransactionProductInfo:{productCode:string,productName:string,quantity:number,unit:string,totalPrice:number}[] = [];
-
+    selecteditemPrint:TransactionInfo = new TransactionInfo();
+    printProduct:CartItemInfo[]=[];
+    printproductInfo: ProductInfo = new ProductInfo();
 
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
@@ -222,9 +226,19 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
           this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+          this.printproductInfo.productCode=item1.ProductCode;
+          this.printproductInfo.productId=item2.ProductId;
+          this.printproductInfo.productName=item1.ProductName;
+          this.printproductInfo.price=item1.item1.SaleRate;         
+          let quantity = item1.quantity;
+          let unit = item1.SaleRate;
+          let price = item1.SaleRate;
+          let totalPrice = item1.quantity*item1.SaleRate;
+          this.printProduct.push({productInfo:this.printproductInfo,quantity:quantity,unit:unit,price:price,totalPrice:totalPrice});
         }
       })
     })
+
     // console.log(res1);
     // console.log(res2);
     // console.log(this.selectedTransactionProductInfo);
@@ -232,5 +246,11 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
 
   onNewPageClose(){
     this.isNewPageModalOpen = false;
+  }
+  onClickPrint(){
+    this.selecteditemPrint.transactionId = (this.selectedTransactionId).toString();
+    this.selecteditemPrint.transactionDate = (this.selectedTransactionDate);
+    this.selecteditemPrint.cartItemList = this.printProduct;
+    this.finishTransaction.emit(this.selecteditemPrint);
   }
 }
