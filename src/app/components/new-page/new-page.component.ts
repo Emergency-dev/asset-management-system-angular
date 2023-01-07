@@ -52,7 +52,8 @@ export class NewPageComponent implements OnInit {
         price: item.SaleRate,
         minPrice: item.MinRate,
         maxPrice: 0,
-        packing:item.Packing
+        packing:item.Packing,
+        urduName:item.urduName
       })
       this.productInfo.push(proInfo);
     });
@@ -77,7 +78,6 @@ export class NewPageComponent implements OnInit {
         this.productName.push(value.productName);
       }
     });
-    console.log(this.productName); 
     return this.isProductNameInDB;
   }
 
@@ -91,7 +91,6 @@ export class NewPageComponent implements OnInit {
       }
     });
     this.pList.nativeElement.focus();
-    console.log(this.productName); 
     return this.isProductNameInDB;
   }
 
@@ -136,7 +135,6 @@ export class NewPageComponent implements OnInit {
         this.saleProductNames.push(value.productName);
       }
     });
-    console.log(this.productName);
     this.sList.nativeElement.focus(); 
     return this.isProductNameInDB; 
   }

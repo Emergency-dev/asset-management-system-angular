@@ -42,9 +42,7 @@ export class CartItemComponent implements OnInit, AfterViewInit {
   }
 
   CartonValueAdded(){
-    console.log("Carton Value");
-    this.cartonValue = Number(this.carton.nativeElement.value); 
-    console.log(this.carton.nativeElement.value);
+    this.cartonValue = Number(this.carton.nativeElement.value);
     this.onCartonValueEnter.emit({cartonValue:this.carton.nativeElement.value,cartonCode: this.item.productInfo.productCode});
   }
 

@@ -49,7 +49,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    selectedCustomerName:string = "";
    selectedCustomerId:string="";
    selectedTransactionDate:Date = new Date;
-   selectedTransactionProductInfo:{productCode:string,productName:string,quantity:number,unit:string,totalPrice:number}[] = [];
+   selectedTransactionProductInfo:{productCode:string,productName:string,urduName:string,quantity:number,unit:string,totalPrice:number}[] = [];
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
 
@@ -221,7 +221,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
       res1?.forEach(item2=>{
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
-          this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+          this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
         }
       })
     })

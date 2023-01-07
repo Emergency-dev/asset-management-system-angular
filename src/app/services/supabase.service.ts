@@ -20,8 +20,9 @@ export class DataService {
     }
 
     async getProducts() {
-        const result = await this.supabase.from(TABLE_PRODUCTS).select('"ProductCode", "ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing"');
+        const result = await this.supabase.from(TABLE_PRODUCTS).select('"ProductCode", "ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate"');
         if(result.error) console.log(result.error);
+        console.log("RESULT");
         console.log(result);
         return result || [];
     }

@@ -46,8 +46,9 @@ export class CartItemAddComponent implements OnInit {
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
     veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
-    // console.log(this.cartItemInfo);
-    // console.log(veryLocalCartItemInfo);
+    veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;
+    console.log('veryLocalCartItemInfo');
+    console.log(veryLocalCartItemInfo);
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
   }
   
@@ -63,6 +64,7 @@ export class CartItemAddComponent implements OnInit {
         this.cartItemInfo.price = value.price;
         this.selectedProductInfo.minPrice = value.minPrice;
         this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
+        this.cartItemInfo.productInfo.urduName = value.urduName;
 
         //this.customerService.selectedProductInfo = this.selectedProductInfo;
         //this.transactionService.transactionInfo.selectedProductInfo = this.selectedProductInfo;
@@ -84,14 +86,11 @@ export class CartItemAddComponent implements OnInit {
         price: item.SaleRate,
         minPrice: item.MinRate,
         maxPrice: 0,
-        packing:item.Packing
+        packing:item.Packing,
+        urduName:item.UrduName
       })
       this.productInfo.push(proInfo);
     });
-    // console.log('this.productInfo - Add Cart Component');
-    // console.log(this.productInfo);
-    // console.log('options - Add Cart Component');
-    // console.log(options);
     
   }
 }

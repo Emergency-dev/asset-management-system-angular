@@ -15,7 +15,7 @@ export class PointOfSaleComponent implements OnInit {
   transactionInfo!: TransactionInfo;
   isAddingModelOpen:boolean=false;
   isListingModelOpen:boolean=false;
-  selectedTransactionProductInfo:{productCode:string,productName:string,quantity:number,unit:string,totalPrice:number}[] = [];
+  selectedTransactionProductInfo:{productCode:string,productName:string,urduName:string,quantity:number,unit:string,totalPrice:number}[] = [];
   
 
   opt = {

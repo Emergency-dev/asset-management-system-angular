@@ -73,7 +73,6 @@ export class CartComponent implements OnInit {
     this.searchFilter = new BehaviorSubject({ searchQuery: this.searchQuery, startDate: this.startDate, endDate: this.endDate });
     this.getDataServiceData();
     this.getCustomersData();
-    console.log(this.transactionService);
 
   }
 
@@ -89,7 +88,6 @@ export class CartComponent implements OnInit {
     this.isExtraNumberModalOpen = false;
   }
   onAddClick() {
-    console.log("Local Cart")
     let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
     veryLocalCartItemInfo.price = this.cartItemInfo.price;
     veryLocalCartItemInfo.productInfo.productCode = this.cartItemInfo.productInfo.productCode;
@@ -100,11 +98,13 @@ export class CartComponent implements OnInit {
     // veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.totalPrice = this.price.totalAmount;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
+    veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;
+
+    console.log('veryLocalCartItemInfo');
+    console.log(veryLocalCartItemInfo);
 
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
     this.totalBill += veryLocalCartItemInfo.totalPrice;
-    console.log(veryLocalCartItemInfo);
-    console.log(this.transactionService.transactionInfo);
   }
 
   getSelectedProductInfo() {
@@ -116,7 +116,6 @@ export class CartComponent implements OnInit {
       this.pId.nativeElement.focus();
     }
     else {
-      console.log("Product Code")
       if (this.productCodeNotInTheDatabase()) {
         this.onAddClick();
         this.pId.nativeElement.value = "";
@@ -168,7 +167,8 @@ export class CartComponent implements OnInit {
         price: item.WHRate,
         minPrice: item.MinRate,
         maxPrice: 0,
-        packing : Number(item.Packing)
+        packing : Number(item.Packing),
+        urduName : item.UrduName
       })
       this.productInfo.push(proInfo);
     });
@@ -185,6 +185,7 @@ export class CartComponent implements OnInit {
           price: item.SaleRate,
           minPrice: item.MinRate,
           maxPrice: 0,
+          urduName: item.UrduName,
           packing : Number(item.Packing)
         })
         this.productInfo.push(proInfo);
@@ -215,8 +216,6 @@ export class CartComponent implements OnInit {
       })
       this.listCustomer.push(cusInfo);
     });
-    console.log("this.listCustomer");
-    console.log(this.listCustomer);
   }
 
   productAlreadyInTheCart(): boolean {
@@ -237,14 +236,7 @@ export class CartComponent implements OnInit {
 
   productCodeNotInTheDatabase(): boolean {
     this.isProductCodeInDB = false;
-    console.log(this.productInfo);
     this.productInfo.forEach((value) => {
-      // if(value.productCode == this.cartItemInfo.productInfo.productCode){
-      //   this.isProductCodeInDB = true;
-      //   this.addProductInTheCart(value);
-      //   //@ViewChild(value.productCode) quantity : ElementRef<HTMLInputElement> = {} as ElementRef;
-      // }
-      console.log(value);
       if (value.productCode == this.pId.nativeElement.value) {
         this.isProductCodeInDB = true;
         this.addProductInTheCart(value);
@@ -268,8 +260,6 @@ export class CartComponent implements OnInit {
     this.isProductNameInDB = false;
     if(this.productName.length == 0){
       this.productInfo.forEach((value) => {
-        //console.log(e.target.value.toUpperCase());
-        //console.log(value.productName);
         if (value.productName.includes(e.target.value.toUpperCase())) {
           this.isProductNameInDB = true;
           this.productName.push(value.productName);
@@ -281,7 +271,6 @@ export class CartComponent implements OnInit {
     //var event = new MouseEvent('mouseClick');
     //this.pListName.nativeElement.dispatchEvent(event);
     //this.pListName.nativeElement.;
-    console.log(this.productName);
     return this.isProductNameInDB;
   }
 
@@ -293,7 +282,6 @@ export class CartComponent implements OnInit {
         this.customerName.push(value.name);
       }
     });
-    console.log(this.customerName);
   }
 
   ClearProduct() {
@@ -315,6 +303,7 @@ export class CartComponent implements OnInit {
     this.selectedProductInfo.minPrice = value.minPrice;
     this.cartItemInfo.totalPrice = value.price * this.cartItemInfo.quantity;
     this.cartItemInfo.productInfo.packing = value.packing;
+    this.cartItemInfo.productInfo.urduName = value.urduName;
     this.ClearProduct();
     //this.cartItemInfo.productInfo.productCode = "";
   }
@@ -326,7 +315,6 @@ export class CartComponent implements OnInit {
       const index = this.checkedTransactions.indexOf(event.target.id, 0);
       this.checkedTransactions.splice(index, 1);
     }
-    console.log(this.checkedTransactions);
   }
 
   removeTransactions() {
@@ -368,14 +356,11 @@ export class CartComponent implements OnInit {
         this.customerService.customerInfo = this.customerInfo;
         this.transactionService.transactionInfo.customerInfo = this.customerInfo;
       }
-      console.log(this.customerInfo);
     });
-    //console.log(this.transactionService.transactionInfo.customerInfo); 
   }
 
   updateTotalPrice() {
     var temp = 0,temp2=0;
-    console.log("Total Bill");
     this.transactionService.transactionInfo.cartItemList.forEach((value) => {
       temp += value.quantity * value.price;
     })
@@ -392,7 +377,6 @@ export class CartComponent implements OnInit {
     if(this.price.totalAmount != temp){
       this.price.totalAmount = temp;
       this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
-      console.log(this.price.totalAmount);
       this.pId.nativeElement.focus();
     
     }

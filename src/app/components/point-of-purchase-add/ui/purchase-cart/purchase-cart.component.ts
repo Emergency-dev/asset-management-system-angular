@@ -90,7 +90,8 @@ export class PurchaseCartComponent implements OnInit {
         price: item.SaleRate,
         minPrice: item.MinRate,
         maxPrice: 0,
-        packing:item.Packing
+        packing:item.Packing,
+        urduName:item.urduName
       })
       this.productInfo.push(proInfo);
     });

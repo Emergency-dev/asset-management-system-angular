@@ -17,7 +17,7 @@ export class ReviewDetailsComponent implements OnInit {
   cartItemInfo: CartItemInfo = new CartItemInfo();
   cartItems: CartItemInfo[] = [];
   @ViewChild("tBill") tBill: ElementRef<HTMLElement> = {} as ElementRef;
-  price:number =0;
+  price:number = 0;
 
   reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
   constructor(protected cartItemService: CartItemAddService,

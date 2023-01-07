@@ -15,4 +15,6 @@ export class ProductInfo{
     productUnitType?:Unit;
 
     productUnit:string = "";
+
+    urduName:string ="";
 }
