@@ -13,6 +13,10 @@ export class PointOfSaleComponent implements OnInit {
   isAddModalOpen:boolean = false;
   isNewPageModalOpen:boolean = false;
   transactionInfo!: TransactionInfo;
+  isAddingModelOpen:boolean=false;
+  isListingModelOpen:boolean=false;
+  selectedTransactionProductInfo:{productCode:string,productName:string,quantity:number,unit:string,totalPrice:number}[] = [];
+  
 
   opt = {
     margin:       0.5,
@@ -44,10 +48,19 @@ export class PointOfSaleComponent implements OnInit {
   onNewPageClose(){
     this.isNewPageModalOpen = false;
   }
+  modelForListing(e:any)
+  {
+    console.log(e)
+    this.isListingModelOpen = true;
+    this.selectedTransactionProductInfo=e;
+    setTimeout(() => {
+      this.convertToPdf();
+    }, 1000);
+  }
 
   closeModalOnFinish(e:TransactionInfo){
     this.isAddModalOpen = false;
-
+    this.isAddingModelOpen = true;
     this.transactionInfo = e;
     setTimeout(() => {
       this.convertToPdf();

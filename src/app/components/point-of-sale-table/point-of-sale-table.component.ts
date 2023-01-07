@@ -18,7 +18,7 @@ import { Data } from '@angular/router';
   providers: [DataService, TransactionListService]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
-  @Output() finishTransaction:EventEmitter<TransactionInfo> = new EventEmitter();
+  @Output() finishTransaction:EventEmitter<any> = new EventEmitter();
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
   
@@ -50,10 +50,6 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    selectedCustomerId:string="";
    selectedTransactionDate:Date = new Date;
    selectedTransactionProductInfo:{productCode:string,productName:string,quantity:number,unit:string,totalPrice:number}[] = [];
-    selecteditemPrint:TransactionInfo = new TransactionInfo();
-    printProduct:CartItemInfo[]=[];
-    printproductInfo: ProductInfo = new ProductInfo();
-
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
 
@@ -226,15 +222,6 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
           this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
-          this.printproductInfo.productCode=item1.ProductCode;
-          this.printproductInfo.productId=item2.ProductId;
-          this.printproductInfo.productName=item1.ProductName;
-          this.printproductInfo.price=item1.item1.SaleRate;         
-          let quantity = item1.quantity;
-          let unit = item1.SaleRate;
-          let price = item1.SaleRate;
-          let totalPrice = item1.quantity*item1.SaleRate;
-          this.printProduct.push({productInfo:this.printproductInfo,quantity:quantity,unit:unit,price:price,totalPrice:totalPrice});
         }
       })
     })
@@ -248,9 +235,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.isNewPageModalOpen = false;
   }
   onClickPrint(){
-    this.selecteditemPrint.transactionId = (this.selectedTransactionId).toString();
-    this.selecteditemPrint.transactionDate = (this.selectedTransactionDate);
-    this.selecteditemPrint.cartItemList = this.printProduct;
-    this.finishTransaction.emit(this.selecteditemPrint);
+    
+    this.finishTransaction.emit(this.selectedTransactionProductInfo);
   }
 }
