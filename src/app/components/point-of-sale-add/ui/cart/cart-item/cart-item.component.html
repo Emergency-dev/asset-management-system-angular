@@ -1,18 +1,21 @@
-<div
-                class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
-<div class="flex flex-row gap-4">
-<input id="{{this.item.productInfo.productCode}}" type="checkbox" class="checkbox" (change)="checkBoxChecked($event)" />
-<div class="flex-grow group-hover:underline">
-    {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
-</div>
-<div class="flex flex-row gap-4 justify-end">
-    <input type="text" placeholder="Carton" #cartonCount
-        class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" (keyup.enter)="CartonValueAdded()"/>
-    <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity" #quantity
-        class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black"
-        (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()" />
-    <div class="divider divider-vertical border m-0 h-full"></div>
-    <!-- <label class="label cursor-pointer p-0 gap-2" style="margin-right: 1em;">
+<div class="transition-all p-4 bg-base-300 rounded hover:drop-shadow-lg hover:bg-primary cursor-pointer group">
+    <div class="flex flex-row gap-4">
+        <input id="{{this.item.productInfo.productCode}}" type="checkbox" class="checkbox"
+            (change)="checkBoxChecked($event)" />
+        <div class="flex-grow group-hover:underline">
+            {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
+        </div>
+        <div class="flex flex-row gap-24 justify-end">
+            <div class="flex flex-row gap-4 justify-center">
+                <input type="text" placeholder="Carton" #cartonCount
+                class="bg-white input input-xs input-bordered w-20 max-w-xs rounded text-black"
+                (keyup.enter)="CartonValueAdded()" />
+                <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity" #quantity
+                class="bg-white input input-xs input-bordered w-20 max-w-xs rounded text-black"
+                (keyup.enter)="updateTotalPrice()" (change)="ClearTotalPrice()" />
+            </div>
+            <div class="divider divider-vertical border m-0 h-full"></div>
+            <!-- <label class="label cursor-pointer p-0 gap-2" style="margin-right: 1em;">
         <span class="label-text">Carton</span>
         <input type="radio" name="radio-10" class="radio" checked />
     </label>
@@ -20,9 +23,12 @@
         <span class="label-text">Pieces</span>
         <input type="radio" name="radio-10" class="radio" checked />
     </label> -->
-    <div class="divider divider-vertical border m-0 h-full"></div>
-    <label *ngIf="this.cartonValue!=0">{{this.cartonValue * this.item.productInfo.packing }} + {{ this.item.quantity }} x {{ this.item.price }} = {{((this.cartonValue * this.item.productInfo.packing) + this.item.quantity) * this.item.price }}</label>
-    <label *ngIf="this.cartonValue==0" style="display: flex; position:absolute;">{{ this.item.quantity }} x {{ this.item.price }} = {{ this.item.quantity * this.item.price }}</label>
-</div>
-</div>
+            <div class="divider divider-vertical border m-0 h-full"></div>
+            <label *ngIf="this.cartonValue!=0">{{this.cartonValue * this.item.productInfo.packing }} + {{
+                this.item.quantity }} x {{ this.item.price }} = {{((this.cartonValue * this.item.productInfo.packing) +
+                this.item.quantity) * this.item.price }}</label>
+            <label *ngIf="this.cartonValue==0" style="display: flex; position:absolute;">{{ this.item.quantity }} x {{
+                this.item.price }} = {{ this.item.quantity * this.item.price }}</label>
+        </div>
+    </div>
 </div>

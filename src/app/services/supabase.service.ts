@@ -28,7 +28,7 @@ export class DataService {
     }
 
     async getCustomers() {
-        const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerId, CustomerName`);
+        const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerId, CustomerName, Address, Mobile, CityName`);
         return result || [];
     }
 

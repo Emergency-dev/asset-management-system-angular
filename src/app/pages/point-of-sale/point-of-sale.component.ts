@@ -51,6 +51,7 @@ export class PointOfSaleComponent implements OnInit {
   modelForListing(e:any)
   {
     console.log(e)
+   this.transactionInfo =  new TransactionInfo;
     this.isListingModelOpen = true;
     this.selectedTransactionProductInfo=e;
     setTimeout(() => {
@@ -61,6 +62,9 @@ export class PointOfSaleComponent implements OnInit {
   closeModalOnFinish(e:TransactionInfo){
     this.isAddModalOpen = false;
     this.isAddingModelOpen = true;
+    this.isListingModelOpen = false;
+    this.selectedTransactionProductInfo = [{productCode:'',productName:'',urduName:'',quantity:0,unit:'',totalPrice:0}];
+    console.log("Transection Info:",e);
     this.transactionInfo = e;
     setTimeout(() => {
       this.convertToPdf();
