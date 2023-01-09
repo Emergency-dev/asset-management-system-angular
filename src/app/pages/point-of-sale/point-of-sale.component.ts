@@ -15,7 +15,6 @@ export class PointOfSaleComponent implements OnInit {
   transactionInfo!: TransactionInfo;
   isAddingModelOpen:boolean=false;
   isListingModelOpen:boolean=false;
-  selectedTransactionProductInfo:{productCode:string,productName:string,urduName:string,quantity:number,unit:string,totalPrice:number}[] = [];
   
 
   opt = {
@@ -48,23 +47,10 @@ export class PointOfSaleComponent implements OnInit {
   onNewPageClose(){
     this.isNewPageModalOpen = false;
   }
-  modelForListing(e:any)
-  {
-    console.log(e)
-   this.transactionInfo =  new TransactionInfo;
-    this.isListingModelOpen = true;
-    this.selectedTransactionProductInfo=e;
-    setTimeout(() => {
-      this.convertToPdf();
-    }, 1000);
-  }
 
   closeModalOnFinish(e:TransactionInfo){
     this.isAddModalOpen = false;
-    this.isAddingModelOpen = true;
-    this.isListingModelOpen = false;
-    this.selectedTransactionProductInfo = [{productCode:'',productName:'',urduName:'',quantity:0,unit:'',totalPrice:0}];
-    console.log("Transection Info:",e);
+    this.transactionInfo = new TransactionInfo;
     this.transactionInfo = e;
     setTimeout(() => {
       this.convertToPdf();

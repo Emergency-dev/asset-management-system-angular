@@ -18,7 +18,7 @@ import { Data } from '@angular/router';
   providers: [DataService, TransactionListService]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
-  @Output() finishTransaction:EventEmitter<any> = new EventEmitter();
+  @Output() finishTransaction:EventEmitter<TransactionInfo> = new EventEmitter();
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
   
@@ -50,7 +50,8 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    selectedCustomerId:string="";
    selectedTransactionDate:Date = new Date;
    selectedTransactionProductInfo:{productCode:string,productName:string,urduName:string,quantity:number,unit:string,totalPrice:number}[] = [];
-  // We use this trigger because fetching the list of persons can be quite long,
+   transactionInfo:TransactionInfo = new TransactionInfo;
+   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
 
 
@@ -209,6 +210,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   }
 
   async onNewPageClick(id:any,cust:any,cust_id:any,trans_date:any){
+    this.transactionInfo = new TransactionInfo;
     this.selectedTransactionProductInfo = [];
     this.isNewPageModalOpen= true;
     this.selectedTransactionId = id;
@@ -222,6 +224,18 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
           this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+          let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
+          veryLocalCartItemInfo.price = item1.SaleRate;
+          veryLocalCartItemInfo.productInfo.productCode = item1.ProductCode;
+          veryLocalCartItemInfo.productInfo.productName = item1.ProductName;
+          veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
+          veryLocalCartItemInfo.productInfo.urduName = item1.urduName;
+          veryLocalCartItemInfo.quantity = item1.quantity;
+          veryLocalCartItemInfo.totalPrice = item1.totalPrice;
+          //veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
+          // console.log('veryLocalCartItemInfo');
+          // console.log(veryLocalCartItemInfo);
+          this.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
         }
       })
     })
@@ -235,7 +249,6 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.isNewPageModalOpen = false;
   }
   onClickPrint(){
-    
-    this.finishTransaction.emit(this.selectedTransactionProductInfo);
+    this.finishTransaction.emit(this.transactionInfo);
   }
 }
