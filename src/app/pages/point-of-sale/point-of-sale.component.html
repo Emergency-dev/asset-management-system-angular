@@ -24,7 +24,7 @@
     </button>
 </div>
 <div>
-    <app-point-of-sale-table #pst (finishTransaction)="this.modelForListing($event)"></app-point-of-sale-table>
+    <app-point-of-sale-table #pst (finishTransaction)="this.closeModalOnFinish($event)"></app-point-of-sale-table>
 </div>
 <app-modal *ngIf="this.isAddModalOpen" [isModalOpen]="this.isAddModalOpen" (closeModal)="this.onClose()">
     <app-point-of-sale-add (finishTransaction)="pst.RefreshReviewList($event)"
@@ -88,27 +88,15 @@
                         <th class="border border-slate-600 "> نمبر</th>
                     </tr>
                 </thead>
-                <tbody *ngIf="this.isAddingModelOpen">
+                <tbody>
                     <tr *ngFor="let item of this.transactionInfo?.cartItemList; let i = index">
-                        <td class="border border-slate-700">{{item?.totalPrice}}</td>
+                        <td class="border border-slate-700">{{item.price*item.quantity}}</td>
                         <td class="border border-slate-700">{{item?.price}}</td>
                         <td class="border border-slate-700">{{item?.quantity}}</td>
                         <td class="border border-slate-700">{{item?.quantity}}</td>
                         <td class="border border-slate-700"></td>
                         <td class="border border-slate-700 text-center">{{item?.productInfo?.urduName}}</td>
                         <td class="border border-slate-700">{{item?.productInfo?.productCode}}</td>
-                        <td class="border border-slate-700">{{i + 1}}</td>
-                    </tr>
-                </tbody>
-                <tbody *ngIf="this.isListingModelOpen">
-                    <tr *ngFor="let item of this.selectedTransactionProductInfo; let i = index">
-                        <td class="border border-slate-700">{{item?.totalPrice}}</td>
-                        <td class="border border-slate-700">{{item?.unit}}</td>
-                        <td class="border border-slate-700">{{item?.quantity}}</td>
-                        <td class="border border-slate-700">{{item?.quantity}}</td>
-                        <td class="border border-slate-700"></td>
-                        <td class="border border-slate-700 text-center">{{item.urduName}}</td>
-                        <td class="border border-slate-700">{{item?.productCode}}</td>
                         <td class="border border-slate-700">{{i + 1}}</td>
                     </tr>
                 </tbody>
