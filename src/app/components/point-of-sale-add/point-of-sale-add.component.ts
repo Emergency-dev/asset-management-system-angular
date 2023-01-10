@@ -93,6 +93,6 @@ export class PointOfSaleAddComponent implements OnInit {
   }
 
   seeDetails(e:any){
-    console.log(e);
+    this.transactionService.transactionInfo.grandTotal = e;
   }
 }
