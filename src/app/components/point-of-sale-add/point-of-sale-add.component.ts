@@ -63,6 +63,8 @@ export class PointOfSaleAddComponent implements OnInit {
     // });
     //console.log(this.serviceReviewList.getReviewList());
     //console.log(this.reviewList2);
+    console.log(this.reviewList2);
+    
 
     this.reviewList2.customerInfo = this.transactionService.transactionInfo.customerInfo;
     this.reviewList2.cartItemList = this.transactionService.transactionInfo.cartItemList;
@@ -77,7 +79,7 @@ export class PointOfSaleAddComponent implements OnInit {
       if(element) products += 1;
     });
     this.reviewList2.cartItemList.forEach(element => {
-      this.dataService.addOrderDetails(element.productInfo.productCode,element.quantity,this.reviewList2.customerInfo.customerCode.toString());
+      this.dataService.addOrderDetails(element.productInfo.productCode,element.quantity,element.cartonQuantity,this.reviewList2.customerInfo.customerCode.toString(),0);
     });
     this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price,this.reviewList2.customerInfo.customerCode.toString());
     // this.finishTransaction.emit(this.reviewList2);

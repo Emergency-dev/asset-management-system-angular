@@ -44,7 +44,7 @@
                         {{ this.item.productInfo.productCode}}: {{ this.item.productInfo.productName}}
                         </div>
                         <div class="flex flex-row gap-4 justify-end">
-                            <input type="text" placeholder="Carton"
+                            <input type="text" placeholder="Carton" [(ngModel)]="this.item.cartonQuantity"
                                 class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />
                                 <input type="text" placeholder="PCS/PKT" [(ngModel)]="this.item.quantity"
                                 class="bg-white input input-xs input-bordered w-16 max-w-xs rounded text-black" />

@@ -75,13 +75,15 @@ export class DataService {
         return result || [];
     }
 
-    async addOrderDetails(product_id: string, product_quantity: number, cust_id: string) {
+    async addOrderDetails(product_id: string, product_quantity: number, product_cartonquantity: number, cust_id: string, phoneNumber: number) {
 
         let { data, error } = await this.supabase
-            .rpc('add_order_details', {
-                cust_id: cust_id,
+            .rpc('add_order_detai', {
                 product_id: product_id,
-                product_quantity: product_quantity
+                product_quantity: product_quantity,
+                cust_id: cust_id,
+                product_cartonquantity: product_cartonquantity,
+                phonenumber: phoneNumber
             })
 
         if (error) console.error(error)
