@@ -95,6 +95,7 @@ export class CartComponent implements OnInit {
     veryLocalCartItemInfo.productInfo.productUnit = this.cartItemInfo.productInfo.productUnit;
     veryLocalCartItemInfo.productInfo.packing = this.cartItemInfo.productInfo.packing;
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
+    veryLocalCartItemInfo.cartonQuantity = this.cartItemInfo.cartonQuantity;
     // veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.totalPrice = this.price.totalAmount;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;

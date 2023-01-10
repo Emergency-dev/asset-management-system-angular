@@ -44,6 +44,7 @@ export class CartItemAddComponent implements OnInit {
     veryLocalCartItemInfo.productInfo.productName = this.cartItemInfo.productInfo.productName;
     veryLocalCartItemInfo.productInfo.productUnit = this.cartItemInfo.productInfo.productUnit;
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
+    veryLocalCartItemInfo.cartonQuantity = this.cartItemInfo.cartonQuantity
     veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
     veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;

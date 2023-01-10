@@ -8,6 +8,7 @@ export class TransactionInfo{
     cartItemList: CartItemInfo[] = [];
     customerInfo: CustomerInfo = new CustomerInfo();
     userInfo: UserInfo = new UserInfo();
+    phoneNumber:string = "";
 
     constructor(){}
 }
@@ -18,4 +19,5 @@ export class CartItemInfo{
     unit:string = "";
     price:number = 0;
     totalPrice:number = 0;
+    cartonQuantity:number = 0;
 }
