@@ -43,14 +43,8 @@ export class ReviewDetailsComponent implements OnInit {
 
     this.cartItems.forEach(item => {
       this.price = item.totalPrice;
-      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:item.quantity*item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
+      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:(item.cartonQuantity*item.productInfo.packing + item.quantity) * item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
     });
-
-    console.log('this.cartItems');
-    console.log(this.cartItems);
-    console.log(this.customerInfo);
-    console.log(this.transactionService);
-    console.log(this.reviewList);
   }
 
   ReviewDetails(e:any){

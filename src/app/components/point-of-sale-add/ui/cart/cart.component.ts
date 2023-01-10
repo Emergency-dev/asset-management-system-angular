@@ -97,15 +97,20 @@ export class CartComponent implements OnInit {
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
     veryLocalCartItemInfo.cartonQuantity = this.cartItemInfo.cartonQuantity;
     // veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
-    veryLocalCartItemInfo.totalPrice = this.price.totalAmount;
+
+    veryLocalCartItemInfo.totalPrice = (this.cartItemInfo.cartonQuantity*this.cartItemInfo.productInfo.packing + this.cartItemInfo.quantity) * this.cartItemInfo.price;
+
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
     veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;
-
-    console.log('veryLocalCartItemInfo');
-    console.log(veryLocalCartItemInfo);
+    this.totalBill += this.price.totalAmount;
+    
 
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
-    this.totalBill += veryLocalCartItemInfo.totalPrice;
+    this.transactionService.transactionInfo.grandTotal = this.totalBill;
+
+    console.log('VEEERYYYY LOCAAALLLL');
+    console.log(this.transactionService);
+
   }
 
   getSelectedProductInfo() {
@@ -427,4 +432,5 @@ export class CartComponent implements OnInit {
       this.TogglePhone=false;
     }
   }
+  
 }
