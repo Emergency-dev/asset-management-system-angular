@@ -24,6 +24,7 @@ export class CartComponent implements OnInit {
   @ViewChild("cList") cLsit: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild('customerType') customerSelected: ElementRef<HTMLSelectElement>= {} as ElementRef;
   @ViewChild('userType') userType: ElementRef<HTMLSelectElement>= {} as ElementRef;
+  @ViewChild('phoneNumber') phoneNumber: ElementRef<HTMLInputElement>= {} as ElementRef;
   //Add Customer Fields Values
   @ViewChild("cust_name") cust_name: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cust_address") cust_address: ElementRef<HTMLInputElement> = {} as ElementRef;
@@ -67,6 +68,7 @@ export class CartComponent implements OnInit {
   customerType:string[]=['Retailer','Wholesale'];
   selectedType:any;
   TogglePhone:boolean=false;
+  PhoneNumber:string='';
   constructor(protected transactionService: PosTransactionService, protected dataService: DataService,
     protected customerService: CustomerInfoService, protected transactionInfoList1: TransactionListService , protected dialogRef:MatDialog ) {
     // this.startDate = this.posTransactionHistoryService.addDays(this.startDate, 30);
@@ -102,9 +104,8 @@ export class CartComponent implements OnInit {
 
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
     veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;
-    this.totalBill += this.price.totalAmount;
-    
-
+    this.totalBill += this.price.totalAmount;    
+    this.transactionService.transactionInfo.phoneNumber = this.PhoneNumber;
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
     this.transactionService.transactionInfo.grandTotal = this.totalBill;
 
@@ -420,6 +421,10 @@ export class CartComponent implements OnInit {
   selectType(){
     this.selectedType = this.customerSelected.nativeElement.value;
     this.getDataServiceData();
+  }
+  setPhoneNumber(){
+    this.PhoneNumber = this.phoneNumber.nativeElement.value;
+    this.transactionService.transactionInfo.phoneNumber = this.PhoneNumber;
   }
   togglePhone()
   {

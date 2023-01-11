@@ -25,8 +25,8 @@
     </label> -->
             <div class="divider divider-vertical border m-0 h-full"></div>
             <label *ngIf="this.cartonValue!=0">{{this.cartonValue * this.item.productInfo.packing }} + {{
-                this.item.quantity }} x {{ this.item.price }} = {{((this.cartonValue * this.item.productInfo.packing) +
-                this.item.quantity) * this.item.price }}</label>
+                this.item.quantity }} x {{ this.item.price }} = {{(((this.cartonValue * this.item.productInfo.packing) +
+                this.item.quantity) * this.item.price) }}</label>
             <label *ngIf="this.cartonValue==0" style="display: flex; position:absolute;">{{ this.item.quantity }} x {{
                 this.item.price }} = {{ this.item.quantity * this.item.price }}</label>
         </div>

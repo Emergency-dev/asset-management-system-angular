@@ -97,9 +97,9 @@
             <!-- <input type="text" placeholder="Search Customer" (keyup.enter)="getCustomerdetails()"
                 [(ngModel)]="this.customerInfo.customerCode"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"/> -->
-                <input  type="text" placeholder="Enter Phone Number"
+                <input #phoneNumber  type="text" placeholder="Enter Phone Number"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
-                 (change)="ClearCustomer()" />
+                 (change)="setPhoneNumber()" />
             <!-- <div class="flex-grow group-hover:underline">
                 {{this.customerInfo.name}}
             </div> -->
@@ -107,12 +107,12 @@
             
             <select #customerType class="select select-bordered select-sm  max-w-xs rounded" (change)="selectType()">
                 <!-- <option *ngFor="let type of customerType" value="Retailer">{{type}}</option> -->
-                <option value="Retailer">Retailer</option>
                 <option value="Wholesale">Wholesale</option>
+                <option value="Retailer">Retailer</option>
             </select>
             <select #userType class="select select-bordered select-sm  max-w-xs rounded" (change)="togglePhone()">
-                <option selected value="regular">Walking</option>
-                <option selected value="regular">Regular</option>
+                <option selected value="Regular">Regular</option>
+                <option selected value="Walking">Walking</option>
             </select>
             <button class="btn gap-2 btn-sm btn-primary rounded" (click)="this.ToggleAddCustomerModal()">
                 Add
