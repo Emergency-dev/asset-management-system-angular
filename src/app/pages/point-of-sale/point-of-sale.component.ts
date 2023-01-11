@@ -13,7 +13,7 @@ export class PointOfSaleComponent implements OnInit {
   isAddModalOpen:boolean = false;
   isNewPageModalOpen:boolean = false;
   transactionInfo!: TransactionInfo;
-  isAddingModelOpen:boolean=false;
+  ShowPhoneNumber:boolean=false;
   isListingModelOpen:boolean=false;
   
 
@@ -49,6 +49,12 @@ export class PointOfSaleComponent implements OnInit {
   }
 
   closeModalOnFinish(e:TransactionInfo){
+    if(e.phoneNumber!=''){
+      this.ShowPhoneNumber=true;
+    }
+    else{
+      this.ShowPhoneNumber=false;
+    }
     this.isAddModalOpen = false;
     this.transactionInfo = new TransactionInfo;
     this.transactionInfo = e;
