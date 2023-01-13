@@ -93,7 +93,7 @@
                     <tr *ngFor="let item of this.transactionInfo?.cartItemList; let i = index">
                         <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing)*item.price + (item.quantity * item.price)}}</td>
                         <td class="border border-slate-700">{{item?.price}}</td>
-                        <td class="border border-slate-700">{{item.cartonQuantity*item.productInfo.packing + item.quantity}}</td>
+                        <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing) + 1*item.quantity}}</td>
                         <td class="border border-slate-700">{{item?.quantity}}</td>
                         <td class="border border-slate-700">{{item?.cartonQuantity}}</td>
                         <td class="border border-slate-700 text-center">{{item?.productInfo?.urduName}}</td>
