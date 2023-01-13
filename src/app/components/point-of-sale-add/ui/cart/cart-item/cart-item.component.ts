@@ -19,6 +19,7 @@ export class CartItemComponent implements OnInit, AfterViewInit {
   @ViewChild('cartonCount') carton: ElementRef<HTMLInputElement> = {} as ElementRef;
   cartonValue:number = 0;
   totalPrice:number=0;
+  pieceTotal:number=0;
 
 
   constructor() { }
