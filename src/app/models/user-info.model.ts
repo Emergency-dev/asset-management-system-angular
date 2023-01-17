@@ -6,5 +6,5 @@ export class UserInfo{
     lastName:string = "";
 
     userImageUrl:string = "";
-    userType?:string
+    userType:string=""
 }

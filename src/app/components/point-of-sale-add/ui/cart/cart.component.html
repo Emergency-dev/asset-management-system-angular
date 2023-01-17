@@ -10,7 +10,7 @@
             (keyup.enter)="searchProductNameInTheDatabase($event)" (change)="ClearProduct()" />
         <select [(ngModel)]="this.cartItemInfo.productInfo.productName" #pListName
             class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
-            (change)="getSelectedProductInfo()">
+            (change)="getEnteredProductInfo()">
             <option>Select Product Name</option>
             <option *ngFor="let product of productName">{{product}}</option>
         </select>

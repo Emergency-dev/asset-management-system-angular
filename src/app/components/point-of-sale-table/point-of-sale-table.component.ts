@@ -223,7 +223,14 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
       res1?.forEach(item2=>{
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
-          this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+          console.log(item1);
+          console.log(item2);
+          if(item2.CustomerType='WholeSale'){
+            this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.WHRate,totalPrice:item1.quantity*item1.WHRate});
+          }
+          else{
+            this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+          }
           let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
           veryLocalCartItemInfo.price = item1.SaleRate;
           veryLocalCartItemInfo.productInfo.productCode = item1.ProductCode;
@@ -233,6 +240,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
           veryLocalCartItemInfo.quantity = item1.quantity;
           veryLocalCartItemInfo.cartonQuantity = item1.cartonQuantity;
           veryLocalCartItemInfo.totalPrice = item1.totalPrice;
+          this.transactionInfo.transactionDate = item2.OrderDate;
           //veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
           // console.log('veryLocalCartItemInfo');
           // console.log(veryLocalCartItemInfo);
