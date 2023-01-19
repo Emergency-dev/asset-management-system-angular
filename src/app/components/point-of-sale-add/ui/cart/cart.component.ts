@@ -401,7 +401,7 @@ export class CartComponent implements OnInit {
     if(this.price.totalAmount != temp){
       this.price.totalAmount = temp;
       this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
-      this.pId.nativeElement.focus();
+      //this.pId.nativeElement.focus();
     
     }
     this.transactionService.transactionInfo.cartItemList.forEach(Element=>{
@@ -413,7 +413,9 @@ export class CartComponent implements OnInit {
   ClearTotalPrice() {
     this.price.totalAmount = 0;
   }
-
+  FocusCodeField(){
+    this.pId.nativeElement.focus();
+  }
   ToggleAddCustomerModal(){
     this.isAddCustomerModalOpen = !this.isAddCustomerModalOpen;
   }

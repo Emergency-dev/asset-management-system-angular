@@ -43,7 +43,7 @@
     <div class="overflow-auto h-full">
         <div *ngFor="let item of this.transactionService.transactionInfo.cartItemList" class="grid grid-cols-1 gap-4">
             <app-cart-item [item]="item" (onItemCheckClick)="this.checkBoxChecked($event)"
-                (onChangeQuantity)="this.ClearTotalPrice()" (onEnterQuantity)="this.updateTotalPrice()" (onCartonValueEnter)="this.cartonValueAdded($event)"></app-cart-item>
+                (onChangeQuantity)="this.ClearTotalPrice()" (onEnterQuantity)="this.updateTotalPrice()" (onCartonValueEnter)="this.cartonValueAdded($event)" (onEnterPress)="this.FocusCodeField()"></app-cart-item>
         </div>
         <div *ngIf="this.transactionService.transactionInfo.cartItemList.length < 1"
             class="flex items-center justify-center">No Item in the Cart
