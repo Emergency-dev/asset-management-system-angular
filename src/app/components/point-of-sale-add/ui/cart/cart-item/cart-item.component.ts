@@ -13,7 +13,7 @@ export class CartItemComponent implements OnInit, AfterViewInit {
   @Output() onChangeQuantity = new EventEmitter<any>();
   @Output() onEnterQuantity = new EventEmitter<any>();
   @Output() onCartonValueEnter = new EventEmitter<any>();
-
+  @Output() onEnterPress = new EventEmitter<any>();
   //@ViewChild('cartonCount') cartonCount!: ElementRef<HTMLInputElement>;
   @ViewChild('quantity') quantity!: ElementRef<HTMLInputElement>;
   @ViewChild('cartonCount') carton: ElementRef<HTMLInputElement> = {} as ElementRef;
@@ -45,6 +45,10 @@ export class CartItemComponent implements OnInit, AfterViewInit {
   CartonValueAdded(){
     this.cartonValue = Number(this.carton.nativeElement.value);
     this.onCartonValueEnter.emit({cartonValue:this.carton.nativeElement.value,cartonCode: this.item.productInfo.productCode});
+  }
+
+  EnterPress(){
+    this.onEnterPress.emit();
   }
 
 }

@@ -128,8 +128,25 @@ export class CartComponent implements OnInit {
         this.pId.nativeElement.value = "";
         this.pName.nativeElement.value = "";
         this.pId.nativeElement.focus();
+      }      
+      else {
+        alert("Product code not in the database");
+        this.pId.nativeElement.value = "";
+        this.pName.nativeElement.value = "";
+        this.pId.nativeElement.focus();
       }
-      else if (this.productNameNotInTheDatabase()) {
+    }
+  }
+  getEnteredProductInfo(){
+    if (this.productAlreadyInTheCart()) {
+      alert("Product already exists in the cart");
+      this.ClearProduct();
+      this.pId.nativeElement.value = "";
+      this.pName.nativeElement.value = "";
+      this.pId.nativeElement.focus();
+    }
+    else {
+      if (this.productNameNotInTheDatabase()) {
         this.onAddClick();
         this.pId.nativeElement.value = "";
         this.pName.nativeElement.value = "";
@@ -143,7 +160,6 @@ export class CartComponent implements OnInit {
       }
     }
   }
-
 
   // getCustomerdetails(){
   //   this.listCustomer.forEach((value) => {
@@ -255,7 +271,8 @@ export class CartComponent implements OnInit {
   productNameNotInTheDatabase(): boolean {
     this.isProductNameInDB = false;
     this.productInfo.forEach((value) => {
-      if (value.productName == this.cartItemInfo.productInfo.productName) {
+      console.log('value',value)
+      if (value.productName == this.cartItemInfo.productInfo.productName ) {
         this.isProductNameInDB = true;
         this.addProductInTheCart(value);
       }
@@ -384,7 +401,7 @@ export class CartComponent implements OnInit {
     if(this.price.totalAmount != temp){
       this.price.totalAmount = temp;
       this.tBill.nativeElement.innerHTML = "Total Bill : " + this.price.totalAmount;
-      this.pId.nativeElement.focus();
+      //this.pId.nativeElement.focus();
     
     }
     this.transactionService.transactionInfo.cartItemList.forEach(Element=>{
@@ -396,7 +413,9 @@ export class CartComponent implements OnInit {
   ClearTotalPrice() {
     this.price.totalAmount = 0;
   }
-
+  FocusCodeField(){
+    this.pId.nativeElement.focus();
+  }
   ToggleAddCustomerModal(){
     this.isAddCustomerModalOpen = !this.isAddCustomerModalOpen;
   }
@@ -420,6 +439,8 @@ export class CartComponent implements OnInit {
   }
   selectType(){
     this.selectedType = this.customerSelected.nativeElement.value;
+    this.transactionService.transactionInfo.userInfo.userType=this.selectedType;
+    //sessionStorage.setItem('customerType', this.selectedType);
     this.getDataServiceData();
   }
   setPhoneNumber(){
@@ -430,7 +451,7 @@ export class CartComponent implements OnInit {
   {
     let customer= this.userType.nativeElement.value;
     if(customer=='Walking')
-    {
+    {      
       this.TogglePhone=true;
     }
     else{
