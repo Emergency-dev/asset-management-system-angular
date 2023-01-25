@@ -217,6 +217,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.selectedCustomerName = cust;
     this.selectedCustomerId = cust_id;
     this.selectedTransactionDate = trans_date;
+    let grandTotal = 0;
     let res1 = (await this.dataService.getOrderData(this.selectedCustomerId, this.selectedTransactionDate)).data;
     let res2 = (await this.dataService.getProducts()).data; 
     res2?.forEach(item1=>{
@@ -225,22 +226,24 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
           item1.quantity = item2.ProductQuantity;
           console.log(item1);
           console.log(item2);
-          if(item2.CustomerType='WholeSale'){
-            this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.WHRate,totalPrice:item1.quantity*item1.WHRate});
+          if(item2.CustomerType=='WholeSale'){
+            this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.WHRate,totalPrice:item1.quantity*item1.WHRate});
           }
           else{
-            this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.urduName,quantity:item1.quantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+            this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
           }
           let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
           veryLocalCartItemInfo.price = item1.SaleRate;
           veryLocalCartItemInfo.productInfo.productCode = item1.ProductCode;
           veryLocalCartItemInfo.productInfo.productName = item1.ProductName;
           veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
-          veryLocalCartItemInfo.productInfo.urduName = item1.urduName;
+          veryLocalCartItemInfo.productInfo.urduName = item1.UrduName;
           veryLocalCartItemInfo.quantity = item1.quantity;
-          veryLocalCartItemInfo.cartonQuantity = item1.cartonQuantity;
-          veryLocalCartItemInfo.totalPrice = item1.totalPrice;
+          veryLocalCartItemInfo.cartonQuantity = item2.CartonQuantity;
+          veryLocalCartItemInfo.totalPrice = item1.quantity*item1.SaleRate;
+          veryLocalCartItemInfo.productInfo.packing = item1.Packing;
           this.transactionInfo.transactionDate = item2.OrderDate;
+          grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
           //veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
           // console.log('veryLocalCartItemInfo');
           // console.log(veryLocalCartItemInfo);
@@ -248,7 +251,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
         }
       })
     })
-
+    this.transactionInfo.grandTotal=grandTotal;
     // console.log(res1);
     // console.log(res2);
     // console.log(this.selectedTransactionProductInfo);
@@ -258,6 +261,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.isNewPageModalOpen = false;
   }
   onClickPrint(){
+    console.log(this.transactionInfo)
     this.finishTransaction.emit(this.transactionInfo);
   }
 }
