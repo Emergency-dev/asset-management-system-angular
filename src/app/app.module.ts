@@ -26,6 +26,7 @@ import { PurchaseCartComponent } from './components/point-of-purchase-add/ui/pur
 import { NewPageComponent } from './components/new-page/new-page.component';
 import { CartItemComponent } from './components/point-of-sale-add/ui/cart/cart-item/cart-item.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { EditPageComponent } from './components/edit-page/edit-page.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
     PointOfPurchaseAddComponent,
     PurchaseCartComponent,
     NewPageComponent,
-    CartItemComponent
+    CartItemComponent,
+    EditPageComponent
   ],
   imports: [
     BrowserModule,

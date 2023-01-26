@@ -99,4 +99,41 @@ export class DataService {
             .eq('OrderDate', trans_date);  
             return result || [];
     }
+    async getSelectedProducts(cust_id:any) {
+        const result = await this.supabase
+        .from(TABLE_PRODUCTS)
+        .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate"')
+        .eq("ProductCode",cust_id);
+        if(result.error) console.log(result.error);
+        console.log("RESULT");
+        console.log(result);
+        return result || [];
+    }
+    async addEditProduct(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urduName:any){
+        let { data, error } = await this.supabase
+        .rpc('add_Edited_Products_test', {
+            prod_code: prod_code,
+            cat: cat,
+            prod_name: prod_name,
+            package: pack,
+            m_unit: m_unit,
+            sale_rate: sale_rate,
+            wh_rate:wh_rate,
+            urdu_name:urduName
+        })
+
+    if (error) console.error(error)
+    else console.log(data)
+    }
+    async updateSelectedProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any) {
+        const result = await this.supabase
+        .from(TABLE_PRODUCTS)
+        .update({Category:cat,ProductName:prod_name,Packing:pack,MeasureUnit:m_unit,SaleRate:sale_rate,WHRate:wh_rate})
+        // .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate"')
+        .eq("ProductCode",prod_code);
+        if(result.error) console.log(result.error);
+        console.log("RESULT");
+        console.log(result);
+        return result || [];
+    }
 }

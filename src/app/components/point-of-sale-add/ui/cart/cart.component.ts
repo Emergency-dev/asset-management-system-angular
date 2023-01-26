@@ -272,7 +272,6 @@ export class CartComponent implements OnInit {
   productNameNotInTheDatabase(): boolean {
     this.isProductNameInDB = false;
     this.productInfo.forEach((value) => {
-      console.log('value',value)
       if (value.productName == this.cartItemInfo.productInfo.productName ) {
         this.isProductNameInDB = true;
         this.addProductInTheCart(value);
