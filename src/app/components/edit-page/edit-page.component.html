@@ -1,0 +1,60 @@
+<div class="flex flex-col h-full">
+    <div class='flex flex-col justify-center items-center'>
+        <div class='text-lg'>Edit Product</div>
+        <div class='divider m-0'></div>
+    </div>
+    <div class="flex flex-row gap-4">
+        <input type="text" #pId placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()"
+            (keyup)="this.ClearProduct()" class="bg-white input input-sm input-bordered w-200 max-w-xs rounded text-black" />
+        <input type="text" placeholder="Product Name" #pName
+            class="bg-white input input-sm input-bordered w-300 max-w-xs rounded text-black"
+            />
+        <select  #pListName
+            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
+            >
+            <option>Select Product Name</option>
+            <!-- <option *ngFor="let product of productName">{{product}}</option> -->
+        </select>
+
+    </div>
+    <div class="divider m-4"></div>
+    <div class="overflow-auto h-full">
+        <div class="flex flex-row gap-4">
+            <p>Product Name</p>
+            <input #prodName type="text" placeholder="Product Name"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+                <p>Retail Price</p>
+                <input #SaleRate type="text" placeholder="Retail Price"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+        </div>
+        <div class="m-2"></div>
+        <div class="flex flex-row gap-4">
+            <p>Wholesale Price</p>
+            <input #WHRate type="text" placeholder="Wholesale Name"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            <p>Package  Size</p>
+                <input #Package type="text" placeholder="Package Size"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+        </div>
+        <div class="m-2"></div>
+        <div class="flex flex-row gap-4">
+            <p>Product Unit</p>
+            <input #productUnit type="text" placeholder="Product Unit"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            <p>Category</p>
+                <input #Category type="text" placeholder="Category"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+        </div>
+        
+    </div>
+    <div class="divider m-0"></div>
+    <div class="flex flex-row gap-4">
+        <button (click)="this.saveEditProduct()" class="btn gap-2 btn-sm btn-primary rounded">
+            Update
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+              </svg>
+              
+        </button>
+    </div>
+</div>

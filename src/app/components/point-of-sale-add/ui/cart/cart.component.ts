@@ -100,6 +100,7 @@ export class CartComponent implements OnInit {
     veryLocalCartItemInfo.cartonQuantity = this.cartItemInfo.cartonQuantity;
     // veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
 
+    
     veryLocalCartItemInfo.totalPrice = (this.cartItemInfo.cartonQuantity*this.cartItemInfo.productInfo.packing + this.cartItemInfo.quantity) * this.cartItemInfo.price;
 
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
@@ -271,7 +272,6 @@ export class CartComponent implements OnInit {
   productNameNotInTheDatabase(): boolean {
     this.isProductNameInDB = false;
     this.productInfo.forEach((value) => {
-      console.log('value',value)
       if (value.productName == this.cartItemInfo.productInfo.productName ) {
         this.isProductNameInDB = true;
         this.addProductInTheCart(value);
