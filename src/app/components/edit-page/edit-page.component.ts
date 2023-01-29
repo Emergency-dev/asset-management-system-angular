@@ -10,6 +10,7 @@ import { editProdInfo } from './editProdInfo.model';
   styleUrls: ['./edit-page.component.css'],
 })
 export class EditPageComponent implements OnInit {
+  @ViewChild("pListName") pListName: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("pName") pName: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("pId") pId: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("prodName") prodName: ElementRef<HTMLInputElement> = {} as ElementRef;
@@ -24,6 +25,8 @@ export class EditPageComponent implements OnInit {
 
   isProductCodeInDB: boolean = false;
   productInfo: editProdInfo = new editProdInfo();
+  productInfoList: editProdInfo[] = [];
+  prodNameList: string[]=[];
   prodCode: any='';
   constructor(protected dataService: DataService) { }
 
@@ -31,9 +34,10 @@ export class EditPageComponent implements OnInit {
   }
   async getSelectedProductInfo(){
     // this.dataService.getSelectedProducts(this.pId.nativeElement.value);
-    if(this.pId.nativeElement.value!=''){
+    const regex = new RegExp(/^[0-9]+$/);
+    //alert(regex.test(this.pId.nativeElement.value))
+    if(regex.test(this.pId.nativeElement.value)){
       const options = await (await this.dataService.getSelectedProducts(this.pId.nativeElement.value)).data;
-      console.log('options',options)
       if(options?.length!=0){
         this.prodCode=this.pId.nativeElement.value;
         options?.map((item) => {
@@ -66,7 +70,46 @@ export class EditPageComponent implements OnInit {
       alert("Enter Product Code")
     }
   }
+  async getSelectedProductInfoByName(){
+    // this.dataService.getSelectedProducts(this.pId.nativeElement.value);
+    // this.prodNameList=[]
+    const regex = new RegExp(/^[a-zA-Z ]*$/);
+    if(regex.test(this.pName.nativeElement.value)){
+      const options = await (await this.dataService.getSelectedProductsByName(this.pName.nativeElement.value)).data;
+      if(options?.length!=0){
+        this.prodCode=this.pId.nativeElement.value;
+        options?.map((item) => {
+        let proInfo = new editProdInfo();
+        proInfo = ({
+          productId: item.ProductId,
+          productCode: item.ProductCode,
+          productName: item.ProductName,          
+          productUnit: item.MeasureUnit,
+          SalePrice: item.SaleRate,
+          WHPrice: item.WHRate,
+          minPrice: item.MinRate,
+          maxPrice: 0,
+          MeasureUnit:item.MeasureUnit,
+          packing : Number(item.Packing),
+          urduName : item.UrduName,
+          Category:item.Category
+        })
+        this.productInfoList.push(proInfo);
+        this.prodNameList.push(proInfo.productName);
+        // console.log(proInfo);
+      })
+      }
+      else{
+        alert("Product is NOT In Database")
+      }
+    }
+    else
+    {
+      alert("Enter Product Name")
+    }
+  }
   setInputValue() {
+    this.prodCode=this.productInfo.productCode;
     this.prodName.nativeElement.value=this.productInfo.productName;
     this.SaleRate.nativeElement.value=(this.productInfo.SalePrice).toString();
     this.WHRate.nativeElement.value=(this.productInfo.WHPrice).toString();
@@ -75,16 +118,27 @@ export class EditPageComponent implements OnInit {
     this.Category.nativeElement.value=(this.productInfo.Category);
 
   }
+  getEnteredProductInfo() {
+    this.pListName.nativeElement.value;
+    this.productInfoList.forEach((value) => {
+      if (value.productName == this.pListName.nativeElement.value ) {
+        this.productInfo = value;
+        console.log(value);
+        this.setInputValue();
+      }
+      
+    });
+    }
   addProductBackup() {
     this.dataService.addEditProduct(
       this.productInfo.productCode,this.productInfo.Category,this.productInfo.productName,this.productInfo.packing,
       this.productInfo.MeasureUnit,this.productInfo.SalePrice,this.productInfo.WHPrice,this.productInfo.urduName)
   }
   saveEditProduct(){
-    if(this.pId.nativeElement.value!=''){
+    if(this.prodCode!=''){
       this.addProductBackup();
       this.dataService.updateSelectedProducts(
-        this.pId.nativeElement.value,
+        this.prodCode,
         this.Category.nativeElement.value,
         this.prodName.nativeElement.value,
         this.Package.nativeElement.value,
@@ -96,19 +150,17 @@ export class EditPageComponent implements OnInit {
       this.closeModel();
     }
     else{
-      alert("Please enter product code!")
+      alert("Please enter product info!")
     }
   }
-  getEnteredProductInfo() {
-    throw new Error('Method not implemented.');
-    }
-    cartItemInfo: any;
+  
   ClearProduct() {
+  this.prodNameList=[];
+  this.productInfoList=[];
   this.productInfo=new editProdInfo();
-  this.prodCode=this.pId.nativeElement.value;
   this.setInputValue();
   }
-    closeModel() {
-    this.finishEvent.emit();
-    }
+  closeModel() {
+  this.finishEvent.emit();
+  }
 }
