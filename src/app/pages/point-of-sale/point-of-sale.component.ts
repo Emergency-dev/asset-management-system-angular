@@ -15,7 +15,7 @@ export class PointOfSaleComponent implements OnInit {
   transactionInfo!: TransactionInfo;
   ShowPhoneNumber:boolean=false;
   isEditPageModelOpen:boolean=false;
-  
+  isLoggedIn=false;
 
   opt = {
     margin:       0.5,

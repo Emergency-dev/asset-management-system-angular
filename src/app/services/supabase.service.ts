@@ -146,5 +146,23 @@ export class DataService {
         console.log(result);
         return result || [];
     }
+    async userLogIn(uname:string , pass: string ){   
+    //     const {  error } = await this.supabase.auth.signUp({
+    //         email: 'someone@email.com',
+    //         password: 'example-password',
+    //       })
+    //     const result = await this.supabase.auth.signInWithPassword({
+    //     email: 'someone@email.com',
+    //     password: 'example-password'
+    // })
+    const result = await this.supabase
+    .from("users")
+    .select('userid')
+    .eq("username",uname)
+    .eq("password",pass);
+    console.log("RESULT");
+    console.log(result);
+    return result || [];
+    }
     
 }

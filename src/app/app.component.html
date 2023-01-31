@@ -1,4 +1,9 @@
-<app-layout>
-    <app-sidebar sidebar></app-sidebar>
-    <div body><router-outlet></router-outlet></div>
-</app-layout>
+<div *ngIf="!this.isLoggedIn" >
+    <app-login-page (finishEvent)="this.LogIN($event)"></app-login-page>
+</div>
+<div *ngIf="this.isLoggedIn">
+    <app-layout>
+        <app-sidebar (finishEvent)="this.LogIN($event)" sidebar></app-sidebar>
+        <div body><router-outlet></router-outlet></div>
+    </app-layout>
+</div>

@@ -1,0 +1,26 @@
+
+<div class="modal-box rounded w-11/12 h-5/6  max-w-screen-xl max-h-screen absolute overflow-auto">
+    <div class='flex flex-col justify-center items-center'>
+        <div class='text-lg '><h2 class="display-1">Log-In </h2> </div>
+        <div class='divider m-0'></div>
+        <div class="flex flex-col gap-6">
+            <div class="m-6"></div>
+            <input type="text" #uName placeholder="User Name"
+                class="input input-bordered input-accent w-600 max-w-xs" />
+            <input type="password" placeholder="Password" #pass
+                class="input input-bordered input-accent w-600 max-w-xs" />
+                <div *ngIf="this.alert" class="alert alert-danger d-flex align-items-center" role="alert">
+                    <div>
+                      Information is wrong
+                    </div>
+                  </div>
+        </div>
+        <div class="m-6"></div>
+        <div class="divider m-4"></div>
+        <div class="flex flex-row justify-end gap-6">
+            <button (click)="this.getUserData()" class="btn gap-6 w-400 rounded">
+                Log-In
+            </button>
+        </div>
+    </div>
+</div>
