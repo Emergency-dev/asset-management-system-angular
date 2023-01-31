@@ -109,6 +109,16 @@ export class DataService {
         console.log(result);
         return result || [];
     }
+    async getSelectedProductsByName(cust_name:any) {
+        const result = await this.supabase
+        .from(TABLE_PRODUCTS)
+        .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate", "*"')
+        .ilike("ProductName",'%'+cust_name+'%');
+        if(result.error) console.log(result.error);
+        console.log("RESULT");
+        console.log(result);
+        return result || [];
+    }
     async addEditProduct(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urduName:any){
         let { data, error } = await this.supabase
         .rpc('add_Edited_Products_test', {
@@ -136,4 +146,23 @@ export class DataService {
         console.log(result);
         return result || [];
     }
+    async userLogIn(uname:string , pass: string ){   
+    //     const {  error } = await this.supabase.auth.signUp({
+    //         email: 'someone@email.com',
+    //         password: 'example-password',
+    //       })
+    //     const result = await this.supabase.auth.signInWithPassword({
+    //     email: 'someone@email.com',
+    //     password: 'example-password'
+    // })
+    const result = await this.supabase
+    .from("users")
+    .select('userid')
+    .eq("username",uname)
+    .eq("password",pass);
+    console.log("RESULT");
+    console.log(result);
+    return result || [];
+    }
+    
 }

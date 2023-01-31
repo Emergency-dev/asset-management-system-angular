@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LayoutConfig } from 'src/app/layout/layout/services/layout-config.service';
 
 @Component({
@@ -8,12 +8,16 @@ import { LayoutConfig } from 'src/app/layout/layout/services/layout-config.servi
 })
 export class SidebarComponent implements OnInit {
   constructor(protected layoutConfig: LayoutConfig) { }
-
+  @Output() finishEvent = new EventEmitter<any>();
   ngOnInit(): void {
   }
 
   toggleExpansion(){
     this.layoutConfig.isSidebarExpanded = !this.layoutConfig.isSidebarExpanded;
+  }
+  logOut(){
+    localStorage.setItem('Login','');
+    this.finishEvent.emit(false);
   }
 
 }
