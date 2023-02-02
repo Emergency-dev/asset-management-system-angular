@@ -18,8 +18,15 @@ export class AppComponent implements OnInit{
     else{
       this.isLoggedIn=false;
     }
+    setTimeout(() => {
+      this.ExpireSession();
+      
+    }, 600000);
   }
   LogIN(event:any){
     this.isLoggedIn=event;
+  }
+  ExpireSession(){
+    localStorage.setItem("Login","");
   }
 }

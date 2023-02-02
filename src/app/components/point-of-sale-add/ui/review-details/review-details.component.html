@@ -44,3 +44,15 @@
     </tbody>
   </table>
 </div>
+<div class='divider m-0'></div>
+<div class="flex flex-col h-full justify-between">
+<!-- <div class="'flex flex-col justify-center items-start">Salesman:</div> -->
+  <div class='flex flex-col justify-center items-end'>
+      <select  #pListName (change)="this.getUsers()"
+            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
+            >
+            <option value="" >Select Salesman Name</option>
+            <option value="{{saller.userId}}" *ngFor="let saller of listSallers">{{saller.firstName}}</option>
+        </select>
+  </div>
+</div>
