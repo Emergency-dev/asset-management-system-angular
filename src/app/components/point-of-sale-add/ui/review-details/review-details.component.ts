@@ -4,6 +4,8 @@ import { CartItemAddService } from 'src/app/components/point-of-sale-add/ui/cart
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CartItemInfo } from 'src/app/models/transaction-info.model';
 import { PosTransactionService } from '../../services/pos-transaction.service';
+import { DataService } from 'src/app/services/supabase.service';
+import { UserInfo } from 'src/app/models/user-info.model';
 
 @Component({
   selector: 'app-review-details',
@@ -17,17 +19,20 @@ export class ReviewDetailsComponent implements OnInit {
   cartItemInfo: CartItemInfo = new CartItemInfo();
   cartItems: CartItemInfo[] = [];
   @ViewChild("tBill") tBill: ElementRef<HTMLElement> = {} as ElementRef;
+  @ViewChild("pListName") pListName: ElementRef<HTMLInputElement> = {} as ElementRef;
   price:number = 0;
-
+  listSallers: UserInfo[]=[];
   reviewList:{productCode:string,productName:string,quantity:number,unit:string,perUnitPrice:number,totalPrice:number,customerName:string,customerPhone:string}[] = [];
   constructor(protected cartItemService: CartItemAddService,
     protected customerService: CustomerInfoService,
-    protected transactionService: PosTransactionService) {
+    protected transactionService: PosTransactionService,
+    protected dataService: DataService) {
       this.loadTotalPrice();
      }
 
   ngOnInit(): void {
     this.getDataFromTransactionService();
+    this.getSallersData();
   }
 
   loadTotalPrice(){
@@ -49,6 +54,31 @@ export class ReviewDetailsComponent implements OnInit {
 
   ReviewDetails(e:any){
     this.price=e;
+  }
+  async getSallersData() {
+    const cusOptions = await (await this.dataService.GetUsers()).data;
+    cusOptions?.map((item) => {
+      let userInfo = new UserInfo();
+      userInfo = ({
+        userId: item.userid,
+        firstName:item.firstname,
+        lastName:item.lastname,
+        userImageUrl:"",
+        username:item.username,
+        userType:""
+      })
+      this.listSallers.push(userInfo);
+    });
+  }
+  getUsers(){
+    this.transactionService.transactionInfo.userInfo.userId=this.pListName.nativeElement.value;
+    this.listSallers.forEach((value) => {
+      if (value.userId == this.pListName.nativeElement.value) {
+        this.transactionService.transactionInfo.userInfo.firstName=value.firstName
+        this.transactionService.transactionInfo.userInfo.lastName=value.lastName
+        this.transactionService.transactionInfo.userInfo.username=value.username
+      }
+    });
   }
 
 }

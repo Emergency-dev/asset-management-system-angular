@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { initSupabase } from 'src/app/utils/initSupabase'
+import { initSupabaseProduction } from '../utils/initSupabaseProduction'
 
 export const TABLE_PRODUCTS = 'Products'
 export const TABLE_CUSTOMERS = 'ShopCustomer'
@@ -75,17 +76,19 @@ export class DataService {
         return result || [];
     }
 
-    async addOrderDetails(product_id: string, product_quantity: number, product_cartonquantity: number, cust_id: string, phoneNumber: number, customerType: string) {
+    async addOrderDetails(product_id: string, product_quantity: number, product_cartonquantity: number, cust_id: string, phoneNumber: number, customerType: string, user_ID: string) {
+        // let { data, error } = await this.supabase
+        //     .rpc('add_order_det', {
+        //         product_id: product_id,
+        //         product_quantity: product_quantity,
+        //         cust_id: cust_id,
+        //         product_cartonquantity: product_cartonquantity,
+        //         phonenumber: phoneNumber,
+        //         customertype: customerType
+        //     })
         let { data, error } = await this.supabase
-            .rpc('add_order_det', {
-                product_id: product_id,
-                product_quantity: product_quantity,
-                cust_id: cust_id,
-                product_cartonquantity: product_cartonquantity,
-                phonenumber: phoneNumber,
-                customertype: customerType
-            })
-
+        .from('Order')
+        .insert({ProductId:product_id,ProductQuantity:product_quantity,CustomerId:cust_id,CartonQuantity:product_cartonquantity,PhoneNumber:phoneNumber,CustomerType:customerType, userID:user_ID})
         if (error) console.error(error)
         else console.log(data)
 
@@ -164,5 +167,12 @@ export class DataService {
     console.log(result);
     return result || [];
     }
-    
+    async GetUsers() {
+        const result = await this.supabase
+    .from("users")
+    .select('"userid","username","firstname","lastname"');
+    console.log("RESULT");
+    console.log(result);
+    return result || [];
+    }
 }

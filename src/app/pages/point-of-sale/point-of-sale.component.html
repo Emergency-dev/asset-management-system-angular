@@ -66,7 +66,7 @@
                                 04237361655</span></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div>بل نمبر : <span>12</span></div>
+                        <div>بل نمبر : <span>{{this.transactionInfo?.transactionId}}</span></div>
                         <div *ngIf="!this.ShowPhoneNumber">کسٹمر : <span>{{this.transactionInfo?.customerInfo?.name}}</span></div>
                         <div *ngIf="this.ShowPhoneNumber"> کسٹمر نمبر :<span>{{this.transactionInfo?.phoneNumber}}</span></div> 
                     </div>
@@ -120,7 +120,7 @@
                     <div>ٹوٹل پیس/درجن  : <span></span></div>
                 </div>
                 <div class="flex flex-col gap-4 divide-y divide-black">
-                    <div>سیل مین  : <span></span></div>
+                    <div>سیل مین  : <span>{{this.transactionInfo?.userInfo?.firstName}}</span></div>
                 </div>
                 <div class="flex flex-col gap-4 divide-y divide-black">
                     <div>کل رقم : <span>{{this.transactionInfo?.grandTotal}}</span></div>
