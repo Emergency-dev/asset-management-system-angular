@@ -1,31 +1,43 @@
-<div class="modal-box rounded  max-w-screen-xl max-h-screen absolute overflow-auto">
+<div class="flex flex-col h-full justify-between">
+    <div *ngIf="this.alert" class="alert alert-error shadow-lg">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span>Error! Please enter product info!.</span>
+        </div>
+      </div>
+      <div *ngIf="this.success" class="alert alert-success shadow-lg">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span>Your Product has been Updated!</span>
+        </div>
+      </div>
     <div class='flex flex-col justify-center items-center'>
         <div class='text-lg'>Edit Product</div>
         <div class='divider m-0'></div>
     </div>
     <div class="flex flex-row gap-6">
         <input type="text" #pId placeholder="Product Code" (keyup.enter)="getSelectedProductInfo()"
-            (keyup)="this.ClearProduct()" class="bg-white input input-sm input-bordered w-300 max-w-xs rounded text-black" />
-        <input (keyup.enter)="this.getSelectedProductInfoByName()" (keyup)="this.ClearProduct()" type="text" placeholder="Product Name" #pName
-            class="bg-white input input-sm input-bordered w-600 max-w-xs rounded text-black"
-            />
-        <select  #pListName (change)="this.getEnteredProductInfo()"
-            class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black"
-            >
-            <option value="" >Select Product Name</option>
+            (keyup)="this.ClearProduct()"
+            class="bg-white input input-sm input-bordered w-300 max-w-xs rounded text-black" />
+        <input (keyup.enter)="this.getSelectedProductInfoByName()" (keyup)="this.ClearProduct()" type="text"
+            placeholder="Product Name" #pName
+            class="bg-white input input-sm input-bordered w-600 max-w-xs rounded text-black" />
+        <select #pListName (change)="this.getEnteredProductInfo()"
+        class="select select-bordered select-sm w-full max-w-xs">
+            <option value="">Select Product Name</option>
             <option value="{{product}}" *ngFor="let product of prodNameList">{{product}}</option>
         </select>
 
     </div>
     <div class="divider m-4"></div>
-    <div class="flex flex-col auto">
+    <div *ngIf="this.updatePage" class="flex flex-col auto">
         <div class="m-3"></div>
         <div class="flex flex-row gap-6">
             <label for="ProdName">Product Name</label>
             <input #prodName type="text" id="ProdName" placeholder="Product Name"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-                <p>Retail Price</p>
-                <input #SaleRate type="text" placeholder="Retail Price"
+            <p>Retail Price</p>
+            <input #SaleRate type="text" placeholder="Retail Price"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         </div>
         <div class="m-3"></div>
@@ -33,8 +45,8 @@
             <p>Wholesale Price</p>
             <input #WHRate type="text" placeholder="Wholesale Name"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
-            <p>Package  Size</p>
-                <input #Package type="text" placeholder="Package Size"
+            <p>Package Size</p>
+            <input #Package type="text" placeholder="Package Size"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         </div>
         <div class="m-3"></div>
@@ -43,19 +55,64 @@
             <input #productUnit type="text" placeholder="Product Unit"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
             <p>Category</p>
-                <input #Category type="text" placeholder="Category"
+            <input #Category type="text" placeholder="Category"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         </div>
-        
+
+    </div>
+    <div *ngIf="this.listingPage">
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <!-- head -->
+                <thead>
+                    <tr>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th>Retail Rate</th>
+                        <th>Whole Sale Rate</th>
+                        <th>Packing Size</th>
+                        <th>Urdu Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let item of this.prodList | paginate: { itemsPerPage: 5, currentPage: p } let i=index ">
+                        <td><button
+                                (click)="this.getEnteredProductInfoByID(item.productCode)">{{item.productCode}}</button>
+                        </td>
+                        <td>{{item.productName}}</td>
+                        <td>{{item.SalePrice}}</td>
+                        <td>{{item.WHPrice}}</td>
+                        <td>{{item.packing}}</td>
+                        <td>{{item.urduName}}</td>
+                    </tr>
+                    <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="divider m-4"></div>
-    <div class="flex flex-row justify-end gap-6">
-        <button (click)="this.saveEditProduct()" class="btn gap-2 rounded">
-            Update
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
-              </svg>
-              
-        </button>
+    <div class="flex flex-row space-x-2">
+        <div *ngIf="this.updatePage" class="justify-start gap-6"><button (click)="this.back()"
+                class="btn gap-2 rounded">
+                Back
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                  </svg>                  
+
+            </button>
+        </div>
+        <div *ngIf="this.updatePage" class="justify-end gap-6"><button (click)="this.saveEditProduct()"
+                class="btn gap-2 rounded">
+                Update
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+                </svg>
+
+            </button>
+        </div>
+
     </div>
 </div>
