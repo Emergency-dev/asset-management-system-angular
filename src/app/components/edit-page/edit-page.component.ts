@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild, AfterViewInit } from '@angular/core';
-import { count } from 'rxjs';
+import { count, Subject } from 'rxjs';
 import { ProductInfo } from 'src/app/models/product-info.model';
 import { DataService } from 'src/app/services/supabase.service';
 import { editProdInfo } from './editProdInfo.model';
@@ -26,17 +26,31 @@ export class EditPageComponent implements OnInit {
   isProductCodeInDB: boolean = false;
   productInfo: editProdInfo = new editProdInfo();
   productInfoList: editProdInfo[] = [];
+  prodList: editProdInfo[] = [];
   prodNameList: string[]=[];
   prodCode: any='';
+  updatePage: boolean=false;
+  listingPage: boolean=true;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<DataTables.Settings> = new Subject();
+  p:number=0;
+  alert:boolean=false;
+  success:boolean=false;
   constructor(protected dataService: DataService) { }
 
   ngOnInit(): void {
+    this.getAllProducts('');
+  }
+  ngAfterViewInit(): void {
+    this.dtTrigger.next(this.dtOptions);
   }
   async getSelectedProductInfo(){
     // this.dataService.getSelectedProducts(this.pId.nativeElement.value);
     const regex = new RegExp(/^[0-9]+$/);
     //alert(regex.test(this.pId.nativeElement.value))
     if(regex.test(this.pId.nativeElement.value)){
+      this.listingPage=false;
+      this.updatePage=true;
       const options = await (await this.dataService.getSelectedProducts(this.pId.nativeElement.value)).data;
       if(options?.length!=0){
         this.prodCode=this.pId.nativeElement.value;
@@ -77,6 +91,8 @@ export class EditPageComponent implements OnInit {
     if(regex.test(this.pName.nativeElement.value)){
       const options = await (await this.dataService.getSelectedProductsByName(this.pName.nativeElement.value)).data;
       if(options?.length!=0){
+        this.listingPage=false;
+        this.updatePage=true;
         this.prodCode=this.pId.nativeElement.value;
         options?.map((item) => {
         let proInfo = new editProdInfo();
@@ -108,7 +124,33 @@ export class EditPageComponent implements OnInit {
       alert("Enter Product Name")
     }
   }
+  async getAllProducts(event:any){
+    const options = await (await this.dataService.getSelectedProductsByName(event)).data;
+      if(options?.length!=0){
+        this.prodCode=this.pId.nativeElement.value;
+        options?.map((item) => {
+        let proInfo = new editProdInfo();
+        proInfo = ({
+          productId: item.ProductId,
+          productCode: item.ProductCode,
+          productName: item.ProductName,          
+          productUnit: item.MeasureUnit,
+          SalePrice: item.SaleRate,
+          WHPrice: item.WHRate,
+          minPrice: item.MinRate,
+          maxPrice: 0,
+          MeasureUnit:item.MeasureUnit,
+          packing : Number(item.Packing),
+          urduName : item.UrduName,
+          Category:item.Category
+        })
+        this.prodList.push(proInfo);
+        // console.log(proInfo);
+      })
+  }
+}
   setInputValue() {
+    //this.updatePage=true;
     this.prodCode=this.productInfo.productCode;
     this.prodName.nativeElement.value=this.productInfo.productName;
     this.SaleRate.nativeElement.value=(this.productInfo.SalePrice).toString();
@@ -126,8 +168,23 @@ export class EditPageComponent implements OnInit {
         console.log(value);
         this.setInputValue();
       }
-      
+      // else{
+      //   this.ClearProduct();
+      // }
     });
+  }
+  getEnteredProductInfoByID(event:any) {
+    this.listingPage=false;
+    this.updatePage=true;
+    this.prodList.forEach((value) => {
+      if (value.productCode == event ) {
+        this.productInfo = value;
+        console.log(value);
+      }
+    });
+    setTimeout(() => {
+      this.setInputValue();
+    }, 100);
     }
   addProductBackup() {
     this.dataService.addEditProduct(
@@ -146,19 +203,32 @@ export class EditPageComponent implements OnInit {
         this.SaleRate.nativeElement.value,
         this.WHRate.nativeElement.value
       )
-      alert("Product Updated");
-      this.closeModel();
+      //alert("Product Updated");
+      this.success=true;
+      setTimeout(() => {
+        this.success=false;
+        this.closeModel();
+      }, 2000);
     }
     else{
-      alert("Please enter product info!")
+      //alert("Please enter product info!");
+      this.alert=true;
+      setTimeout(() => {
+        this.alert=false;
+      }, 3000);
     }
   }
   
   ClearProduct() {
-  this.prodNameList=[];
-  this.productInfoList=[];
-  this.productInfo=new editProdInfo();
-  this.setInputValue();
+    this.prodNameList=[];
+    this.productInfoList=[];
+    this.productInfo=new editProdInfo();
+    this.setInputValue();
+
+  }
+  back(){
+    this.updatePage=false;
+    this.listingPage=true;
   }
   closeModel() {
   this.finishEvent.emit();

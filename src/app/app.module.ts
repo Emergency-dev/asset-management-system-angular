@@ -28,6 +28,7 @@ import { CartItemComponent } from './components/point-of-sale-add/ui/cart/cart-i
 import {MatDialogModule} from "@angular/material/dialog";
 import { EditPageComponent } from './components/edit-page/edit-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -65,7 +66,8 @@ const appRoutes: Routes = [
     DataTablesModule,
     FormsModule,
     NgxPopper,
-    MatDialogModule
+    MatDialogModule,
+    NgxPaginationModule
   ],
   providers: [LayoutConfig],
   bootstrap: [AppComponent]

@@ -34,6 +34,10 @@ export class LoginPageComponent implements OnInit {
       localStorage.setItem("Login","false");
       this.alert=true;
       this.uName.nativeElement.required;
+      setTimeout(() => {
+        this.alert=false;
+        
+      }, 5000);
     }
     this.LogIN();
 }
