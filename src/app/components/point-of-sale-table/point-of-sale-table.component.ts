@@ -220,30 +220,35 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     let grandTotal = 0;
     let res1 = (await this.dataService.getOrderData(this.selectedCustomerId, this.selectedTransactionDate)).data;
     let res2 = (await this.dataService.getProducts()).data; 
+    console.log(res1);
     res2?.forEach(item1=>{
       res1?.forEach(item2=>{
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
           console.log(item1);
           console.log(item2);
-          if(item2.CustomerType=='WholeSale'){
+          let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
+          if(item2.CustomerType=='Wholesale'){
             this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.WHRate,totalPrice:item1.quantity*item1.WHRate});
+            veryLocalCartItemInfo.price = item1.WHRate;
+            veryLocalCartItemInfo.productInfo.productUnit = item1.WHRate;
+            veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate;
+            grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
           }
           else{
             this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+            veryLocalCartItemInfo.price = item1.SaleRate;
+            veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
+            veryLocalCartItemInfo.totalPrice = item1.quantity*item1.SaleRate;
+            grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
           }
-          let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
-          veryLocalCartItemInfo.price = item1.SaleRate;
           veryLocalCartItemInfo.productInfo.productCode = item1.ProductCode;
           veryLocalCartItemInfo.productInfo.productName = item1.ProductName;
-          veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
           veryLocalCartItemInfo.productInfo.urduName = item1.UrduName;
           veryLocalCartItemInfo.quantity = item1.quantity;
           veryLocalCartItemInfo.cartonQuantity = item2.CartonQuantity;
-          veryLocalCartItemInfo.totalPrice = item1.quantity*item1.SaleRate;
           veryLocalCartItemInfo.productInfo.packing = item1.Packing;
           this.transactionInfo.transactionDate = item2.OrderDate;
-          grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
           //veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
           // console.log('veryLocalCartItemInfo');
           // console.log(veryLocalCartItemInfo);

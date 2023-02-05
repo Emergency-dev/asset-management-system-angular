@@ -47,13 +47,11 @@ export class EditPageComponent implements OnInit {
   async getSelectedProductInfo(){
     // this.dataService.getSelectedProducts(this.pId.nativeElement.value);
     const regex = new RegExp(/^[0-9]+$/);
-    //alert(regex.test(this.pId.nativeElement.value))
     if(regex.test(this.pId.nativeElement.value)){
       this.listingPage=false;
       this.updatePage=true;
       const options = await (await this.dataService.getSelectedProducts(this.pId.nativeElement.value)).data;
       if(options?.length!=0){
-        this.prodCode=this.pId.nativeElement.value;
         options?.map((item) => {
         let proInfo = new editProdInfo();
         proInfo = ({
@@ -93,7 +91,6 @@ export class EditPageComponent implements OnInit {
       if(options?.length!=0){
         this.listingPage=false;
         this.updatePage=true;
-        this.prodCode=this.pId.nativeElement.value;
         options?.map((item) => {
         let proInfo = new editProdInfo();
         proInfo = ({
@@ -127,7 +124,6 @@ export class EditPageComponent implements OnInit {
   async getAllProducts(event:any){
     const options = await (await this.dataService.getSelectedProductsByName(event)).data;
       if(options?.length!=0){
-        this.prodCode=this.pId.nativeElement.value;
         options?.map((item) => {
         let proInfo = new editProdInfo();
         proInfo = ({
@@ -163,7 +159,7 @@ export class EditPageComponent implements OnInit {
   getEnteredProductInfo() {
     this.pListName.nativeElement.value;
     this.productInfoList.forEach((value) => {
-      if (value.productName == this.pListName.nativeElement.value ) {
+      if (value.productCode == this.pListName.nativeElement.value ) {
         this.productInfo = value;
         console.log(value);
         this.setInputValue();

@@ -29,11 +29,16 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { EditPageComponent } from './components/edit-page/edit-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { UserManagementComponent } from './pages/user-management/user-management.component';
+import { UserListComponent } from './pages/user-management/user-list/user-list.component';
+import { AddUserComponent } from './pages/user-management/add-user/add-user.component';
+import { AddNewProductComponent } from './components/add-new-product/add-new-product.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
   {path: 'point-of-sale', component: PointOfSaleComponent},
-  {path: 'point-of-purchase', component: PointOfPurchaseComponent}
+  {path: 'point-of-purchase', component: PointOfPurchaseComponent},
+  {path:'user-management', component: UserManagementComponent }
 ];
 
 @NgModule({
@@ -58,7 +63,11 @@ const appRoutes: Routes = [
     NewPageComponent,
     CartItemComponent,
     EditPageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    UserManagementComponent,
+    UserListComponent,
+    AddUserComponent,
+    AddNewProductComponent
   ],
   imports: [
     BrowserModule,

@@ -138,6 +138,15 @@ export class DataService {
     if (error) console.error(error)
     else console.log(data)
     }
+    async insertNewProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urdu_name:any) {
+        const result = await this.supabase
+        .from(TABLE_PRODUCTS)
+        .insert({ProductCode:prod_code,Category:cat,ProductName:prod_name, SaleRate:sale_rate, MeasureUnit:m_unit,Packing:pack,UrduName:urdu_name, WHRate:wh_rate})
+        if(result.error) console.log(result.error);
+        console.log("RESULT");
+        console.log(result);
+        return result || [];
+    }
     async updateSelectedProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any) {
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
@@ -150,14 +159,6 @@ export class DataService {
         return result || [];
     }
     async userLogIn(uname:string , pass: string ){   
-    //     const {  error } = await this.supabase.auth.signUp({
-    //         email: 'someone@email.com',
-    //         password: 'example-password',
-    //       })
-    //     const result = await this.supabase.auth.signInWithPassword({
-    //     email: 'someone@email.com',
-    //     password: 'example-password'
-    // })
     const result = await this.supabase
     .from("users")
     .select('userid')
@@ -170,7 +171,15 @@ export class DataService {
     async GetUsers() {
         const result = await this.supabase
     .from("users")
-    .select('"userid","username","firstname","lastname"');
+    .select('"userid","username","firstname","lastname","isactive","isadmin"');
+    console.log("RESULT");
+    console.log(result);
+    return result || [];
+    }
+    async InsertUsers(uname:any,fname:any,lname:any,passwd:any,isactive:any,isadmin:any) {
+        const result = await this.supabase
+    .from("users")
+    .insert({password:passwd,username:uname,firstname:fname,lastname:lname,isactive:isactive,isadmin:isadmin});
     console.log("RESULT");
     console.log(result);
     return result || [];

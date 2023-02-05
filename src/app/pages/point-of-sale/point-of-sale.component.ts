@@ -15,6 +15,7 @@ export class PointOfSaleComponent implements OnInit {
   transactionInfo!: TransactionInfo;
   ShowPhoneNumber:boolean=false;
   isEditPageModelOpen:boolean=false;
+  isAddPageModelOpen:boolean=false;
   isLoggedIn=false;
 
   opt = {
@@ -52,6 +53,12 @@ export class PointOfSaleComponent implements OnInit {
   }
   onEditPageClose(){
     this.isEditPageModelOpen=false;
+  }
+  onAddPageClick(){
+    this.isAddPageModelOpen=true;
+  }
+  onAddPageClose(){
+    this.isAddPageModelOpen=false;
   }
 
   closeModalOnFinish(e:TransactionInfo){

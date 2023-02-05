@@ -1,0 +1,32 @@
+<table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
+    <thead>
+      <tr>
+        <th>Sr#</th>
+        <th> Id </th>
+        <th> First Name </th>
+        <th> Last Name </th>
+        <th> Username</th>
+        <th> Active </th>
+        <th> Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
+        <th>{{this.reviewList.length - i}}</th>
+        <td>User Name</td>
+        <td>{{trans.customerInfo.name}}</td>
+        <td>{{this.totalProducts[this.reviewList.length - i - 1]}}</td>
+        <td>{{trans.transactionDate.getDate() + "/" + trans.transactionDate.getMonth() +"/"+ trans.transactionDate.getFullYear()}}</td>
+        <td>{{this.totalPrice[this.reviewList.length - i - 1]}}</td>
+      </tr> -->
+      <tr *ngFor="let user of this.userList.reverse() let i = index">
+        <td>{{this.userList.length - i}}</td>
+        <td>{{user.userId}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.userActive}}</td>
+        <td>{{user.userAdmin}}</td>
+      </tr>
+    </tbody>
+  </table>

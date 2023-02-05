@@ -1,16 +1,28 @@
 <div class="mockup-window border bg-base-300">
     <div class='flex flex-col justify-center items-center'>
-        <div class='text-lg '>
-            <h2 class="display-1">Log-In </h2>
-        </div>
+        <div class='text-lg '><div style="height:4vw; width: 8vw; font-weight: bold; font-size: x-large;" class="badge badge-primary">Log-In</div></div>
         <div class='divider m-0'></div>
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-8">
             <div class="m-6"></div>
-            <input type="text" #uName placeholder="User Name"
-                class="input input-bordered input-accent w-1000 max-w-xs" />
-            <input type="password" placeholder="Password" #pass
-                class="input input-bordered input-accent w-1000 max-w-xs" />
-            <div *ngIf="this.alert" class="alert alert-warning shadow-lg">
+            <div  class="flex flex-row gap-2 indicator">
+                <span class="indicator-item indicator-start badge">Required</span>
+                <input (keyup.enter)="this.getUserData()" type="text" style="width: 1000px;" #uName placeholder="User Name"
+                    class="input input-bordered input-accent w-1000 max-w-xs" />
+            </div>
+            <div  class="flex flex-row gap-2 indicator">
+                <span class="indicator-item indicator-start badge">Required</span>
+                <input style="width: 1000px;" (keyup.enter)="this.getUserData()" [type]="showPasswordOnPress ? 'text' : 'password'"
+                    placeholder="Password" #pass class="input input-bordered input-accent w-1000 max-w-xs" />
+                <button (mousedown)="showPasswordOnPress = !showPasswordOnPress"
+                    (mouseup)="showPasswordOnPress = !showPasswordOnPress">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>                  
+                </button>
+                
+            </div>
+            <div *ngIf="this.alert" style="position: relative;" class="alert alert-warning shadow-lg">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-4 w-4" fill="none"
                         viewBox="0 0 24 24">
@@ -21,12 +33,13 @@
                 </div>
             </div>
         </div>
-        <div class="m-6"></div>
+        <div class="m-4"></div>
         <div class="divider m-4"></div>
         <div class="flex flex-row justify-end gap-6">
             <button (click)="this.getUserData()" class="btn gap-6 w-400 rounded">
                 Log-In
             </button>
         </div>
+        <div class="m-6"></div>
     </div>
 </div>
