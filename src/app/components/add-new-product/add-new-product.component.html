@@ -1,0 +1,51 @@
+<div class="modal-box rounded w-11/12 h-5/6 max-w-screen-xl max-h-screen absolute overflow-auto">
+    <!-- Add Customer Screen Here -->
+    <div class='flex flex-col justify-center items-center'>
+        <div *ngIf="this.alert" style="position: relative;" class="alert alert-warning shadow-lg">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-4 w-4" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>Warning: Information is wrong!</span>
+            </div>
+        </div>
+        <div class='text-lg'>Add Product Page</div>
+        <div class='divider m-0'></div>
+    </div>
+    <div class="flex flex-col auto">
+        <div class="flex flex-row justify-center items-center gap-4">
+            <input #cust_prodname type="text" placeholder="Product Name" class="input input-bordered input-accent w-full max-w-xs" />
+            <input #cust_urduname type="text" placeholder="Urdu Name" class="input input-bordered input-accent w-full max-w-xs" />
+            <input #cust_Category type="text" placeholder="Category" class="input input-bordered input-accent w-full max-w-xs" />
+            <!-- <input type="text" placeholder="Customer Name" #pId
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-row justify-center items-center gap-4 my-3">
+            <input #cust_Code type="text" placeholder="Product Code" class="input input-bordered input-accent  w-full max-w-xs" />
+            <input #cust_Unit type="text" placeholder="Unit" class="input input-bordered input-accent  w-full max-w-xs" />
+            <input #cust_pack type="text" placeholder="Package Size" class="input input-bordered input-accent  w-full max-w-xs" />
+            <!-- <input type="radio" name="gender" value="Male" class="radio radio-accent" checked />Male
+            <input type="radio" name="gender" value="Female" class="radio radio-accent" />Female    -->
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-row justify-center items-center gap-4 my-1">
+            <input #cust_Retail type="text" placeholder="Retail Price" class="input input-bordered input-accent  w-full max-w-xs" />
+            <input #cust_WH type="text" placeholder="Wholesale Price" class="input input-bordered input-accent  w-full max-w-xs" />
+            <!-- <span class="label-text">Is Admin</span><input #cust_admin type="checkbox" class="checkbox"/>
+            <span class="label-text">Is Active</span><input #cust_active type="checkbox" class="checkbox" /> -->
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-col justify-center items-center my-3">
+            <button class="btn bg-accent gap-2 rounded my-2" (click)="this.addProduct()" >
+                Add Product
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>

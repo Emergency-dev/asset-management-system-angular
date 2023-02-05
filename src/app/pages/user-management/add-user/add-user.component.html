@@ -1,0 +1,38 @@
+<div class="modal-box rounded w-11/12 h-5/6 max-w-screen-xl max-h-screen absolute overflow-auto">
+    <!-- Add Customer Screen Here -->
+    <div class='flex flex-col justify-center items-center'>
+        <div class='text-lg'>Add User Page</div>
+        <div class='divider m-0'></div>
+    </div>
+    <div class="flex flex-col auto">
+        <div class="flex flex-row justify-center items-center gap-4">
+            <input #cust_fname type="text" placeholder="First Name" class="input input-bordered input-accent w-full max-w-xs" />
+            <input #cust_lname type="text" placeholder="Last Name" class="input input-bordered input-accent w-full max-w-xs" />  
+            <!-- <input type="text" placeholder="Customer Name" #pId
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-row justify-center items-center gap-4 my-3">
+            <input #cust_uname type="text" placeholder="User Name" class="input input-bordered input-accent w-full max-w-xs" />
+            <input #cust_pass type="password" placeholder="Password" class="input input-bordered input-accent  w-full max-w-xs" />
+            <input #cust_conpass type="password" placeholder="Confirm Password" class="input input-bordered input-accent  w-full max-w-xs" />
+            <!-- <input type="radio" name="gender" value="Male" class="radio radio-accent" checked />Male
+            <input type="radio" name="gender" value="Female" class="radio radio-accent" />Female    -->
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-row justify-center items-center gap-4 my-1">
+            <span class="label-text">Is Admin</span><input #cust_admin type="checkbox" class="checkbox"/>
+            <span class="label-text">Is Active</span><input #cust_active type="checkbox" class="checkbox" />
+        </div>
+        <div class="divider m-0"></div>
+        <div class="flex flex-col justify-center items-center my-3">
+            <button class="btn bg-accent gap-2 rounded my-2" (click)="this.addUser()" >
+                Add User
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            </button>
+        </div> 
+    </div>
+</div>

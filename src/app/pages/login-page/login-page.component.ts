@@ -14,12 +14,22 @@ export class LoginPageComponent implements OnInit {
 
   isLoggedIn=false;
   alert=false;
+  public showPassword: boolean=false;
+  public showPasswordOnPress: boolean=false;
   constructor(protected dataService: DataService) { }
 
   ngOnInit(): void {
   }
   async getUserData(){
-    const options = await (await this.dataService.userLogIn(this.uName.nativeElement.value,this.pass.nativeElement.value)).data;
+    if(this.uName.nativeElement.value==''||this.pass.nativeElement.value==''){
+      this.alert=true;
+      this.uName.nativeElement.required;
+      setTimeout(() => {
+        this.alert=false;        
+      }, 3000);
+    }
+    else{
+      const options = await (await this.dataService.userLogIn(this.uName.nativeElement.value,this.pass.nativeElement.value)).data;
       if(options?.length!=0){
         localStorage.setItem("Login","true");
         this.alert=false
@@ -27,18 +37,19 @@ export class LoginPageComponent implements OnInit {
           if(item)
           {
           }      
-        
-      })
+          
+        })
+      }
+      else{
+        localStorage.setItem("Login","false");
+        this.alert=true;
+        this.uName.nativeElement.required;
+        setTimeout(() => {
+          this.alert=false;
+          
+      }, 3000);
     }
-    else{
-      localStorage.setItem("Login","false");
-      this.alert=true;
-      this.uName.nativeElement.required;
-      setTimeout(() => {
-        this.alert=false;
-        
-      }, 5000);
-    }
+  }
     this.LogIN();
 }
   LogIN(){

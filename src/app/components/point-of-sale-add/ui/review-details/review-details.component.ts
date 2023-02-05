@@ -65,7 +65,9 @@ export class ReviewDetailsComponent implements OnInit {
         lastName:item.lastname,
         userImageUrl:"",
         username:item.username,
-        userType:""
+        userType:"",
+        userAdmin:item.isadmin,
+        userActive:item.isactive
       })
       this.listSallers.push(userInfo);
     });
