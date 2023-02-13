@@ -9,5 +9,5 @@ export class UserInfo{
     userType:string="";
     userAdmin!:boolean;
     userActive!:boolean;
-
+    password:string="";
 }

@@ -138,7 +138,16 @@ export class DataService {
     if (error) console.error(error)
     else console.log(data)
     }
-    async insertNewProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urdu_name:any) {
+    async insertNewProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urdu_name:any,cbm:any,weight:any) {
+        // const checkCode = await this.supabase
+        // .from(TABLE_PRODUCTS)
+        // .select('*')
+        // .eq("ProductCode",prod_code);
+        // if(checkCode?.count!=0){
+        // }
+        const result2 =await this.supabase
+        .from('MultiWeightProducts')
+        .insert({ProductCode:prod_code,CBM:cbm,Weight:weight,Pieces:pack});
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
         .insert({ProductCode:prod_code,Category:cat,ProductName:prod_name, SaleRate:sale_rate, MeasureUnit:m_unit,Packing:pack,UrduName:urdu_name, WHRate:wh_rate})
@@ -180,6 +189,24 @@ export class DataService {
         const result = await this.supabase
     .from("users")
     .insert({password:passwd,username:uname,firstname:fname,lastname:lname,isactive:isactive,isadmin:isadmin});
+    console.log("RESULT");
+    console.log(result);
+    return result || [];
+    }
+    async SelectUsers(id:any) {
+        const result = await this.supabase
+    .from("users")
+    .select('"userid","username","firstname","lastname","isactive","isadmin","password"')
+    .eq('userid',id);
+    console.log("RESULT");
+    console.log(result);
+    return result || [];
+    }
+    async UpdateUsers(id:any,uname:any,fname:any,lname:any,passwd:any,isactive:any,isadmin:any) {
+        const result = await this.supabase
+    .from("users")
+    .update({password:passwd,username:uname,firstname:fname,lastname:lname,isactive:isactive,isadmin:isadmin})
+    .eq('userid',id);
     console.log("RESULT");
     console.log(result);
     return result || [];
