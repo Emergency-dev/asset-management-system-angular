@@ -21,7 +21,7 @@
       </tr> -->
       <tr *ngFor="let user of this.userList.reverse() let i = index">
         <td>{{this.userList.length - i}}</td>
-        <td>{{user.userId}}</td>
+        <td><button (click)="selectUser(user.userId)"><span><strong>{{user.userId}}</strong></span></button></td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.username}}</td>
@@ -30,3 +30,50 @@
       </tr>
     </tbody>
   </table>
+
+  <app-modal *ngIf="this.isUpdatePageModalOpen" [isModalOpen]="this.isUpdatePageModalOpen" (closeModal)="this.onUpdatePageClose()">
+    <div class="modal-box rounded w-11/12 h-5/6 max-w-screen-xl max-h-screen absolute overflow-auto">
+      <!-- Add Customer Screen Here -->
+      <div class='flex flex-col justify-center items-center'>
+          <div class='text-lg'>Add User Page</div>
+          <div class='divider m-0'></div>
+      </div>
+      <div class="flex flex-col auto">
+          <div class="flex flex-row justify-center items-center gap-4">
+              <label>First Name:</label>
+              <input #cust_fname type="text" placeholder="First Name" class="input input-bordered input-accent w-full max-w-xs" />
+              <label>Last Name:</label>
+              <input #cust_lname type="text" placeholder="Last Name" class="input input-bordered input-accent w-full max-w-xs" />  
+              <!-- <input type="text" placeholder="Customer Name" #pId
+                  class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+          </div>
+          <div class="divider m-0"></div>
+          <div class="flex flex-row justify-center items-center gap-4 my-3">
+              <label>User Name:</label>
+              <input #cust_uname type="text" placeholder="User Name" class="input input-bordered input-accent w-full max-w-xs" />
+              <label>Password:</label>
+              <input #cust_pass type="password" placeholder="Password" class="input input-bordered input-accent  w-full max-w-xs" />
+              <label>Confirm Password:</label>
+              <input #cust_conpass type="password" placeholder="Confirm Password" class="input input-bordered input-accent  w-full max-w-xs" />
+              <!-- <input type="radio" name="gender" value="Male" class="radio radio-accent" checked />Male
+              <input type="radio" name="gender" value="Female" class="radio radio-accent" />Female    -->
+          </div>
+          <div class="divider m-0"></div>
+          <div class="flex flex-row justify-center items-center gap-4 my-1">
+              <span class="label-text">Is Admin</span><input #cust_admin type="checkbox" class="checkbox"/>
+              <span class="label-text">Is Active</span><input #cust_active type="checkbox" class="checkbox" />
+          </div>
+          <div class="divider m-0"></div>
+          <div class="flex flex-col justify-center items-center my-3">
+              <button class="btn bg-accent gap-2 rounded my-2" (click)="this.updateUser()" >
+                  Update User
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+                </svg>                  
+              </button>
+          </div> 
+      </div>
+  </div>
+</app-modal>

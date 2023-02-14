@@ -22,7 +22,8 @@ export class EditPageComponent implements OnInit {
 
   @Output() finishEvent = new EventEmitter<any>();
 
-
+  categoryName:string[]=[];
+  unitName:string[]=[];
   isProductCodeInDB: boolean = false;
   productInfo: editProdInfo = new editProdInfo();
   productInfoList: editProdInfo[] = [];
@@ -48,10 +49,10 @@ export class EditPageComponent implements OnInit {
     // this.dataService.getSelectedProducts(this.pId.nativeElement.value);
     const regex = new RegExp(/^[0-9]+$/);
     if(regex.test(this.pId.nativeElement.value)){
-      this.listingPage=false;
-      this.updatePage=true;
       const options = await (await this.dataService.getSelectedProducts(this.pId.nativeElement.value)).data;
       if(options?.length!=0){
+        this.listingPage=false;
+        this.updatePage=true;
         options?.map((item) => {
         let proInfo = new editProdInfo();
         proInfo = ({
@@ -71,7 +72,9 @@ export class EditPageComponent implements OnInit {
         this.productInfo = (proInfo);
         console.log(proInfo);
       })
-      this.setInputValue();
+      setTimeout(() => {
+        this.setInputValue();
+      }, 100);
       }
       else{
         alert("Product is NOT In Database")
@@ -141,6 +144,14 @@ export class EditPageComponent implements OnInit {
           Category:item.Category
         })
         this.prodList.push(proInfo);
+        if(!this.categoryName.includes(item.Category))
+        {
+          this.categoryName.push(item.Category);
+        }
+        if(!this.unitName.includes(item.MeasureUnit))
+        {
+          this.unitName.push(item.MeasureUnit);
+        }
         // console.log(proInfo);
       })
   }
@@ -219,12 +230,15 @@ export class EditPageComponent implements OnInit {
     this.prodNameList=[];
     this.productInfoList=[];
     this.productInfo=new editProdInfo();
-    this.setInputValue();
+    //this.setInputValue();
 
   }
   back(){
     this.updatePage=false;
     this.listingPage=true;
+    this.ClearProduct();
+    this.pName.nativeElement.value=''
+    this.pId.nativeElement.value=''
   }
   closeModel() {
   this.finishEvent.emit();

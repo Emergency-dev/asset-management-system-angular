@@ -37,27 +37,44 @@
             <input #prodName type="text" id="ProdName" placeholder="Product Name"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
             <p>Retail Price</p>
-            <input #SaleRate type="text" placeholder="Retail Price"
+            <input #SaleRate type="number" placeholder="Retail Price"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         </div>
         <div class="m-3"></div>
         <div class="flex flex-row gap-6">
             <p>Wholesale Price</p>
-            <input #WHRate type="text" placeholder="Wholesale Name"
+            <input #WHRate type="number" placeholder="Wholesale Name"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
             <p>Package Size</p>
-            <input #Package type="text" placeholder="Package Size"
+            <input #Package type="number" placeholder="Package Size"
                 class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         </div>
         <div class="m-3"></div>
         <div class="flex flex-row gap-6">
             <p>Product Unit</p>
-            <input #productUnit type="text" placeholder="Product Unit"
-                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            <!-- <input #productUnit type="text" placeholder="Product Unit"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+            <select #productUnit  class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+                <option value="">Select Unit</option>
+                <option value="{{Unit}}" *ngFor="let Unit of unitName">{{Unit}}</option>
+            </select>
             <p>Category</p>
-            <input #Category type="text" placeholder="Category"
-                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+            <!-- <input #Category type="text" placeholder="Category"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+            <select #Category  class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+                <option value="">Select Category</option>
+                <option value="{{category}}" *ngFor="let category of categoryName">{{category}}</option>
+            </select>
+            
         </div>
+        <!-- <div class="m-3"></div>
+        <div class="flex flex-row gap-6">
+            <p>Weight</p>
+            <input #cust_Wt type="number" placeholder="Weight" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+
+            <p>CBM</p>
+            <input #cust_CBM type="number" placeholder="CBM" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+        </div> -->
 
     </div>
     <div *ngIf="this.listingPage" >
@@ -77,7 +94,7 @@
                     <tr
                         *ngFor="let item of this.prodList | paginate: { itemsPerPage: 5, currentPage: p } let i=index ">
                         <td><button
-                                (click)="this.getEnteredProductInfoByID(item.productCode)">{{item.productCode}}</button>
+                                (click)="this.getEnteredProductInfoByID(item.productCode)"><span><strong>{{item.productCode}}</strong></span></button>
                         </td>
                         <td>{{item.productName}}</td>
                         <td>{{item.SalePrice}}</td>
@@ -98,7 +115,7 @@
                 Back
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                  </svg>                  
+                  </svg>
 
             </button>
         </div>
