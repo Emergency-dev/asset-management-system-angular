@@ -6,6 +6,7 @@ export class CustomerInfo{
     contactNumber:string = "";
     customerType:Customer = Customer.Regular
     customerCode:number =0;
+    customerId:number =0;
     OrganizationCode:number =0;
     OrganizationName:string = "";
     CityName:string = "";

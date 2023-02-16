@@ -236,7 +236,8 @@ export class CartComponent implements OnInit {
         customerType: 1,
         OrganizationCode: 0,
         OrganizationName: '',
-        CityName: item.CityName
+        CityName: item.CityName,
+        customerId:0
       })
       this.listCustomer.push(cusInfo);
     });

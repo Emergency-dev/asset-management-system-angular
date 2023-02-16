@@ -15,6 +15,7 @@ export class PointOfSaleComponent implements OnInit {
   transactionInfo!: TransactionInfo;
   ShowPhoneNumber:boolean=false;
   isEditPageModelOpen:boolean=false;
+  isEditCustPageModelOpen:boolean=false;
   isAddPageModelOpen:boolean=false;
   isLoggedIn=false;
 
@@ -59,6 +60,12 @@ export class PointOfSaleComponent implements OnInit {
   }
   onAddPageClose(){
     this.isAddPageModelOpen=false;
+  }
+  onEditCustPageClick(){
+    this.isEditCustPageModelOpen=true;
+  }
+  onEditCustPageClose(){
+    this.isEditCustPageModelOpen=false;
   }
 
   closeModalOnFinish(e:TransactionInfo){
