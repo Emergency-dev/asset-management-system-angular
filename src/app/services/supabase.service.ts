@@ -29,7 +29,20 @@ export class DataService {
     }
 
     async getCustomers() {
-        const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerId, CustomerName, Address, Mobile, CityName`);
+        const result = await this.supabase.from(TABLE_CUSTOMERS).select(`CustomerCode,CustomerId, CustomerName, Address, Mobile, CityName`);
+        return result || [];
+    }
+    async getCustomerById(id:any) {
+        const result = await this.supabase
+        .from(TABLE_CUSTOMERS).select(`CustomerCode,CustomerId, CustomerName, Address, Mobile, CityName`)
+        .eq('CustomerId',id);
+        return result || [];
+    }
+    async updateCustomerById(id:any,cust_name: string, cust_address: string, cust_city: string, cust_phone: string, cust_code: string) {
+        const result = await this.supabase
+        .from(TABLE_CUSTOMERS)
+        .update({CustomerCode:cust_code, CustomerName:cust_name, Address:cust_address, Mobile:cust_phone, CityName:cust_city})
+        .eq('CustomerId',id);
         return result || [];
     }
 

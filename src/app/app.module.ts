@@ -33,6 +33,7 @@ import { UserManagementComponent } from './pages/user-management/user-management
 import { UserListComponent } from './pages/user-management/user-list/user-list.component';
 import { AddUserComponent } from './pages/user-management/add-user/add-user.component';
 import { AddNewProductComponent } from './components/add-new-product/add-new-product.component';
+import { EditCustomerPageComponent } from './components/edit-customer-page/edit-customer-page.component';
 
 const appRoutes: Routes = [
   {path:'', component: PointOfSaleComponent},
@@ -67,7 +68,8 @@ const appRoutes: Routes = [
     UserManagementComponent,
     UserListComponent,
     AddUserComponent,
-    AddNewProductComponent
+    AddNewProductComponent,
+    EditCustomerPageComponent
   ],
   imports: [
     BrowserModule,
