@@ -2,67 +2,41 @@
 <div class="flex flex-row">
   <label class="input-group input-group-vertical">
     <span class="first:rounded-none first:rounded-tl">Search</span>
-    <input
-      [(ngModel)]="this.searchQuery"
-      type="text"
-      placeholder="Filter"
-      class="input input-bordered w-full
+    <input [(ngModel)]="this.searchQuery" type="text" placeholder="Filter" class="input input-bordered w-full
       focus:outline-none focus:bg-base-300
-      last:rounded-none"
-      (ngModelChange)="this.updateTable()"
-    />
+      last:rounded-none" (ngModelChange)="this.updateTable()" />
   </label>
   <label class="input-group input-group-vertical">
     <span class="first:rounded-none">Start Date</span>
-    <input
-      [ngModel]="this.startDate | date:'yyyy-MM-dd'"
-      (ngModelChange)="this.startDate = this.setDate($event); this.updateTable();"
-      type="date"
-      (keydown)="false"
-      class="input input-bordered w-full
+    <input [ngModel]="this.startDate | date:'yyyy-MM-dd'"
+      (ngModelChange)="this.startDate = this.setDate($event); this.updateTable();" type="date" (keydown)="false" class="input input-bordered w-full
       focus:outline-none focus:bg-base-300
-      last:rounded-none"
-
-    />
+      last:rounded-none" />
   </label>
   <label class="input-group input-group-vertical">
     <span class="first:rounded-none first:rounded-tr">End Date</span>
-    <input
-    [ngModel]="this.endDate | date:'yyyy-MM-dd'"
-    (ngModelChange)="this.endDate = this.setDate($event); this.updateTable();"
-      type="date"
-      (keydown)="false"
-      class="input input-bordered w-full
+    <input [ngModel]="this.endDate | date:'yyyy-MM-dd'"
+      (ngModelChange)="this.endDate = this.setDate($event); this.updateTable();" type="date" (keydown)="false" class="input input-bordered w-full
       focus:outline-none focus:bg-base-300
-      last:rounded-none"
-    />
+      last:rounded-none" />
   </label>
   <label class="input-group input-group-vertical">
     <span class="first:rounded-none first:rounded-tr">Get Today's transactions</span>
-    <button
-    (click)="getTodaysTransactions()"
-    class="input input-bordered w-full
+    <button (click)="getTodaysTransactions()" class="input input-bordered w-full
       focus:outline-none focus:bg-base-300
-      last:rounded-none"
-    >TODAY</button>
+      last:rounded-none">TODAY</button>
   </label>
   <label class="input-group input-group-vertical">
     <span class="first:rounded-none first:rounded-tr">Get This week's transactions</span>
-    <button
-    (click)="getThisWeeksTransactions()"
-    class="input input-bordered w-full
+    <button (click)="getThisWeeksTransactions()" class="input input-bordered w-full
       focus:outline-none focus:bg-base-300
-      last:rounded-none"
-    >THIS WEEK</button>
+      last:rounded-none">THIS WEEK</button>
   </label>
   <label class="input-group input-group-vertical">
     <span class="first:rounded-none first:rounded-tr">Get This month's transactions</span>
-    <button
-    (click)="getThisMonthsTransactions()"
-    class="input input-bordered w-full
+    <button (click)="getThisMonthsTransactions()" class="input input-bordered w-full
       focus:outline-none focus:bg-base-300
-      last:rounded-none"
-    >THIS MONTH</button>
+      last:rounded-none">THIS MONTH</button>
   </label>
 </div>
 <!-- <table datatable [dtOptions]="this.dtOptions" [dtTrigger]="this.dtTrigger" class="row-border hover compact stripe">
@@ -150,7 +124,9 @@
       <td>{{this.totalPrice[this.reviewList.length - i - 1]}}</td>
     </tr> -->
     <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
-      <th><button (click)="this.onNewPageClick(trans.transactionId,trans.CustomerName,trans.CustomerId,trans.transactionDate)">{{this.reviewList.length - i}}</button></th>
+      <th><button
+          (click)="this.onNewPageClick(trans.transactionId,trans.CustomerName,trans.CustomerId,trans.transactionDate)">{{this.reviewList.length
+          - i}}</button></th>
       <td>{{trans.SellerName}}</td>
       <td>{{trans.CustomerName}}</td>
       <td>{{trans.TotalProducts}}</td>
@@ -162,37 +138,9 @@
 
 <app-modal *ngIf="this.isNewPageModalOpen" [isModalOpen]="this.isNewPageModalOpen" (closeModal)="this.onNewPageClose()">
   <div class='flex flex-col justify-center items-center'>
-        <div class='text-lg'>Review Transaction</div>
-        <div class='divider m-0'></div>
+    <div class='text-lg'>Review Transaction</div>
+    <div class='divider m-0'></div>
   </div>
-  <div class="overflow-x-auto">
-    <table class="table w-full">
-      <!-- head -->
-      <thead>
-        <tr>
-          <th></th>
-          <th>Product Code</th>
-          <th>Product Name</th>
-          <th>Quantity</th>
-          <th>Per Unit Price</th>
-          <th>Customer Name</th>
-          <th>Total Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of this.selectedTransactionProductInfo let i=index">
-          <th>{{i+1}}</th>
-          <td>{{item.productCode}}</td>
-          <td>{{item.productName}}</td>
-          <td>{{item.quantity}}</td>
-          <td>{{item.unit}}</td>
-          <td>{{this.selectedCustomerName}}</td>
-          <td>{{item.totalPrice}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class='divider m-0'></div>
   <div class='flex justify-end'>
     <button class="btn btn-sm bg-primary gap-2 rounded" (click)="this.onClickPrint()">
       Print
@@ -203,4 +151,51 @@
       </svg>
     </button>
   </div>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th></th>
+          <th>Product Code</th>
+          <th>Product Name</th>
+          <th>Carton</th>
+          <th>Quantity</th>
+          <th>Per Unit Price</th>
+          <th>Customer Name</th>
+          <th>Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of this.transactionInfo.cartItemList let i=index">
+          <th>{{i+1}}</th>
+          <td>{{item.productInfo.productCode}}</td>
+          <td>{{item.productInfo.productName}}</td>
+          <td><input type="number" placeholder="Carton" [(ngModel)]="this.item.cartonQuantity" #cartonCount
+              class="bg-white input input-xs input-bordered w-20 max-w-xs rounded text-black" /></td>
+          <td><input type="number" placeholder="Quantity" [(ngModel)]="this.item.quantity" #quantityCount
+              class="bg-white input input-xs input-bordered w-20 max-w-xs rounded text-black" /></td>
+          <td>{{this.item.price}}
+            <!-- <input type="number" placeholder="Price" [(ngModel)]="this.item.price" #priceCount
+              class="bg-white input input-xs input-bordered w-20 max-w-xs rounded text-black" /> -->
+            </td>
+          <td>{{this.selectedCustomerName}}</td>
+          <td>{{item.totalPrice}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class='divider m-0'></div>
+  <div class='flex justify-start'>
+    <button (click)="this.saveEditProduct()" class="btn gap-2 rounded">
+      Update
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+      </svg>
+
+    </button>
+  </div>
+  
 </app-modal>

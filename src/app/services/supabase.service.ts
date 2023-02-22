@@ -115,6 +115,15 @@ export class DataService {
             .eq('OrderDate', trans_date);  
             return result || [];
     }
+    async updateOrderData(cust_id: any, trans_date: any,prod_id:any, carton: any,quantity:any) {
+        let result= await this.supabase
+            .from('Order')
+            .update({ProductQuantity:quantity,CartonQuantity:carton})
+            .eq('CustomerId', cust_id)
+            .eq('ProductId', prod_id)
+            .eq('OrderDate', trans_date);   
+            return result || [];
+    }
     async getSelectedProducts(cust_id:any) {
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
