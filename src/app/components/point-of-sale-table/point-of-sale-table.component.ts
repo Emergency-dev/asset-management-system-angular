@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Customer } from 'src/app/models/customer-type.enum';
@@ -18,6 +18,11 @@ import { Data } from '@angular/router';
   providers: [DataService, TransactionListService]
 })
 export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
+  @ViewChild("cartonCount") cartonCount: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("quantityCount") quantityCount: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("priceCount") priceCount: ElementRef<HTMLInputElement> = {} as ElementRef;
+
+
   @Output() finishTransaction:EventEmitter<TransactionInfo> = new EventEmitter();
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
@@ -230,16 +235,22 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
           let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
           if(item2.CustomerType=='Wholesale'){
             this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.WHRate,totalPrice:item1.quantity*item1.WHRate});
+            // this.cartonCount.nativeElement.value=item2.CartonQuantity;
+            // this.priceCount.nativeElement.value=item1.WHRate;
+            // this.quantityCount.nativeElement.value=item1.quantity;
             veryLocalCartItemInfo.price = item1.WHRate;
             veryLocalCartItemInfo.productInfo.productUnit = item1.WHRate;
-            veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate;
+            veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
             grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
           }
           else{
             this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
+            // this.cartonCount.nativeElement.value=item2.CartonQuantity;
+            // this.priceCount.nativeElement.value=item1.SaleRate;
+            // this.quantityCount.nativeElement.value=item1.quantity;
             veryLocalCartItemInfo.price = item1.SaleRate;
             veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
-            veryLocalCartItemInfo.totalPrice = item1.quantity*item1.SaleRate;
+            veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
             grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
           }
           veryLocalCartItemInfo.productInfo.productCode = item1.ProductCode;
@@ -252,6 +263,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
           //veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
           // console.log('veryLocalCartItemInfo');
           // console.log(veryLocalCartItemInfo);
+          this.transactionInfo.transactionId=item2.id;
           this.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
         }
       })
@@ -264,6 +276,18 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
 
   onNewPageClose(){
     this.isNewPageModalOpen = false;
+  }
+  saveEditProduct(){
+    this.transactionInfo.cartItemList.forEach(item => {
+      if(item.cartonQuantity > 0 
+        || item.quantity > 0 ){
+          this.dataService.updateOrderData(this.selectedCustomerId,this.selectedTransactionDate,item.productInfo.productCode,item.cartonQuantity,item.quantity);
+        }
+        else{
+          alert("Please fill all fields");
+        }
+      });
+      this.onNewPageClose()
   }
   onClickPrint(){
     console.log(this.transactionInfo)
