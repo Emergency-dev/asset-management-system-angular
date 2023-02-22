@@ -62,92 +62,92 @@
 </app-modal>
 <div class="invisible">
     <div class="text-black" #receipt>
-        <div class="urdu">
-            <div class="text-center text-xl">
-                ایسٹیمیٹ
+        <div *ngFor="let page of this.recieptPages" style="height: 10.69in; min-height: 10.69in; max-height: 10.69in;">
+            <div class="urdu">
+                <div class="text-center text-xl">
+                    ایسٹیمیٹ
+                </div>
+                <br>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-4 col-span-2 divide-y divide-black">
+                        <div class="text-4xl">ذیام فیسٹیول ڈیکوریشن</div>
+                        <div class="divider-horizontal"></div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>گنپت روڈ نیو انارکلی لاھور</div>
+                            <div>صدیق برادرز سیالکوٹ والے</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>حاجی اکبر : 03217116377</div>
+                            <div>ایم رفیع : 03216139677</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="col-span-2">حاجی اکبر : <span style="direction: rtl !important">04237361656 ,
+                                    04237361655</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>بل نمبر : <span>{{this.transactionInfo?.transactionId}}</span></div>
+                            <div *ngIf="!this.ShowPhoneNumber">کسٹمر : <span>{{this.transactionInfo?.customerInfo?.name}}</span></div>
+                            <div *ngIf="this.ShowPhoneNumber"> کسٹمر نمبر :<span>{{this.transactionInfo?.phoneNumber}}</span></div> 
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-4 divide-y divide-black">
+                        <div>اڈا : <span>{{this.transactionInfo?.customerInfo?.name}}</span></div>
+                        <div>پارٹی فون نمبر :<span>{{this.transactionInfo?.customerInfo?.contactNumber}}</span></div>                                       
+                        <div>تاریخ : <span>{{this.transactionInfo?.transactionDate}}</span></div>
+                        <div>شہر : <span>{{this.transactionInfo?.customerInfo?.CityName}}</span></div>
+                        <div> سیل بل :<span></span></div>
+                    </div>
+                </div>
+                <div class="divider before:bg-black after:bg-black"></div>
+        
+                <br>
+            </div>
+            <div>
+                <table class="border-collapse border border-slate-500 min-w-full receiptTable">
+                    <thead>
+                        <tr>
+                            <th class="border border-slate-600">کل رقم</th>
+                            <th class="border border-slate-600 ">ریٹ</th>
+                            <th class="border border-slate-600 ">کل تعداد</th>
+                            <th class="border border-slate-600 ">پیس/درجن</th>
+                            <th class="border border-slate-600 ">کارٹن</th>
+                            <th class="border border-slate-600 w-56">آیٹم نام</th>
+                            <th class="border border-slate-600">آیٹم کوڈ</th>
+                            <th class="border border-slate-600 "> نمبر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of this.getPageItems(page); let i = index">
+                            <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing)*item.price + (item.quantity * item.price)}}</td>
+                            <td class="border border-slate-700">{{item?.price}}</td>
+                            <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing) + 1*item.quantity}}</td>
+                            <td class="border border-slate-700">{{item?.quantity}}</td>
+                            <td class="border border-slate-700">{{item?.cartonQuantity}}</td>
+                            <td class="border border-slate-700 text-center">{{item?.productInfo?.urduName}}</td>
+                            <td class="border border-slate-700">{{item?.productInfo?.productCode}}</td>
+                            <td class="border border-slate-700">{{i + 1}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <br>
-            <div class="grid grid-cols-3 gap-4">
-                <div class="flex flex-col gap-4 col-span-2 divide-y divide-black">
-                    <div class="text-4xl">ذیام فیسٹیول ڈیکوریشن</div>
-                    <div class="divider-horizontal"></div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>گنپت روڈ نیو انارکلی لاھور</div>
-                        <div>صدیق برادرز سیالکوٹ والے</div>
+            <div class="urdu">
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-4 divide-y divide-black">
+                        <div>ٹوٹل کارٹن : <span></span></div>
+                        <div>پیس/درجن  :<span></span></div>
+                        <div>ٹوٹل پیس/درجن  : <span></span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>حاجی اکبر : 03217116377</div>
-                        <div>ایم رفیع : 03216139677</div>
+                    <div class="flex flex-col gap-4 divide-y divide-black">
+                        <div>سیل مین  : <span>{{this.transactionInfo?.userInfo?.firstName}}</span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="col-span-2">حاجی اکبر : <span style="direction: rtl !important">04237361656 ,
-                                04237361655</span></div>
+                    <div class="flex flex-col gap-4 divide-y divide-black">
+                        <div>کل رقم : <span>{{this.transactionInfo?.grandTotal}}</span></div>
+                        <div>رعائت :<span></span></div>
+                        <div>اصل رقم : <span></span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>بل نمبر : <span>{{this.transactionInfo?.transactionId}}</span></div>
-                        <div *ngIf="!this.ShowPhoneNumber">کسٹمر : <span>{{this.transactionInfo?.customerInfo?.name}}</span></div>
-                        <div *ngIf="this.ShowPhoneNumber"> کسٹمر نمبر :<span>{{this.transactionInfo?.phoneNumber}}</span></div> 
-                    </div>
-                </div>
-                <div class="flex flex-col gap-4 divide-y divide-black">
-                    <div>اڈا : <span>{{this.transactionInfo?.customerInfo?.name}}</span></div>
-                    <div>پارٹی فون نمبر :<span>{{this.transactionInfo?.customerInfo?.contactNumber}}</span></div>                                       
-                    <div>تاریخ : <span>{{this.transactionInfo?.transactionDate}}</span></div>
-                    <div>شہر : <span>{{this.transactionInfo?.customerInfo?.CityName}}</span></div>
-                    <div> سیل بل :<span></span></div>
                 </div>
             </div>
-            <div class="divider before:bg-black after:bg-black"></div>
-    
-            <br>
         </div>
-        <div>
-            <table class="border-collapse border border-slate-500 min-w-full receiptTable">
-                <thead>
-                    <tr>
-                        <th class="border border-slate-600">کل رقم</th>
-                        <th class="border border-slate-600 ">ریٹ</th>
-                        <th class="border border-slate-600 ">کل تعداد</th>
-                        <th class="border border-slate-600 ">پیس/درجن</th>
-                        <th class="border border-slate-600 ">کارٹن</th>
-                        <th class="border border-slate-600 w-56">آیٹم نام</th>
-                        <th class="border border-slate-600">آیٹم کوڈ</th>
-                        <th class="border border-slate-600 "> نمبر</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of this.transactionInfo?.cartItemList; let i = index">
-                        <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing)*item.price + (item.quantity * item.price)}}</td>
-                        <td class="border border-slate-700">{{item?.price}}</td>
-                        <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing) + 1*item.quantity}}</td>
-                        <td class="border border-slate-700">{{item?.quantity}}</td>
-                        <td class="border border-slate-700">{{item?.cartonQuantity}}</td>
-                        <td class="border border-slate-700 text-center">{{item?.productInfo?.urduName}}</td>
-                        <td class="border border-slate-700">{{item?.productInfo?.productCode}}</td>
-                        <td class="border border-slate-700">{{i + 1}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <div class="urdu">
-            <div class="grid grid-cols-3 gap-4">
-                <div class="flex flex-col gap-4 divide-y divide-black">
-                    <div>ٹوٹل کارٹن : <span></span></div>
-                    <div>پیس/درجن  :<span></span></div>
-                    <div>ٹوٹل پیس/درجن  : <span></span></div>
-                </div>
-                <div class="flex flex-col gap-4 divide-y divide-black">
-                    <div>سیل مین  : <span>{{this.transactionInfo?.userInfo?.firstName}}</span></div>
-                </div>
-                <div class="flex flex-col gap-4 divide-y divide-black">
-                    <div>کل رقم : <span>{{this.transactionInfo?.grandTotal}}</span></div>
-                    <div>رعائت :<span></span></div>
-                    <div>اصل رقم : <span></span></div>
-                </div>
-            </div>
-            
-        </div>
-        <br>
     </div>
 </div>
