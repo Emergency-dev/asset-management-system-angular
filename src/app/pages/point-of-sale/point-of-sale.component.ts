@@ -19,6 +19,9 @@ export class PointOfSaleComponent implements OnInit {
   isAddPageModelOpen:boolean=false;
   isLoggedIn=false;
 
+  recieptPages:number[] = [];
+  itemsPerPage:number = 12;
+
   opt = {
     margin:       0.5,
     filename:     'myfile.pdf',
@@ -78,6 +81,9 @@ export class PointOfSaleComponent implements OnInit {
     this.isAddModalOpen = false;
     this.transactionInfo = new TransactionInfo;
     this.transactionInfo = e;
+
+    this.recieptPages = Array(Math.ceil(this.transactionInfo.cartItemList.length / this.itemsPerPage)).fill(0).map((a, i) => i);
+
     setTimeout(() => {
       this.convertToPdf();
     }, 1000);
@@ -87,6 +93,11 @@ export class PointOfSaleComponent implements OnInit {
     html2pdf().set(this.opt).from(this.receipt.nativeElement).toPdf().get('pdf').then(function (pdf) {
       window.open(pdf.output('bloburl'), '_blank');
     });
+  }
+
+  getPageItems(pageNumber: number){
+    console.log(pageNumber);
+    return this.transactionInfo.cartItemList.slice(pageNumber * this.itemsPerPage, (pageNumber * this.itemsPerPage) + this.itemsPerPage);
   }
 }
 
