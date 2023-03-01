@@ -56,6 +56,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    selectedTransactionDate:Date = new Date;
    selectedTransactionProductInfo:{productCode:string,productName:string,urduName:string,quantity:number,unit:string,totalPrice:number}[] = [];
    transactionInfo:TransactionInfo = new TransactionInfo;
+   isEditMode:boolean=false;
    // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
 
@@ -276,6 +277,13 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
 
   onNewPageClose(){
     this.isNewPageModalOpen = false;
+    this.isEditMode=false;
+  }
+  EditOn(){
+    this.isEditMode=true;
+  }
+  Back(){
+    this.isEditMode=false;
   }
   saveEditProduct(){
     this.transactionInfo.cartItemList.forEach(item => {

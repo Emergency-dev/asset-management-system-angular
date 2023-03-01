@@ -166,7 +166,22 @@
           <th>Total Price</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="!this.isEditMode">
+        <tr *ngFor="let item of this.transactionInfo.cartItemList let i=index">
+          <th>{{i+1}}</th>
+          <td>{{item.productInfo.productCode}}</td>
+          <td>{{item.productInfo.productName}}</td>
+          <td>{{this.item.cartonQuantity}}</td>
+          <td>{{this.item.quantity}}</td>
+          <td>{{this.item.price}}
+            <!-- <input type="number" placeholder="Price" [(ngModel)]="this.item.price" #priceCount
+              class="bg-white input input-xs input-bordered w-20 max-w-xs rounded text-black" /> -->
+            </td>
+          <td>{{this.selectedCustomerName}}</td>
+          <td>{{item.totalPrice}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="this.isEditMode">
         <tr *ngFor="let item of this.transactionInfo.cartItemList let i=index">
           <th>{{i+1}}</th>
           <td>{{item.productInfo.productCode}}</td>
@@ -186,9 +201,31 @@
     </table>
   </div>
   <div class='divider m-0'></div>
-  <div class='flex justify-start'>
-    <button (click)="this.saveEditProduct()" class="btn gap-2 rounded">
+  <div *ngIf="!this.isEditMode" class='flex justify-start'>
+    <button (click)="this.EditOn()" class="btn gap-2 rounded">
+      Edit
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+      </svg>
+
+    </button>
+  </div>
+  <div *ngIf="this.isEditMode" class='flex justify-start'>
+    <button (click)="this.saveEditProduct()" class="btn gap-2 bg-primary rounded">
       Update
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+      </svg>
+
+    </button>
+  </div>
+  <div *ngIf="this.isEditMode" class='flex justify-end'>
+    <button (click)="this.Back()" class="btn gap-2 rounded">
+      Back
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
         class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round"
