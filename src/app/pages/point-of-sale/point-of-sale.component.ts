@@ -20,7 +20,7 @@ export class PointOfSaleComponent implements OnInit {
   isLoggedIn=false;
 
   recieptPages:number[] = [];
-  itemsPerPage:number = 12;
+  itemsPerPage:number = 10;
 
   opt = {
     margin:       0.5,
