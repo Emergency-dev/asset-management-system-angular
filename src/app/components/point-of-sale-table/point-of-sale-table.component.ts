@@ -57,6 +57,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
    selectedTransactionProductInfo:{productCode:string,productName:string,urduName:string,quantity:number,unit:string,totalPrice:number}[] = [];
    transactionInfo:TransactionInfo = new TransactionInfo;
    isEditMode:boolean=false;
+   isAdmin=false;
    // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
 
@@ -74,6 +75,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.checkAdmin();
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -300,5 +302,13 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
   onClickPrint(){
     console.log(this.transactionInfo)
     this.finishTransaction.emit(this.transactionInfo);
+  }
+  checkAdmin(){
+    if(localStorage.getItem('Admin')=='true'){
+      this.isAdmin=true;
+    }
+    else{
+      this.isAdmin=false;
+    }
   }
 }

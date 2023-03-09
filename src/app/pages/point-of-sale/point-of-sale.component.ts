@@ -2,7 +2,10 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 
 import * as html2pdf from 'html2pdf.js';
 import { PosTransactionService } from 'src/app/components/point-of-sale-add/services/pos-transaction.service';
+import { LoginInfo } from 'src/app/models/login-info';
 import { TransactionInfo } from 'src/app/models/transaction-info.model';
+import { DataService } from 'src/app/services/supabase.service';
+import { LoginService } from '../login-page/services/login.service';
 
 @Component({
   selector: 'app-point-of-sale',
@@ -18,6 +21,8 @@ export class PointOfSaleComponent implements OnInit {
   isEditCustPageModelOpen:boolean=false;
   isAddPageModelOpen:boolean=false;
   isLoggedIn=false;
+  isAdmin=false;
+  logedinInfo:LoginInfo = new LoginInfo();
 
   recieptPages:number[] = [];
   itemsPerPage:number = 10;
@@ -30,11 +35,13 @@ export class PointOfSaleComponent implements OnInit {
     jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
   };
 
-  constructor(private readonly transactionService:PosTransactionService) { }
+  constructor(private readonly transactionService:PosTransactionService,protected readonly loginService: LoginService) { }
 
   @ViewChild('receipt') receipt !: ElementRef;
 
   ngOnInit(): void {
+    console.log(this.loginService.loginInfo)
+    this.checkAdmin();
   }
 
   onAddClick(){
@@ -69,6 +76,14 @@ export class PointOfSaleComponent implements OnInit {
   }
   onEditCustPageClose(){
     this.isEditCustPageModelOpen=false;
+  }
+  checkAdmin(){
+    if(localStorage.getItem('Admin')=='true'){
+      this.isAdmin=true;
+    }
+    else{
+      this.isAdmin=false;
+    }
   }
 
   closeModalOnFinish(e:TransactionInfo){

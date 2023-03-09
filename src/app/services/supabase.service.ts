@@ -192,7 +192,7 @@ export class DataService {
     async userLogIn(uname:string , pass: string ){   
     const result = await this.supabase
     .from("users")
-    .select('userid')
+    .select('"userid","username","firstname","lastname","isactive","isadmin"')
     .eq("username",uname)
     .eq("password",pass);
     console.log("RESULT");
