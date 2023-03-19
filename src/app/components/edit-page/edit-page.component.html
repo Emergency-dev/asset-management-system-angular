@@ -75,6 +75,19 @@
             <p>CBM</p>
             <input #cust_CBM type="number" placeholder="CBM" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
         </div> -->
+        <div class="m-3"></div>
+        <div class="flex flex-row gap-6">
+            <p>Discount Type</p>
+            <!-- <input #Category type="text" placeholder="Category"
+                class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" /> -->
+            <select #DiscountType  class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black">
+                <option value="">Select Category</option>
+                <option value="Price" >Price</option>
+                <option value="Percentage" >Percentage</option>
+            </select>
+            <p>Discount</p>
+            <input #Discount type="number" placeholder="Discount" class="bg-white input input-sm input-bordered w-full max-w-xs rounded text-black" />
+        </div>
 
     </div>
     <div *ngIf="this.listingPage" >

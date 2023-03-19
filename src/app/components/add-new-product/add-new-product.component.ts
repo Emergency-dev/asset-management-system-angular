@@ -19,6 +19,8 @@ export class AddNewProductComponent implements OnInit {
   @ViewChild("cust_Code") cust_Code: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cust_Wt") cust_Wt: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("cust_CBM") cust_CBM: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("DiscountType") DiscountType: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("Discount") Discount: ElementRef<HTMLInputElement> = {} as ElementRef;
 
   alert:boolean=false;
   codeAlert:boolean=false;
@@ -26,7 +28,9 @@ export class AddNewProductComponent implements OnInit {
   
   unitName:string[]=[];
   prodCode:number[]= [];
-  number:number=0
+  number:number=0;
+  cartonPrice:any;
+  discountPrice: any;
   constructor(protected dataService: DataService) { }
 
   ngOnInit(): void {
@@ -74,7 +78,8 @@ export class AddNewProductComponent implements OnInit {
         this.cust_prodname.nativeElement.value.toUpperCase(),this.cust_pack.nativeElement.value,
         this.cust_Unit.nativeElement.value.toUpperCase(),this.cust_Retail.nativeElement.value,
         this.cust_WH.nativeElement.value,this.cust_urduname.nativeElement.value,
-        this.cust_CBM.nativeElement.value,this.cust_Wt.nativeElement.value
+        this.cust_CBM.nativeElement.value,this.cust_Wt.nativeElement.value,
+        this.cartonPrice
         );
     this.finishEvent.emit()
     }
@@ -125,5 +130,13 @@ export class AddNewProductComponent implements OnInit {
     });
     return isValid;
   }
-
+  SetCartonPrice(){
+    this.discountPrice= (this.Discount.nativeElement.value);
+    if(this.DiscountType.nativeElement.value=='Price'){
+      this.cartonPrice=this.cartonPrice-this.discountPrice;
+    }
+    else{
+      this.cartonPrice=this.cartonPrice - this.cartonPrice*(this.discountPrice/100);
+    }
+  }
   }

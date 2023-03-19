@@ -24,9 +24,11 @@
         <input type="radio" name="radio-10" class="radio" checked />
     </label> -->
             <div class="divider divider-vertical border m-0 h-full"></div>
-            <label *ngIf="this.cartonValue!=0">({{this.cartonValue}} x {{this.item.productInfo.packing }} + {{
+            <label *ngIf="this.cartonValue!=0 && this.item.cartonPrice==0">({{this.cartonValue}} x {{this.item.productInfo.packing }} + {{
                 this.item.quantity }}) x {{ this.item.price }} = {{(this.cartonValue * this.item.productInfo.packing) * this.item.price +
                 this.item.quantity * this.item.price }}</label>
+            <label *ngIf="this.cartonValue!=0 && this.item.productInfo.cartonPrice!=0">{{this.item.cartonPrice}} + {{this.item.quantity }} x 
+                {{ this.item.price }} = {{this.item.productInfo.cartonPrice + this.item.quantity * this.item.price }}</label>
             <label *ngIf="this.cartonValue==0" style="display: flex; position:absolute;">{{ this.item.quantity }} x {{
                 this.item.price }} = {{ this.item.quantity * this.item.price }}</label>
         </div>

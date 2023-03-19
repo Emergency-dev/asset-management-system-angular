@@ -92,7 +92,8 @@ export class PurchaseCartComponent implements OnInit {
         minPrice: item.MinRate,
         maxPrice: 0,
         packing:item.Packing,
-        urduName:item.urduName
+        urduName:item.urduName,
+        cartonPrice: Number(item.CartonPrice)
       })
       this.productInfo.push(proInfo);
     });

@@ -48,6 +48,8 @@ export class CartItemAddComponent implements OnInit {
     veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
     veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;
+    veryLocalCartItemInfo.productInfo.cartonPrice = this.cartItemInfo.productInfo.cartonPrice;
+    veryLocalCartItemInfo.cartonPrice = this.cartItemInfo.cartonPrice;
     console.log('veryLocalCartItemInfo');
     console.log(veryLocalCartItemInfo);
     this.transactionService.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
@@ -66,6 +68,7 @@ export class CartItemAddComponent implements OnInit {
         this.selectedProductInfo.minPrice = value.minPrice;
         this.cartItemInfo.totalPrice = value.price*this.cartItemInfo.quantity;
         this.cartItemInfo.productInfo.urduName = value.urduName;
+        this.cartItemInfo.productInfo.cartonPrice = value.cartonPrice;
 
         //this.customerService.selectedProductInfo = this.selectedProductInfo;
         //this.transactionService.transactionInfo.selectedProductInfo = this.selectedProductInfo;
@@ -88,7 +91,8 @@ export class CartItemAddComponent implements OnInit {
         minPrice: item.MinRate,
         maxPrice: 0,
         packing:item.Packing,
-        urduName:item.UrduName
+        urduName:item.UrduName,
+        cartonPrice: (item.CartonPrice)
       })
       this.productInfo.push(proInfo);
     });

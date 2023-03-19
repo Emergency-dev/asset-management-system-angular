@@ -48,7 +48,7 @@ export class ReviewDetailsComponent implements OnInit {
 
     this.cartItems.forEach(item => {
       this.price = item.totalPrice;
-      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice:(item.cartonQuantity*item.productInfo.packing) * item.price + item.quantity * item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
+      this.reviewList.push({productCode:item.productInfo.productCode,productName:item.productInfo.productName,quantity:item.quantity,unit:item.unit,perUnitPrice:item.price,totalPrice: item.cartonPrice==0? (item.cartonQuantity*item.productInfo.packing) * item.price + item.quantity * item.price : item.cartonPrice + item.quantity * item.price,customerName:this.customerInfo.name,customerPhone:this.customerInfo.contactNumber});
     });
   }
 

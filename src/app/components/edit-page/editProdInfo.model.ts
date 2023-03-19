@@ -3,7 +3,7 @@ export class editProdInfo{
     productCode:string = "";
     productName:string = "";
     packing:number = 0;
-    
+    CartonPrice:number=0;
     SalePrice:number = 0;
     WHPrice:number = 0;
     minPrice:number = 0;

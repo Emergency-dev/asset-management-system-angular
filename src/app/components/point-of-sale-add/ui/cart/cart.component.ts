@@ -98,10 +98,16 @@ export class CartComponent implements OnInit {
     veryLocalCartItemInfo.productInfo.packing = this.cartItemInfo.productInfo.packing;
     veryLocalCartItemInfo.quantity = this.cartItemInfo.quantity;
     veryLocalCartItemInfo.cartonQuantity = this.cartItemInfo.cartonQuantity;
+    veryLocalCartItemInfo.cartonPrice = this.cartItemInfo.cartonPrice;
+    veryLocalCartItemInfo.productInfo.cartonPrice = this.cartItemInfo.cartonPrice;
     // veryLocalCartItemInfo.totalPrice = this.cartItemInfo.totalPrice;
 
-    
-    veryLocalCartItemInfo.totalPrice = (this.cartItemInfo.cartonQuantity*this.cartItemInfo.productInfo.packing + this.cartItemInfo.quantity) * this.cartItemInfo.price;
+    if(!this.cartItemInfo.cartonPrice){
+      veryLocalCartItemInfo.totalPrice = (this.cartItemInfo.cartonQuantity*this.cartItemInfo.productInfo.packing + this.cartItemInfo.quantity) * this.cartItemInfo.price;
+    }
+    else{
+      veryLocalCartItemInfo.totalPrice = this.cartItemInfo.cartonPrice + this.cartItemInfo.quantity * this.cartItemInfo.price;
+    }
 
     veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
     veryLocalCartItemInfo.productInfo.urduName = this.cartItemInfo.productInfo.urduName;
@@ -192,7 +198,8 @@ export class CartComponent implements OnInit {
         minPrice: item.MinRate,
         maxPrice: 0,
         packing : Number(item.Packing),
-        urduName : item.UrduName
+        urduName : item.UrduName,
+        cartonPrice: Number(item.CartonPrice)
       })
       this.productInfo.push(proInfo);
     });
@@ -210,7 +217,8 @@ export class CartComponent implements OnInit {
           minPrice: item.MinRate,
           maxPrice: 0,
           urduName: item.UrduName,
-          packing : Number(item.Packing)
+          packing : Number(item.Packing),
+          cartonPrice: Number(item.CartonPrice)
         })
         this.productInfo.push(proInfo);
       });
@@ -329,6 +337,8 @@ export class CartComponent implements OnInit {
     this.cartItemInfo.totalPrice = value.price * this.cartItemInfo.quantity;
     this.cartItemInfo.productInfo.packing = value.packing;
     this.cartItemInfo.productInfo.urduName = value.urduName;
+    this.cartItemInfo.productInfo.cartonPrice = value.cartonPrice;
+    this.cartItemInfo.cartonPrice = value.cartonPrice;
     this.ClearProduct();
     //this.cartItemInfo.productInfo.productCode = "";
   }
@@ -392,9 +402,13 @@ export class CartComponent implements OnInit {
     this.transactionService.transactionInfo.cartItemList.forEach((value) => {
       this.cartonValue.forEach(element=>{
         if(element.cartonCode == value.productInfo.productCode){
-          if(element.cartonValue!=0){
+          if(element.cartonValue!=0 && value.cartonPrice==0){
             temp2= element.cartonValue * value.productInfo.packing;
           temp += temp2 * value.price;
+          }
+          else if(element.cartonValue!=0 && value.cartonPrice!=0){
+            temp2= value.cartonPrice;
+          temp += temp2;
           }
           }
       })

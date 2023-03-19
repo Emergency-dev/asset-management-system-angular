@@ -9,7 +9,7 @@ export class ProductInfo{
     price:number = 0;
     minPrice:number = 0;
     maxPrice:number = 0;
-    
+    cartonPrice: number=0;
 
     productImageUrl:string = "";
     productUnitType?:Unit;

@@ -1,3 +1,4 @@
+import { TotalPrice } from "../components/point-of-sale-add/ui/cart/TotalPrice.model";
 import { CustomerInfo } from "./customer-info.model";
 import { ProductInfo } from "./product-info.model";
 import { UserInfo } from "./user-info.model";
@@ -20,5 +21,7 @@ export class CartItemInfo{
     unit:string = "";
     price:number = 0;
     cartonQuantity:number = 0;
-    totalPrice:number = (this.cartonQuantity*this.productInfo.packing + this.quantity) * this.price;
+    cartonPrice:number = 0;
+    totalPrice:number = this.cartonPrice== 0 ? (this.cartonQuantity*this.productInfo.packing + this.quantity) * this.price : this.cartonPrice + this.quantity*this.price;
+    
 }

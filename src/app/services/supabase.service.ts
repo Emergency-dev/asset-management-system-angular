@@ -21,7 +21,7 @@ export class DataService {
     }
 
     async getProducts() {
-        const result = await this.supabase.from(TABLE_PRODUCTS).select('"ProductCode", "ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate"');
+        const result = await this.supabase.from(TABLE_PRODUCTS).select('"ProductCode", "ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate","CartonPrice"');
         if(result.error) console.log(result.error);
         console.log("RESULT");
         console.log(result);
@@ -127,7 +127,7 @@ export class DataService {
     async getSelectedProducts(cust_id:any) {
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
-        .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate"')
+        .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate","CartonPrice"')
         .eq("ProductCode",cust_id);
         if(result.error) console.log(result.error);
         console.log("RESULT");
@@ -137,7 +137,7 @@ export class DataService {
     async getSelectedProductsByName(cust_name:any) {
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
-        .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate", "*"')
+        .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate","CartonPrice", "*"')
         .ilike("ProductName",'%'+cust_name+'%');
         if(result.error) console.log(result.error);
         console.log("RESULT");
@@ -160,7 +160,7 @@ export class DataService {
     if (error) console.error(error)
     else console.log(data)
     }
-    async insertNewProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urdu_name:any,cbm:any,weight:any) {
+    async insertNewProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,urdu_name:any,cbm:any,weight:any,cartonPrice:any) {
         // const checkCode = await this.supabase
         // .from(TABLE_PRODUCTS)
         // .select('*')
@@ -172,16 +172,16 @@ export class DataService {
         .insert({ProductCode:prod_code,CBM:cbm,Weight:weight,Pieces:pack});
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
-        .insert({ProductCode:prod_code,Category:cat,ProductName:prod_name, SaleRate:sale_rate, MeasureUnit:m_unit,Packing:pack,UrduName:urdu_name, WHRate:wh_rate})
+        .insert({ProductCode:prod_code,Category:cat,ProductName:prod_name, SaleRate:sale_rate, MeasureUnit:m_unit,Packing:pack,UrduName:urdu_name, WHRate:wh_rate,CartonPrice:cartonPrice})
         if(result.error) console.log(result.error);
         console.log("RESULT");
         console.log(result);
         return result || [];
     }
-    async updateSelectedProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any) {
+    async updateSelectedProducts(prod_code:any,cat:any,prod_name:any,pack:any,m_unit:any,sale_rate:any,wh_rate:any,cartonPrice:any) {
         const result = await this.supabase
         .from(TABLE_PRODUCTS)
-        .update({Category:cat,ProductName:prod_name,Packing:pack,MeasureUnit:m_unit,SaleRate:sale_rate,WHRate:wh_rate})
+        .update({Category:cat,ProductName:prod_name,Packing:pack,MeasureUnit:m_unit,SaleRate:sale_rate,WHRate:wh_rate,CartonPrice:cartonPrice})
         // .select('"ProductCode","Category","SubCatCode","ProductName", "SaleRate", "MinRate", "MeasureUnit","Packing","UrduName", "WHRate", "CtnWHRate"')
         .eq("ProductCode",prod_code);
         if(result.error) console.log(result.error);

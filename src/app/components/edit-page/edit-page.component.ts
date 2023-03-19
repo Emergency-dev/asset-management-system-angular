@@ -19,6 +19,8 @@ export class EditPageComponent implements OnInit {
   @ViewChild("Package") Package: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("productUnit") productUnit: ElementRef<HTMLInputElement> = {} as ElementRef;
   @ViewChild("Category") Category: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("DiscountType") DiscountType: ElementRef<HTMLInputElement> = {} as ElementRef;
+  @ViewChild("Discount") Discount: ElementRef<HTMLInputElement> = {} as ElementRef;
 
   @Output() finishEvent = new EventEmitter<any>();
 
@@ -37,6 +39,8 @@ export class EditPageComponent implements OnInit {
   p:number=0;
   alert:boolean=false;
   success:boolean=false;
+  cartonPrice:any;
+  discountPrice:any;
   constructor(protected dataService: DataService) { }
 
   ngOnInit(): void {
@@ -67,7 +71,8 @@ export class EditPageComponent implements OnInit {
           MeasureUnit:item.MeasureUnit,
           packing : Number(item.Packing),
           urduName : item.UrduName,
-          Category:item.Category
+          Category:item.Category,
+          CartonPrice:item.CartonPrice
         })
         this.productInfo = (proInfo);
         console.log(proInfo);
@@ -108,7 +113,8 @@ export class EditPageComponent implements OnInit {
           MeasureUnit:item.MeasureUnit,
           packing : Number(item.Packing),
           urduName : item.UrduName,
-          Category:item.Category
+          Category:item.Category,
+          CartonPrice:item.CartonPrice
         })
         this.productInfoList.push(proInfo);
         this.prodNameList.push(proInfo.productName);
@@ -141,7 +147,8 @@ export class EditPageComponent implements OnInit {
           MeasureUnit:item.MeasureUnit,
           packing : Number(item.Packing),
           urduName : item.UrduName,
-          Category:item.Category
+          Category:item.Category,
+          CartonPrice:item.CartonPrice
         })
         this.prodList.push(proInfo);
         if(!this.categoryName.includes(item.Category))
@@ -159,13 +166,13 @@ export class EditPageComponent implements OnInit {
   setInputValue() {
     //this.updatePage=true;
     this.prodCode=this.productInfo.productCode;
+    this.cartonPrice=this.productInfo.SalePrice*this.productInfo.packing;
     this.prodName.nativeElement.value=this.productInfo.productName;
     this.SaleRate.nativeElement.value=(this.productInfo.SalePrice).toString();
     this.WHRate.nativeElement.value=(this.productInfo.WHPrice).toString();
     this.Package.nativeElement.value=(this.productInfo.packing).toString();
     this.productUnit.nativeElement.value=(this.productInfo.productUnit);
     this.Category.nativeElement.value=(this.productInfo.Category);
-
   }
   getEnteredProductInfo() {
     this.pListName.nativeElement.value;
@@ -198,9 +205,20 @@ export class EditPageComponent implements OnInit {
       this.productInfo.productCode,this.productInfo.Category,this.productInfo.productName,this.productInfo.packing,
       this.productInfo.MeasureUnit,this.productInfo.SalePrice,this.productInfo.WHPrice,this.productInfo.urduName)
   }
+  SetCartonPrice(){
+    this.discountPrice= (this.Discount.nativeElement.value);
+    if(this.DiscountType.nativeElement.value=='Price'){
+      console.log(this.cartonPrice);
+      this.cartonPrice=this.cartonPrice-this.discountPrice;
+    }
+    else{
+      this.cartonPrice=this.cartonPrice - this.cartonPrice*(this.discountPrice/100);
+    }
+  }
   saveEditProduct(){
     if(this.prodCode!=''){
       this.addProductBackup();
+      this.SetCartonPrice();
       this.dataService.updateSelectedProducts(
         this.prodCode,
         this.Category.nativeElement.value,
@@ -208,7 +226,8 @@ export class EditPageComponent implements OnInit {
         this.Package.nativeElement.value,
         this.productUnit.nativeElement.value,
         this.SaleRate.nativeElement.value,
-        this.WHRate.nativeElement.value
+        this.WHRate.nativeElement.value,
+        this.cartonPrice
       )
       //alert("Product Updated");
       this.success=true;
