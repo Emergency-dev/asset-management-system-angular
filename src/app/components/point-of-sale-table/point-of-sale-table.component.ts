@@ -243,8 +243,15 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
             // this.quantityCount.nativeElement.value=item1.quantity;
             veryLocalCartItemInfo.price = item1.WHRate;
             veryLocalCartItemInfo.productInfo.productUnit = item1.WHRate;
-            veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
-            grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
+            veryLocalCartItemInfo.cartonPrice =  item1.CartonPrice;
+            if(item1.CartonPrice){
+              veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate + item1.CartonPrice
+              grandTotal+=item1.quantity*item1.WHRate + item1.CartonPrice;
+          }
+            else{
+              veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
+              grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
+            }
           }
           else{
             this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.SaleRate,totalPrice:item1.quantity*item1.SaleRate});
@@ -253,8 +260,17 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
             // this.quantityCount.nativeElement.value=item1.quantity;
             veryLocalCartItemInfo.price = item1.SaleRate;
             veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
-            veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
-            grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
+            veryLocalCartItemInfo.cartonPrice =  item1.CartonPrice;
+            if(item1.CartonPrice){
+              veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate + item1.CartonPrice
+              grandTotal+=item1.quantity*item1.WHRate + item1.CartonPrice;
+          }
+            else{
+              veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
+              grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
+            }
+            // veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
+            // grandTotal+=(item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;
           }
           veryLocalCartItemInfo.productInfo.productCode = item1.ProductCode;
           veryLocalCartItemInfo.productInfo.productName = item1.ProductName;

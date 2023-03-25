@@ -166,7 +166,7 @@ export class EditPageComponent implements OnInit {
   setInputValue() {
     //this.updatePage=true;
     this.prodCode=this.productInfo.productCode;
-    this.cartonPrice=this.productInfo.SalePrice*this.productInfo.packing;
+    this.cartonPrice=this.productInfo.WHPrice*this.productInfo.packing;
     this.prodName.nativeElement.value=this.productInfo.productName;
     this.SaleRate.nativeElement.value=(this.productInfo.SalePrice).toString();
     this.WHRate.nativeElement.value=(this.productInfo.WHPrice).toString();
@@ -208,7 +208,6 @@ export class EditPageComponent implements OnInit {
   SetCartonPrice(){
     this.discountPrice= (this.Discount.nativeElement.value);
     if(this.DiscountType.nativeElement.value=='Price'){
-      console.log(this.cartonPrice);
       this.cartonPrice=this.cartonPrice-this.discountPrice;
     }
     else{
