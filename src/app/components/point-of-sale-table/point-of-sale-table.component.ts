@@ -244,9 +244,9 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
             veryLocalCartItemInfo.price = item1.WHRate;
             veryLocalCartItemInfo.productInfo.productUnit = item1.WHRate;
             veryLocalCartItemInfo.cartonPrice =  item1.CartonPrice;
-            if(item1.CartonPrice){
-              veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate + item1.CartonPrice
-              grandTotal+=item1.quantity*item1.WHRate + item1.CartonPrice;
+            if(item1.CartonPrice>0){
+              veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate + item2.CartonQuantity*item1.CartonPrice
+              grandTotal+=item1.quantity*item1.WHRate + item2.CartonQuantity*item1.CartonPrice;
           }
             else{
               veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.WHRate;
@@ -261,9 +261,9 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
             veryLocalCartItemInfo.price = item1.SaleRate;
             veryLocalCartItemInfo.productInfo.productUnit = item1.SaleRate;
             veryLocalCartItemInfo.cartonPrice =  item1.CartonPrice;
-            if(item1.CartonPrice){
-              veryLocalCartItemInfo.totalPrice = item1.quantity*item1.WHRate + item1.CartonPrice
-              grandTotal+=item1.quantity*item1.WHRate + item1.CartonPrice;
+            if(item1.CartonPrice>0){
+              veryLocalCartItemInfo.totalPrice = item1.quantity*item1.SaleRate + item2.CartonQuantity*item1.CartonPrice
+              grandTotal+=item1.quantity*item1.SaleRate + item2.CartonQuantity*item1.CartonPrice;
           }
             else{
               veryLocalCartItemInfo.totalPrice = (item1.quantity+item1.Packing*item2.CartonQuantity)*item1.SaleRate;

@@ -111,7 +111,6 @@ export class PointOfSaleComponent implements OnInit {
   }
 
   getPageItems(pageNumber: number){
-    console.log(pageNumber);
     return this.transactionInfo.cartItemList.slice(pageNumber * this.itemsPerPage, (pageNumber * this.itemsPerPage) + this.itemsPerPage);
   }
 }

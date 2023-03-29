@@ -120,7 +120,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of this.getPageItems(page); let i = index">
-                            <td class="border border-slate-700">{{item.cartonPrice==0 ? (item.cartonQuantity*item.productInfo.packing)*item.price + (item.quantity * item.price) : item.cartonPrice+(item.quantity * item.price)}}</td>
+                            <td class="border border-slate-700">{{item.cartonPrice>0?  item.cartonQuantity*item.cartonPrice+(item.quantity * item.price)  : (item.cartonQuantity*item.productInfo.packing)*item.price + (item.quantity * item.price)}}</td>
                             <td class="border border-slate-700">{{item?.price}}</td>
                             <td class="border border-slate-700">{{(item.cartonQuantity*item.productInfo.packing) + 1*item.quantity}}</td>
                             <td class="border border-slate-700">{{item?.quantity}}</td>
