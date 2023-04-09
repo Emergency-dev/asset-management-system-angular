@@ -282,7 +282,9 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
           //veryLocalCartItemInfo.unit = this.cartItemInfo.unit;
           // console.log('veryLocalCartItemInfo');
           // console.log(veryLocalCartItemInfo);
-          this.transactionInfo.transactionId=item2.id;
+          if(item2.BillNumber){
+            this.transactionInfo.transactionId=item2.BillNumber;
+          }
           this.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
         }
       })

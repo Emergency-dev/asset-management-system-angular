@@ -89,7 +89,7 @@ export class DataService {
         return result || [];
     }
 
-    async addOrderDetails(product_id: string, product_quantity: number, product_cartonquantity: number, cust_id: string, phoneNumber: number, customerType: string, user_ID: string) {
+    async addOrderDetails(product_id: string, product_quantity: number, product_cartonquantity: number, cust_id: string, phoneNumber: number, customerType: string, user_ID: string,billNumber: string) {
         // let { data, error } = await this.supabase
         //     .rpc('add_order_det', {
         //         product_id: product_id,
@@ -101,7 +101,7 @@ export class DataService {
         //     })
         let { data, error } = await this.supabase
         .from('Order')
-        .insert({ProductId:product_id,ProductQuantity:product_quantity,CustomerId:cust_id,CartonQuantity:product_cartonquantity,PhoneNumber:phoneNumber,CustomerType:customerType, userID:user_ID})
+        .insert({ProductId:product_id,ProductQuantity:product_quantity,CustomerId:cust_id,CartonQuantity:product_cartonquantity,PhoneNumber:phoneNumber,CustomerType:customerType, userID:user_ID,BillNumber:billNumber})
         if (error) console.error(error)
         else console.log(data)
 

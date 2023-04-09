@@ -78,13 +78,8 @@ export class PointOfSaleAddComponent implements OnInit {
     this.reviewList2.cartItemList.forEach(element => {
       if(element) products += 1;
     });
-    this.reviewList2.cartItemList.forEach(element => {
-      this.dataService.addOrderDetails(element.productInfo.productCode,element.quantity,element.cartonQuantity,this.reviewList2.customerInfo.customerCode.toString(),0,this.transactionService.transactionInfo.userInfo.userType,this.transactionService.transactionInfo.userInfo.userId);
-    });
     this.dataService.addTransactionDetails("User Name",this.reviewList2.customerInfo.name,products,price,this.reviewList2.customerInfo.customerCode.toString());
-    // this.finishTransaction.emit(this.reviewList2);
-    //this.transactionService.PrintTransaction();
-    this.finishTransaction.emit(this.transactionService.transactionInfo);
+    this.GetBillID();
     
   }
 
@@ -94,5 +89,28 @@ export class PointOfSaleAddComponent implements OnInit {
 
   seeDetails(e:any){
     this.transactionService.transactionInfo.grandTotal = e;
+  }
+  async GetBillID(){
+      //this.reviewList = this.transaction;
+      //console.log(this.dataService);
+      //console.log(this.serviceReviewList.getReviewList());
+      //this.reviewList.push(e) ;
+      //const Info: Array<TransactionSupabaseInfo> = [];
+      const options = await (await (this.dataService.getTransaction())).data;
+      options?.map((item)=>{
+        this.transactionService.transactionInfo.transactionId=item.id,
+        this.transactionService.transactionInfo.transactionDate=item.Date
+        })
+      if(options){
+        this.EmitFunction();
+      }
+  }
+  EmitFunction (){
+    this.reviewList2.cartItemList.forEach(element => {
+      this.dataService.addOrderDetails(element.productInfo.productCode,element.quantity,element.cartonQuantity,this.reviewList2.customerInfo.customerCode.toString(),0,this.transactionService.transactionInfo.userInfo.userType,this.transactionService.transactionInfo.userInfo.userId,this.transactionService.transactionInfo.transactionId);
+    });
+    // this.finishTransaction.emit(this.reviewList2);
+    //this.transactionService.PrintTransaction();
+    this.finishTransaction.emit(this.transactionService.transactionInfo);
   }
 }
