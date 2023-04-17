@@ -123,10 +123,10 @@
       <td>{{trans.transactionDate.getDate() + "/" + trans.transactionDate.getMonth() +"/"+ trans.transactionDate.getFullYear()}}</td>
       <td>{{this.totalPrice[this.reviewList.length - i - 1]}}</td>
     </tr> -->
+    <!-- this.reviewList.length - i -->
     <tr *ngFor="let trans of this.reviewList.reverse() let i = index">
       <th><button
-          (click)="this.onNewPageClick(trans.transactionId,trans.CustomerName,trans.CustomerId,trans.transactionDate)">{{this.reviewList.length
-          - i}}</button></th>
+          (click)="this.onNewPageClick(trans.transactionId,trans.CustomerName,trans.CustomerId,trans.transactionDate)">{{trans.transactionId }}</button></th>
       <td>{{trans.SellerName}}</td>
       <td>{{trans.CustomerName}}</td>
       <td>{{trans.TotalProducts}}</td>

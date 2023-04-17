@@ -214,6 +214,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     // this.reviewList.cartItemList.forEach(element => {
     //   if(element) this.totalPrice += 1;
     // });
+    console.log('this.reviewList');
     console.log(this.reviewList);
   }
 
@@ -224,17 +225,16 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.selectedTransactionId = id;
     this.selectedCustomerName = cust;
     this.selectedCustomerId = cust_id;
+    this.transactionInfo.customerInfo.customerId = cust_id;
+    this.transactionInfo.customerInfo.name = cust;
     this.selectedTransactionDate = trans_date;
     let grandTotal = 0;
     let res1 = (await this.dataService.getOrderData(this.selectedCustomerId, this.selectedTransactionDate)).data;
-    let res2 = (await this.dataService.getProducts()).data; 
-    console.log(res1);
+    let res2 = (await this.dataService.getProducts()).data;
     res2?.forEach(item1=>{
       res1?.forEach(item2=>{
         if(item1.ProductCode == item2.ProductId){
           item1.quantity = item2.ProductQuantity;
-          console.log(item1);
-          console.log(item2);
           let veryLocalCartItemInfo: CartItemInfo = new CartItemInfo();
           if(item2.CustomerType=='Wholesale'){
             this.selectedTransactionProductInfo.push({productCode:item1.ProductCode,productName:item1.ProductName,urduName:item1.UrduName,quantity:item1.quantity+item1.Packing*item2.CartonQuantity,unit:item1.WHRate,totalPrice:item1.quantity*item1.WHRate});
@@ -284,15 +284,13 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
           // console.log(veryLocalCartItemInfo);
           if(item2.BillNumber){
             this.transactionInfo.transactionId=item2.BillNumber;
-          }
+          }          
+          console.log(this.transactionInfo.customerInfo.customerId)
           this.transactionInfo.cartItemList.push(veryLocalCartItemInfo);
         }
       })
     })
     this.transactionInfo.grandTotal=grandTotal;
-    // console.log(res1);
-    // console.log(res2);
-    // console.log(this.selectedTransactionProductInfo);
   }
 
   onNewPageClose(){
@@ -306,6 +304,7 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
     this.isEditMode=false;
   }
   saveEditProduct(){
+    console.log('CALLED');
     this.transactionInfo.cartItemList.forEach(item => {
       if(item.cartonQuantity > 0 
         || item.quantity > 0 ){
@@ -318,7 +317,9 @@ export class PointOfSaleTableComponent implements OnInit, AfterViewInit {
       this.onNewPageClose()
   }
   onClickPrint(){
+    console.log('this.transactionInfo')
     console.log(this.transactionInfo)
+    console.log(this.transactionInfo.customerInfo.customerId)
     this.finishTransaction.emit(this.transactionInfo);
   }
   checkAdmin(){
